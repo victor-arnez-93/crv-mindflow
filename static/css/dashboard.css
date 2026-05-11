@@ -1,0 +1,805 @@
+/* =========================================================
+   DASHBOARD.CSS — MINDFLOW PSICOLOGIA
+   Psicologia • Psicoterapia • Neurociência
+   ========================================================= */
+
+/* =========================================================
+   VARIÁVEIS COMPLEMENTARES
+   ========================================================= */
+
+:root{
+    --mind-primaria: #7c5cff;
+    --mind-secundaria: #3ec7b7;
+    --mind-rosa: #ff7eb6;
+    --mind-neuro: #64d2ff;
+
+    --mind-glow:
+        0 0 18px rgba(124,92,255,0.25),
+        0 0 32px rgba(62,199,183,0.10);
+
+    --mind-border:
+        rgba(124,92,255,0.18);
+}
+
+/* =========================================================
+   ANIMAÇÕES
+   ========================================================= */
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes fadeSlideUp {
+    0%{
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    100%{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes pulseMind {
+    0%,100%{
+        filter: drop-shadow(0 0 4px rgba(124,92,255,0.20));
+    }
+
+    50%{
+        filter:
+            drop-shadow(0 0 14px rgba(124,92,255,0.65))
+            drop-shadow(0 0 24px rgba(62,199,183,0.25));
+    }
+}
+
+@keyframes gradientMove {
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
+}
+
+@keyframes brainPulse {
+
+    0%,100%{
+        transform:scale(1);
+        filter: drop-shadow(0 0 3px rgba(124,92,255,0.25));
+    }
+
+    50%{
+        transform:scale(1.06);
+        filter:
+            drop-shadow(0 0 16px rgba(124,92,255,0.75))
+            drop-shadow(0 0 24px rgba(62,199,183,0.20));
+    }
+}
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.dashboard-container{
+    width:100%;
+    max-width:1240px;
+    margin:0 auto;
+    padding:22px 0;
+    display:flex;
+    flex-direction:column;
+    gap:32px;
+}
+
+/* =========================================================
+   CARD PRINCIPAL
+   ========================================================= */
+.card-principal{
+
+    position:relative;
+    overflow:hidden;
+
+    border-radius:24px;
+
+    padding:42px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.72),
+            rgba(255,255,255,.58)
+        );
+
+    border:1px solid rgba(124,92,255,0.18);
+
+    box-shadow:
+        var(--mind-glow),
+        0 10px 34px rgba(0,0,0,0.12);
+
+    text-align:center;
+
+    animation:fadeSlideUp .5s ease both;
+}
+
+[data-theme="dark"] .card-principal{
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(12,18,34,.72),
+            rgba(12,18,34,.58)
+        );
+}
+
+.card-principal-img{
+
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+    object-position:center;
+
+    opacity:.28;
+
+    filter:
+        blur(.5px)
+        saturate(1.08)
+        brightness(.92);
+
+    pointer-events:none;
+
+    z-index:0;
+}
+
+[data-theme="light"] .card-principal-img{
+
+    content:url('../imagens/imgfundo1.png');
+
+    opacity:.24;
+}
+
+[data-theme="dark"] .card-principal-img{
+
+    content:url('../imagens/imgfundo2.png');
+
+    opacity:.20;
+}
+
+.card-principal > *:not(.card-principal-img){
+    position:relative;
+    z-index:1;
+}
+
+.titulo-pagina{
+
+    font-family:'Sora',sans-serif;
+
+    font-size:34px;
+    font-weight:800;
+
+    letter-spacing:.6px;
+
+    text-transform:uppercase;
+
+    color:var(--mind-primaria);
+
+    margin-bottom:18px;
+}
+
+.bemvindo-texto{
+    font-family:'Manrope',sans-serif;
+    font-size:18px;
+    font-weight:700;
+
+    color:var(--cor-texto);
+
+    margin-bottom:8px;
+}
+
+.subtexto-inicial{
+    max-width:940px;
+    margin:0 auto 22px;
+
+    font-family:'Manrope',sans-serif;
+    font-size:15px;
+    line-height:1.75;
+
+    color:var(--cor-texto);
+    opacity:.88;
+}
+
+.dashboard-quote{
+    margin-top:18px;
+
+    font-family:'Rajdhani',sans-serif;
+    font-size:21px;
+    font-weight:700;
+    letter-spacing:.4px;
+
+    color:var(--mind-secundaria);
+
+    opacity:0;
+
+    animation:
+        fadeIn .5s forwards ease,
+        pulseMind 5s ease infinite;
+}
+
+.dashboard-quote::before{ content:'“'; }
+.dashboard-quote::after{ content:'”'; }
+
+/* =========================================================
+   CARD DESTAQUE
+   ========================================================= */
+
+.card-acesso-destaque{
+    position:relative;
+    overflow:hidden;
+
+    min-height:290px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    border-radius:22px;
+    padding:30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(124,92,255,0.10),
+            rgba(62,199,183,0.08)
+        ),
+        var(--cor-sidebar);
+
+    border:1px solid rgba(124,92,255,0.25);
+
+    box-shadow:
+        var(--mind-glow),
+        0 8px 26px rgba(0,0,0,0.32);
+}
+
+.card-destaque-img{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+    object-position:center;
+
+    opacity:.22;
+
+    filter:
+        blur(1px)
+        saturate(1.15)
+        brightness(.88);
+
+    pointer-events:none;
+    z-index:0;
+}
+
+.card-acesso-destaque > *:not(.card-destaque-img){
+    position:relative;
+    z-index:2;
+}
+
+.card-acesso-destaque::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    border-radius:inherit;
+    padding:1px;
+
+    background:
+        linear-gradient(
+            130deg,
+            rgba(124,92,255,.75),
+            rgba(62,199,183,.75),
+            rgba(255,126,182,.75)
+        );
+
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+
+    opacity:.7;
+}
+
+.card-subtitulo{
+    text-align:center;
+
+    font-family:'Rajdhani',sans-serif;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.6px;
+    line-height:1.6;
+
+    color:var(--cor-texto);
+
+    opacity:.92;
+
+    margin-top:2px;
+    margin-bottom:22px;
+}
+
+.destaque-acoes{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+/* =========================================================
+   BOTÃO GRADIENTE
+   ========================================================= */
+
+.btn-gradient{
+    border:none;
+    border-radius:999px;
+
+    padding:15px 34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    font-family:'Rajdhani',sans-serif;
+    font-size:15px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.28s ease;
+
+    background-size:300% 300%;
+
+    animation:gradientMove 5s linear infinite;
+}
+
+[data-theme="dark"] .btn-gradient{
+
+    background:
+        linear-gradient(
+            270deg,
+            #7c5cff,
+            #5d7dff,
+            #3ec7b7,
+            #7c5cff
+        );
+
+    color:#ffffff;
+}
+
+[data-theme="light"] .btn-gradient{
+
+    background:
+        linear-gradient(
+            270deg,
+            #241E4E,
+            #4b3bc7,
+            #5d7dff,
+            #64d2ff
+        );
+
+    color:#ffffff;
+}
+
+.btn-gradient:hover{
+    transform:
+        translateY(-3px)
+        scale(1.03);
+
+    box-shadow:
+        0 12px 30px rgba(124,92,255,0.30);
+}
+
+/* =========================================================
+   CARDS BASE
+   ========================================================= */
+
+.card,
+.card-novo,
+.card-hero,
+.insights-compatibilidade{
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(124,92,255,0.04),
+            rgba(62,199,183,0.02)
+        ),
+        var(--cor-sidebar);
+
+    border:1px solid rgba(124,92,255,0.14);
+
+    border-radius:20px;
+
+    box-shadow:
+        0 0 18px rgba(124,92,255,0.08),
+        0 6px 18px rgba(0,0,0,0.28);
+
+    transition:.28s ease;
+}
+
+.card:hover,
+.card-novo:hover,
+.card-hero:hover,
+.insights-compatibilidade:hover{
+
+    transform:translateY(-4px);
+
+    border-color:rgba(124,92,255,0.30);
+
+    box-shadow:
+        0 0 22px rgba(124,92,255,0.16),
+        0 10px 28px rgba(0,0,0,0.30);
+}
+
+.card{
+    padding:22px;
+}
+
+.card-novo,
+.card-hero{
+    padding:28px;
+}
+
+.card-titulo,
+.novo-titulo,
+.hero-titulo{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:14px;
+
+    font-family:'Manrope',sans-serif;
+    font-size:18px;
+    font-weight:800;
+
+    color:var(--mind-primaria);
+}
+
+.card-titulo i,
+.novo-titulo i,
+.hero-titulo i{
+
+    color:var(--mind-secundaria);
+
+    animation:brainPulse 5s ease infinite;
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.cards-grid-2x2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+}
+
+.cards-topo{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:26px;
+}
+
+.cards-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:26px;
+}
+
+/* =========================================================
+   TEXTOS
+   ========================================================= */
+
+.novo-conteudo,
+.hero-frase,
+.lista-insights,
+.lista-noticias{
+
+    font-family:'Manrope',sans-serif;
+    font-size:15px;
+    line-height:1.75;
+
+    color:var(--cor-texto);
+}
+
+.novo-fonte,
+.foto-link{
+
+    margin-top:10px;
+
+    font-size:13px;
+    line-height:1.5;
+
+    color:var(--mind-secundaria);
+
+    opacity:.88;
+}
+
+.lista-insights{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.lista-noticias{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+/* =========================================================
+   FOTO
+   ========================================================= */
+
+.card-foto-wrapper{
+    overflow:hidden;
+
+    border-radius:18px;
+
+    border:1px solid rgba(124,92,255,0.20);
+
+    box-shadow:
+        0 0 12px rgba(124,92,255,0.08);
+}
+
+.card-foto-wrapper img{
+    width:100%;
+    height:220px;
+
+    object-fit:cover;
+
+    transition:.4s ease;
+}
+
+.card-foto-wrapper:hover img{
+    transform:scale(1.05);
+}
+
+.foto-info{
+    padding-top:14px;
+}
+
+.foto-tema{
+
+    font-family:'Rajdhani',sans-serif;
+    font-size:16px;
+    font-weight:700;
+
+    color:var(--cor-texto);
+}
+
+/* =========================================================
+   SIMULADOR
+   ========================================================= */
+
+.insights-compatibilidade{
+    padding:28px;
+}
+
+.insights-compatibilidade h2{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    margin-bottom:20px;
+
+    font-family:'Orbitron',sans-serif;
+    font-size:20px;
+
+    color:var(--mind-primaria);
+}
+
+.compatibilidade-form .form-row{
+
+    display:flex;
+    align-items:flex-end;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.form-group label{
+
+    font-family:'Manrope',sans-serif;
+    font-size:13px;
+    font-weight:700;
+
+    color:var(--cor-texto);
+
+    opacity:.82;
+}
+
+.form-group select{
+
+    min-width:220px;
+
+    padding:12px 16px;
+
+    border-radius:12px;
+
+    border:1px solid rgba(124,92,255,0.22);
+
+    background:var(--cor-header);
+
+    color:var(--cor-texto);
+
+    font-family:'Manrope',sans-serif;
+    font-size:14px;
+
+    transition:.25s ease;
+}
+
+.form-group select:focus{
+
+    outline:none;
+
+    border-color:var(--mind-secundaria);
+
+    box-shadow:
+        0 0 12px rgba(62,199,183,0.18);
+}
+
+.btn-analisar{
+
+    border:none;
+    border-radius:12px;
+
+    padding:13px 24px;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--mind-primaria),
+            var(--mind-secundaria)
+        );
+
+    color:#fff;
+
+    font-family:'Manrope',sans-serif;
+    font-size:14px;
+    font-weight:800;
+
+    transition:.25s ease;
+}
+
+.btn-analisar:hover{
+
+    transform:
+        translateY(-2px)
+        scale(1.02);
+
+    box-shadow:
+        0 10px 22px rgba(124,92,255,0.22);
+}
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 980px){
+
+    .cards-grid-2x2,
+    .cards-topo,
+    .cards-3{
+
+        grid-template-columns:1fr;
+    }
+
+    .card-principal{
+        padding:30px 24px;
+    }
+
+    .titulo-pagina{
+        font-size:25px;
+    }
+
+    .dashboard-quote{
+        font-size:18px;
+    }
+
+    .compatibilidade-form .form-row{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .form-group select{
+        width:100%;
+        min-width:unset;
+    }
+
+    .btn-analisar{
+        width:100%;
+        justify-content:center;
+    }
+}
+
+@media (max-width: 768px){
+
+    .dashboard-container{
+        padding:14px 12px;
+        gap:24px;
+    }
+
+    .card,
+    .card-novo,
+    .card-hero,
+    .insights-compatibilidade{
+        padding:20px;
+    }
+
+    .titulo-pagina{
+        font-size:22px;
+    }
+
+    .subtexto-inicial{
+        font-size:14px;
+    }
+
+    .dashboard-quote{
+        font-size:16px;
+    }
+
+    .destaque-acoes{
+        flex-direction:column;
+    }
+
+    .btn-gradient{
+        width:100%;
+    }
+
+    .card-foto-wrapper img{
+        height:200px;
+    }
+}
+
+@media (max-width: 480px){
+
+    .card-principal{
+        padding:22px 16px;
+    }
+
+    .titulo-pagina{
+        font-size:20px;
+    }
+
+    .card-titulo,
+    .novo-titulo,
+    .hero-titulo{
+        font-size:16px;
+    }
+
+    .dashboard-quote{
+        font-size:15px;
+    }
+
+    .card-foto-wrapper img{
+        height:180px;
+    }
+}

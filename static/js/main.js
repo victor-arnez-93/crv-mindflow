@@ -3,14 +3,82 @@
 // Tema • Relógio • Clima • Sidebar • Busca Global
 // ===================================================================
 
+window.MindFlow = {};
+
 // ======================================================
-// RELÓGIO DIGITAL
+// REFERÊNCIAS GLOBAIS
+// ======================================================
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const btnMenuDesktop =
+    document.getElementById("btnMenu");
+
+const btnMenuMobile =
+    document.getElementById("btnMenuMobile");
+
+const botaoTema =
+    document.getElementById("btnTema");
+
+const weatherBox =
+    document.getElementById("weatherBox");
+
+const modalClima =
+    document.getElementById("modalClima");
+
+const closeModalClima =
+    document.getElementById("closeModalClima");
+
+// ======================================================
+// INIT
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        iniciarRelogio();
+
+        aplicarTema(
+            localStorage.getItem("temaMindFlow")
+            || "light"
+        );
+
+        carregarClima();
+
+        iniciarTema();
+
+        iniciarSidebarDesktop();
+
+        iniciarSidebarMobile();
+
+        iniciarModalClima();
+
+        iniciarBuscaGlobal();
+
+        carregarPerfil();
+
+        ajustarMenuResponsivo();
+
+        marcarMenuAtivo();
+
+        console.log(
+            "🧠 MindFlow iniciado."
+        );
+    }
+);
+
+// ======================================================
+// RELÓGIO
 // ======================================================
 
 function iniciarRelogio(){
 
     const relogio =
         document.getElementById("relogio");
+
+    if(!relogio) return;
 
     function atualizar(){
 
@@ -28,46 +96,29 @@ function iniciarRelogio(){
             agora.getSeconds()
         ).padStart(2,"0");
 
-        if(relogio){
-
-            relogio.textContent =
-                `${h}:${m}:${s}`;
-        }
+        relogio.textContent =
+            `${h}:${m}:${s}`;
     }
 
     atualizar();
 
-    setInterval(atualizar, 1000);
+    setInterval(atualizar,1000);
 }
 
-iniciarRelogio();
-
 // ======================================================
-// REFERÊNCIAS GLOBAIS
-// ======================================================
-
-const sidebar =
-    document.getElementById("sidebar");
-
-const btnMenuDesktop =
-    document.getElementById("btnMenu");
-
-const btnMenuMobile =
-    document.getElementById("btnMenuMobile");
-
-// ======================================================
-// DETECÇÃO DIA / NOITE
+// DIA / NOITE
 // ======================================================
 
 function isDia(){
 
-    const hora = new Date().getHours();
+    const hora =
+        new Date().getHours();
 
     return hora >= 6 && hora < 18;
 }
 
 // ======================================================
-// ÍCONE CLIMA
+// ÍCONES CLIMA
 // ======================================================
 
 function getIcone(code){
@@ -107,7 +158,8 @@ function atualizarIconeClimaPorHora(){
 
     if(!icone) return;
 
-    const src = icone.src || "";
+    const src =
+        icone.src || "";
 
     if(
         src.includes("ico_dia")
@@ -115,7 +167,8 @@ function atualizarIconeClimaPorHora(){
         src.includes("ico_noite")
     ){
 
-        icone.src = isDia()
+        icone.src =
+            isDia()
             ? "static/imagens/ico_dia.png"
             : "static/imagens/ico_noite.png";
     }
@@ -137,16 +190,16 @@ setInterval(
 );
 
 // ======================================================
-// TEMA CLARO / ESCURO
+// TEMA
 // ======================================================
-
-const botaoTema =
-    document.getElementById("btnTema");
 
 function aplicarTema(tema){
 
     document.documentElement
-        .setAttribute("data-theme", tema);
+        .setAttribute(
+            "data-theme",
+            tema
+        );
 
     localStorage.setItem(
         "temaMindFlow",
@@ -175,13 +228,16 @@ function alternarTema(){
             || "light";
 
     aplicarTema(
+
         temaAtual === "light"
         ? "dark"
         : "light"
     );
 }
 
-if(botaoTema){
+function iniciarTema(){
+
+    if(!botaoTema) return;
 
     botaoTema.addEventListener(
         "click",
@@ -189,22 +245,22 @@ if(botaoTema){
     );
 }
 
-aplicarTema(
-    localStorage.getItem("temaMindFlow")
-    || "light"
-);
-
 // ======================================================
 // SIDEBAR DESKTOP
 // ======================================================
 
-if(btnMenuDesktop && sidebar){
+function iniciarSidebarDesktop(){
+
+    if(!btnMenuDesktop || !sidebar)
+        return;
 
     btnMenuDesktop.addEventListener(
         "click",
         () => {
 
-            sidebar.classList.toggle("closed");
+            sidebar.classList.toggle(
+                "closed"
+            );
         }
     );
 }
@@ -213,16 +269,10 @@ if(btnMenuDesktop && sidebar){
 // MODAL CLIMA
 // ======================================================
 
-const weatherBox =
-    document.getElementById("weatherBox");
+function iniciarModalClima(){
 
-const modalClima =
-    document.getElementById("modalClima");
-
-const closeModalClima =
-    document.getElementById("closeModalClima");
-
-if(weatherBox && modalClima){
+    if(!weatherBox || !modalClima)
+        return;
 
     weatherBox.addEventListener(
         "click",
@@ -230,7 +280,9 @@ if(weatherBox && modalClima){
 
             e.stopPropagation();
 
-            modalClima.classList.toggle("ativo");
+            modalClima.classList.toggle(
+                "ativo"
+            );
         }
     );
 
@@ -242,7 +294,9 @@ if(weatherBox && modalClima){
 
                 e.stopPropagation();
 
-                modalClima.classList.remove("ativo");
+                modalClima.classList.remove(
+                    "ativo"
+                );
             }
         );
     }
@@ -255,28 +309,40 @@ if(weatherBox && modalClima){
                 !weatherBox.contains(e.target)
             ){
 
-                modalClima.classList.remove("ativo");
+                modalClima.classList.remove(
+                    "ativo"
+                );
             }
         }
     );
 }
 
 // ======================================================
-// CLIMA REAL — OPEN METEO
+// CLIMA REAL
 // ======================================================
 
 async function carregarClima(){
 
     const temperatura =
-        document.getElementById("temperatura");
+        document.getElementById(
+            "temperatura"
+        );
 
     const modalBody =
-        document.getElementById("modalClimaBody");
+        document.getElementById(
+            "modalClimaBody"
+        );
 
     const icone =
-        document.getElementById("iconeClimaImg");
+        document.getElementById(
+            "iconeClimaImg"
+        );
 
-    if(!temperatura || !modalBody) return;
+    if(
+        !temperatura
+        ||
+        !modalBody
+    ) return;
 
     try{
 
@@ -288,6 +354,19 @@ async function carregarClima(){
 
         const data =
             await resp.json();
+
+        temperatura.textContent =
+            Math.round(
+                data.current_weather.temperature
+            ) + "°C";
+
+        if(icone){
+
+            icone.src =
+                getIcone(
+                    data.current_weather.weathercode
+                );
+        }
 
         const diasSemana = [
             "dom.",
@@ -311,49 +390,47 @@ async function carregarClima(){
             return "⛈️";
         };
 
-        temperatura.textContent =
-            Math.round(
-                data.current_weather.temperature
-            ) + "°C";
-
-        if(icone){
-
-            icone.src = getIcone(
-                data.current_weather.weathercode
-            );
-        }
-
         const previsoes =
-            data.daily.time.map((d, i) => {
+            data.daily.time.map(
+                (d,i) => {
 
                 const dt =
-                    new Date(d + "T12:00:00");
+                    new Date(
+                        d + "T12:00:00"
+                    );
 
                 return {
 
                     dia:
                         i === 0
                         ? "Hoje"
-                        : diasSemana[dt.getDay()],
+                        : diasSemana[
+                            dt.getDay()
+                        ],
 
                     max:
                         Math.round(
-                            data.daily.temperature_2m_max[i]
+                            data.daily
+                            .temperature_2m_max[i]
                         ),
 
                     min:
                         Math.round(
-                            data.daily.temperature_2m_min[i]
+                            data.daily
+                            .temperature_2m_min[i]
                         ),
 
                     emoji:
                         getEmoji(
-                            data.daily.weathercode[i]
+                            data.daily
+                            .weathercode[i]
                         )
                 };
             });
 
-        atualizarModalClima(previsoes);
+        atualizarModalClima(
+            previsoes
+        );
 
     }catch(e){
 
@@ -362,31 +439,35 @@ async function carregarClima(){
             e
         );
 
-        temperatura.textContent = "--°";
+        temperatura.textContent =
+            "--°";
 
-        if(modalBody){
-
-            modalBody.innerHTML =
-                "<p style='opacity:.6'>Clima indisponível</p>";
-        }
+        modalBody.innerHTML =
+            `
+                <p style="opacity:.6">
+                    Clima indisponível
+                </p>
+            `;
     }
 }
-
-carregarClima();
 
 setInterval(
     carregarClima,
     600000
 );
 
-function atualizarModalClima(previsoes){
+function atualizarModalClima(
+    previsoes
+){
 
-    const modalClima =
-        document.getElementById("modalClimaBody");
+    const modal =
+        document.getElementById(
+            "modalClimaBody"
+        );
 
-    if(!modalClima) return;
+    if(!modal) return;
 
-    modalClima.innerHTML =
+    modal.innerHTML =
         previsoes.map(p => `
 
             <div class="previsao-dia">
@@ -409,191 +490,177 @@ function atualizarModalClima(previsoes){
 }
 
 // ======================================================
-// PERFIL / CONFIGURAÇÕES
+// PERFIL
 // ======================================================
 
-window.addEventListener(
-    "DOMContentLoaded",
-    () => {
+function carregarPerfil(){
 
-        const nome =
-            localStorage.getItem("config_nome");
+    const nome =
+        localStorage.getItem(
+            "config_nome"
+        );
 
-        const email =
-            localStorage.getItem("config_email");
+    const email =
+        localStorage.getItem(
+            "config_email"
+        );
 
-        const avatarURL =
-            localStorage.getItem("config_avatar");
+    const avatarURL =
+        localStorage.getItem(
+            "config_avatar"
+        );
 
-        if(nome){
+    if(nome){
 
-            document
-                .querySelectorAll(".user-name")
-                .forEach(e => {
+        document
+            .querySelectorAll(
+                ".user-name"
+            )
+            .forEach(el => {
 
-                    e.textContent = nome;
-                });
-        }
-
-        if(email){
-
-            document
-                .querySelectorAll(".user-role")
-                .forEach(e => {
-
-                    e.textContent = email;
-                });
-        }
-
-        if(avatarURL){
-
-            document
-                .querySelectorAll(
-                    ".user-box img, .logo-header"
-                )
-                .forEach(im => {
-
-                    im.src = avatarURL;
-                });
-        }
+                el.textContent = nome;
+            });
     }
-);
+
+    if(email){
+
+        document
+            .querySelectorAll(
+                ".user-role"
+            )
+            .forEach(el => {
+
+                el.textContent = email;
+            });
+    }
+
+    if(avatarURL){
+
+        document
+            .querySelectorAll(
+                ".user-avatar-img"
+            )
+            .forEach(img => {
+
+                img.src = avatarURL;
+            });
+    }
+}
 
 // ======================================================
 // BUSCA GLOBAL
 // ======================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+function iniciarBuscaGlobal(){
 
-        const campo =
-            document.getElementById("searchInput");
+    const campo =
+        document.getElementById(
+            "searchInput"
+        );
 
-        if(!campo) return;
+    if(!campo) return;
 
-        let resultados = [];
-        let indiceAtual = -1;
+    let timeoutBusca;
 
-        function limparDestaques(){
+    campo.addEventListener(
+        "input",
+        () => {
 
-            document
-                .querySelectorAll(".highlight-busca")
-                .forEach(el => {
+            clearTimeout(timeoutBusca);
 
-                    el.outerHTML =
-                        el.innerText;
-                });
-        }
+            timeoutBusca =
+                setTimeout(() => {
 
-        function destacar(texto){
-
-            limparDestaques();
-
-            if(texto.length < 2) return;
-
-            resultados = [];
-            indiceAtual = -1;
-
-            const walk =
-                document.createTreeWalker(
-                    document.body,
-                    NodeFilter.SHOW_TEXT
+                executarBusca(
+                    campo.value.trim()
                 );
 
-            while(walk.nextNode()){
-
-                const node =
-                    walk.currentNode;
-
-                const valor =
-                    node.nodeValue.toLowerCase();
-
-                if(
-                    valor.includes(
-                        texto.toLowerCase()
-                    )
-                ){
-
-                    const span =
-                        document.createElement("span");
-
-                    span.className =
-                        "highlight-busca";
-
-                    const idx =
-                        valor.indexOf(
-                            texto.toLowerCase()
-                        );
-
-                    const antes =
-                        node.nodeValue.slice(0, idx);
-
-                    const match =
-                        node.nodeValue.slice(
-                            idx,
-                            idx + texto.length
-                        );
-
-                    const depois =
-                        node.nodeValue.slice(
-                            idx + texto.length
-                        );
-
-                    span.textContent = match;
-
-                    const parent =
-                        node.parentNode;
-
-                    parent.insertBefore(
-                        document.createTextNode(antes),
-                        node
-                    );
-
-                    parent.insertBefore(
-                        span,
-                        node
-                    );
-
-                    parent.insertBefore(
-                        document.createTextNode(depois),
-                        node
-                    );
-
-                    parent.removeChild(node);
-
-                    resultados.push(span);
-                }
-            }
-
-            if(resultados.length > 0){
-
-                indiceAtual = 0;
-
-                resultados[indiceAtual]
-                    .scrollIntoView({
-
-                        behavior:"smooth",
-                        block:"center"
-                    });
-            }
+            },250);
         }
+    );
+}
 
-        campo.addEventListener(
-            "input",
-            () => destacar(
-                campo.value.trim()
-            )
+function executarBusca(texto){
+
+    limparResultadosBusca();
+
+    if(texto.length < 2)
+        return;
+
+    const elementos =
+        document.querySelectorAll(
+            `
+            h1,h2,h3,h4,
+            p,
+            span,
+            .card-title,
+            .section-title
+            `
         );
+
+    elementos.forEach(el => {
+
+        if(
+            el.closest(".sidebar")
+            ||
+            el.closest(".header")
+            ||
+            el.closest(".modal")
+        ) return;
+
+        const conteudo =
+            el.textContent
+                .toLowerCase();
+
+        if(
+            conteudo.includes(
+                texto.toLowerCase()
+            )
+        ){
+
+            el.classList.add(
+                "highlight-busca"
+            );
+        }
+    });
+
+    const primeiro =
+        document.querySelector(
+            ".highlight-busca"
+        );
+
+    if(primeiro){
+
+        primeiro.scrollIntoView({
+
+            behavior:"smooth",
+            block:"center"
+        });
     }
-);
+}
+
+function limparResultadosBusca(){
+
+    document
+        .querySelectorAll(
+            ".highlight-busca"
+        )
+        .forEach(el => {
+
+            el.classList.remove(
+                "highlight-busca"
+            );
+        });
+}
 
 // ======================================================
-// MENU MOBILE
+// SIDEBAR MOBILE
 // ======================================================
 
 let overlay =
-    document.getElementById("sidebar-overlay");
+    document.getElementById(
+        "sidebar-overlay"
+    );
 
 if(!overlay){
 
@@ -606,80 +673,94 @@ if(!overlay){
     overlay.className =
         "sidebar-overlay";
 
-    document.body.appendChild(overlay);
-}
-
-const btnFechar =
-    document.querySelector(".sidebar-fechar");
-
-if(btnMenuMobile && sidebar){
-
-    btnMenuMobile.addEventListener(
-        "click",
-        (e) => {
-
-            e.stopPropagation();
-
-            sidebar.classList.add("aberta");
-
-            overlay.classList.add("mostrar");
-
-            document.body.classList.add("menu-aberto");
-        }
+    document.body.appendChild(
+        overlay
     );
 }
 
-if(btnFechar && sidebar){
+function iniciarSidebarMobile(){
 
-    btnFechar.addEventListener(
-        "click",
-        (e) => {
+    const btnFechar =
+        document.querySelector(
+            ".sidebar-fechar"
+        );
 
-            e.stopPropagation();
+    if(btnMenuMobile && sidebar){
 
-            sidebar.classList.remove("aberta");
+        btnMenuMobile.addEventListener(
+            "click",
+            (e) => {
 
-            overlay.classList.remove("mostrar");
+                e.stopPropagation();
 
-            document.body.classList.remove("menu-aberto");
-        }
-    );
-}
+                sidebar.classList.add(
+                    "aberta"
+                );
 
-if(overlay && sidebar){
+                overlay.classList.add(
+                    "mostrar"
+                );
+
+                document.body.classList.add(
+                    "menu-aberto"
+                );
+            }
+        );
+    }
+
+    if(btnFechar && sidebar){
+
+        btnFechar.addEventListener(
+            "click",
+            (e) => {
+
+                e.stopPropagation();
+
+                fecharSidebarMobile();
+            }
+        );
+    }
 
     overlay.addEventListener(
         "click",
-        () => {
-
-            sidebar.classList.remove("aberta");
-
-            overlay.classList.remove("mostrar");
-
-            document.body.classList.remove("menu-aberto");
-        }
+        fecharSidebarMobile
     );
+
+    document
+        .querySelectorAll(
+            ".sidebar .menu-item"
+        )
+        .forEach(item => {
+
+            item.addEventListener(
+                "click",
+                () => {
+
+                    if(
+                        window.innerWidth <= 768
+                    ){
+
+                        fecharSidebarMobile();
+                    }
+                }
+            );
+        });
 }
 
-document
-    .querySelectorAll(".sidebar .menu-item")
-    .forEach(item => {
+function fecharSidebarMobile(){
 
-        item.addEventListener(
-            "click",
-            () => {
+    sidebar.classList.remove(
+        "aberta"
+    );
 
-                if(window.innerWidth <= 768){
+    overlay.classList.remove(
+        "mostrar"
+    );
 
-                    sidebar.classList.remove("aberta");
-
-                    overlay.classList.remove("mostrar");
-
-                    document.body.classList.remove("menu-aberto");
-                }
-            }
-        );
-    });
+    document.body.classList.remove(
+        "menu-aberto"
+    );
+}
 
 // ======================================================
 // RESPONSIVIDADE
@@ -689,17 +770,17 @@ function ajustarMenuResponsivo(){
 
     if(window.innerWidth <= 768){
 
-        sidebar.classList.remove("aberta");
-
-        overlay.classList.remove("mostrar");
-
-        document.body.classList.remove("menu-aberto");
+        fecharSidebarMobile();
 
     }else{
 
-        sidebar.classList.remove("aberta");
+        sidebar?.classList.remove(
+            "aberta"
+        );
 
-        document.body.classList.remove("menu-aberto");
+        document.body.classList.remove(
+            "menu-aberto"
+        );
     }
 }
 
@@ -708,16 +789,11 @@ window.addEventListener(
     ajustarMenuResponsivo
 );
 
-window.addEventListener(
-    "DOMContentLoaded",
-    ajustarMenuResponsivo
-);
-
 // ======================================================
 // MENU ATIVO
 // ======================================================
 
-(function marcarMenuAtivo(){
+function marcarMenuAtivo(){
 
     const pagina =
         window.location.pathname
@@ -727,23 +803,119 @@ window.addEventListener(
             || "dashboard";
 
     document
-        .querySelectorAll(".menu-item")
+        .querySelectorAll(
+            ".menu-item"
+        )
         .forEach(btn => {
 
-            btn.classList.remove("active");
+            btn.classList.remove(
+                "active"
+            );
 
             const dp =
-                (btn.dataset.page || "")
+                (
+                    btn.dataset.page
+                    || ""
+                )
                 .toLowerCase()
                 .trim();
 
             if(
                 dp
                 &&
-                dp === pagina.toLowerCase().trim()
+                dp === pagina
             ){
 
-                btn.classList.add("active");
+                btn.classList.add(
+                    "active"
+                );
             }
         });
-})();
+}
+
+// ======================================================
+// TOAST GLOBAL
+// ======================================================
+
+MindFlow.toast =
+    function(
+        mensagem,
+        tipo = "success"
+    ){
+
+    const toast =
+        document.createElement("div");
+
+    toast.className =
+        `mindflow-toast ${tipo}`;
+
+    toast.innerHTML = `
+        <span>${mensagem}</span>
+    `;
+
+    document.body.appendChild(
+        toast
+    );
+
+    setTimeout(() => {
+
+        toast.classList.add(
+            "mostrar"
+        );
+
+    },50);
+
+    setTimeout(() => {
+
+        toast.classList.remove(
+            "mostrar"
+        );
+
+        setTimeout(() => {
+
+            toast.remove();
+
+        },300);
+
+    },3000);
+};
+
+// ======================================================
+// MODAL GLOBAL
+// ======================================================
+
+MindFlow.abrirModal =
+    function(id){
+
+    const modal =
+        document.getElementById(id);
+
+    if(!modal) return;
+
+    modal.classList.add("ativo");
+
+    document.body.style.overflow =
+        "hidden";
+};
+
+MindFlow.fecharModal =
+    function(id){
+
+    const modal =
+        document.getElementById(id);
+
+    if(!modal) return;
+
+    modal.classList.remove("ativo");
+
+    document.body.style.overflow =
+        "auto";
+};
+
+// ======================================================
+// LOG
+// ======================================================
+
+console.log(
+    "🧠 MAIN.JS consolidado."
+);

@@ -1,459 +1,729 @@
 <!DOCTYPE html>
 <html lang="pt-br" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindFlow | Dashboard Psicologia</title>
 
-    <!-- FAVICON -->
-    <link rel="icon" href="static/imagens/favicon.ico">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        MindFlow | Dashboard Psicologia
+    </title>
+
+    <link
+        rel="icon"
+        href="static/imagens/favicon.ico"
+    >
 
     <!-- FONTES -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Manrope:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
     <!-- FONTAWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
 
-    <!-- CSS GLOBAL -->
-    <link rel="stylesheet" href="static/css/auth.css">
-    <link rel="stylesheet" href="static/css/main.css">
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="static/css/main.css"
+    >
 
-    <!-- CSS DA DASHBOARD -->
-    <link rel="stylesheet" href="static/css/dashboard.css">
+    <link
+        rel="stylesheet"
+        href="static/css/dashboard.css"
+    >
+
 </head>
 
 <body>
 
-<!-- ================================================================== -->
-<!-- SIDEBAR -->
-<!-- ================================================================== -->
-<aside id="sidebar" class="sidebar">
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
 
-    <span class="sidebar-fechar">
-        <i class="fas fa-times"></i>
-    </span>
+<aside
+    class="sidebar"
+    id="sidebar"
+>
 
-    <nav class="sidebar-menu">
+    <div class="sidebar-fechar">
 
-        <button class="menu-item" data-page="dashboard" onclick="window.location.href='dashboard.html'">
-            <i class="fas fa-home"></i>
-            <span>Início</span>
-        </button>
+        <i class="fa-solid fa-xmark"></i>
 
-        <button class="menu-item" data-page="sessao" onclick="window.location.href='sessao.html'">
-            <i class="fas fa-brain"></i>
-            <span>Ferramentas Clínicas</span>
-        </button>
-
-        <button class="menu-item" data-page="atividades" onclick="window.location.href='atividades.html'">
-            <i class="fas fa-puzzle-piece"></i>
-            <span>Atividades Terapêuticas</span>
-        </button>
-
-        <button class="menu-item" data-page="insights" onclick="window.location.href='insights.html'">
-            <i class="fas fa-lightbulb"></i>
-            <span>Insights & IA</span>
-        </button>
-
-        <button class="menu-item" data-page="casos" onclick="window.location.href='casos.html'">
-            <i class="fas fa-book-medical"></i>
-            <span>Estudos de Caso</span>
-        </button>
-
-        <button class="menu-item" data-page="neurociencia" onclick="window.location.href='neurociencia.html'">
-            <i class="fas fa-network-wired"></i>
-            <span>Neurociência</span>
-        </button>
-
-        <button class="menu-item" data-page="artigos" onclick="window.location.href='artigos.html'">
-            <i class="fas fa-newspaper"></i>
-            <span>Artigos Científicos</span>
-        </button>
-
-        <button class="menu-item" data-page="mindfulness" onclick="window.location.href='mindfulness.html'">
-            <i class="fas fa-spa"></i>
-            <span>Mindfulness</span>
-        </button>
-
-        <button class="menu-item" data-page="configuracoes" onclick="window.location.href='configuracoes.html'">
-            <i class="fas fa-cog"></i>
-            <span>Configurações</span>
-        </button>
-
-    </nav>
-
-    <div class="sidebar-logo">
-        <span class="dev-label">Desenvolvido por</span>
-        <img src="static/imagens/logo_crv.png" alt="Logo CRV">
     </div>
 
-    <button id="btnMenu" class="sidebar-toggle">
-        <i class="fas fa-chevron-left"></i>
-    </button>
+    <div class="sidebar-top">
+
+        <a
+            href="dashboard.html"
+            class="menu-item"
+            data-page="dashboard"
+        >
+
+            <i class="fa-solid fa-house"></i>
+
+            <span>
+                Início
+            </span>
+
+        </a>
+
+        <a
+            href="ferramentas.html"
+            class="menu-item"
+            data-page="ferramentas"
+        >
+
+            <i class="fa-solid fa-brain"></i>
+
+            <span>
+                Ferramentas Clínicas
+            </span>
+
+        </a>
+
+        <a
+            href="atividades.html"
+            class="menu-item"
+            data-page="atividades"
+        >
+
+            <i class="fa-solid fa-puzzle-piece"></i>
+
+            <span>
+                Atividades Terapêuticas
+            </span>
+
+        </a>
+
+        <a
+            href="insights.html"
+            class="menu-item"
+            data-page="insights"
+        >
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+            <span>
+                Insights & IA
+            </span>
+
+        </a>
+
+        <a
+            href="casos.html"
+            class="menu-item"
+            data-page="casos"
+        >
+
+            <i class="fa-solid fa-book-medical"></i>
+
+            <span>
+                Estudos de Caso
+            </span>
+
+        </a>
+
+        <a
+            href="neurociencia.html"
+            class="menu-item"
+            data-page="neurociencia"
+        >
+
+            <i class="fa-solid fa-network-wired"></i>
+
+            <span>
+                Neurociência
+            </span>
+
+        </a>
+
+        <a
+            href="artigos.html"
+            class="menu-item"
+            data-page="artigos"
+        >
+
+            <i class="fa-solid fa-newspaper"></i>
+
+            <span>
+                Artigos Científicos
+            </span>
+
+        </a>
+
+        <a
+            href="mindfulness.html"
+            class="menu-item"
+            data-page="mindfulness"
+        >
+
+            <i class="fa-solid fa-spa"></i>
+
+            <span>
+                Mindfulness
+            </span>
+
+        </a>
+
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <a
+            href="configuracoes.html"
+            class="menu-item"
+            data-page="configuracoes"
+        >
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+                Configurações
+            </span>
+
+        </a>
+
+        <div class="sidebar-footer">
+
+            <span>
+                Desenvolvido por
+            </span>
+
+            <div class="sidebar-logo">
+
+                <img
+                    src="static/imagens/logo2.png"
+                    alt="Logo CRV"
+                >
+
+            </div>
+
+        </div>
+
+        <button
+            class="sidebar-toggle"
+            id="btnMenu"
+        >
+
+            <i class="fa-solid fa-angle-left"></i>
+
+        </button>
+
+    </div>
 
 </aside>
 
-<!-- ================================================================== -->
-<!-- HEADER -->
-<!-- ================================================================== -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
 <header class="header">
 
-    <button id="btnMenuMobile" class="btn-menu">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <div class="header-left">
-        <img src="static/imagens/logo_psicologia.png" alt="MindFlow" class="logo-header">
 
-        <div class="header-titles">
-            <span class="subtitulo">
-                <strong>Dashboard Inteligente para Psicólogos</strong>
-            </span>
+        <button
+            id="btnMenuMobile"
+            class="menu-mobile-btn"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <div class="logo-box">
+
+            <img
+                src="static/imagens/logo1.png"
+                class="logo-crv"
+                alt="CRV"
+            >
+
+            <img
+                src="static/imagens/logoclaro.png"
+                class="logo-mindflow logo-light"
+                alt="MindFlow"
+            >
+
+            <img
+                src="static/imagens/logoescuro.png"
+                class="logo-mindflow logo-dark"
+                alt="MindFlow"
+            >
+
+            <div class="logo-texts">
+
+                <span class="logo-subtitle">
+
+                    Dashboard Inteligente para Psicólogos
+
+                </span>
+
+            </div>
+
         </div>
+
     </div>
 
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Buscar conteúdos, técnicas, artigos...">
-        <i class="fas fa-search"></i>
+    <div class="header-center">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Buscar conteúdos, técnicas, artigos..."
+            >
+
+        </div>
+
     </div>
 
     <div class="header-right">
 
-        <span id="relogio" class="clock">00:00:00</span>
+        <span
+            id="relogio"
+            class="clock-box"
+        >
 
-        <div class="weather-box" id="weatherBox">
-            <img id="iconeClimaImg"
-                 src="static/imagens/ico_dia.png"
-                 alt="clima"
-                 class="icone-clima-img">
+            00:00:00
 
-            <span id="temperatura" class="temperature">21°C</span>
+        </span>
+
+        <div
+            class="weather-box"
+            id="weatherBox"
+        >
+
+            <img
+                src="static/imagens/ico_dia.png"
+                alt="Clima"
+                class="icone-clima-img"
+                id="iconeClimaImg"
+            >
+
+            <span
+                class="weather-temp"
+                id="temperatura"
+            >
+
+                --°C
+
+            </span>
+
         </div>
 
-        <button id="btnTema" class="btn-tema">
+        <button
+            id="btnTema"
+            class="theme-toggle"
+        >
+
             <i class="fas fa-moon"></i>
+
         </button>
 
     </div>
 
 </header>
 
-<!-- ================================================================== -->
-<!-- MAIN -->
-<!-- ================================================================== -->
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
 <main class="main-content">
 
-<div class="dashboard-container">
+    <div class="page-container">
 
-    <!-- CARD HERO -->
-    <div class="card-principal">
+        <!-- HERO -->
+        <section class="hero-dashboard card">
 
-        <img src="static/imagens/hero_psicologia.jpg"
-             alt=""
-             class="card-principal-img"
-             id="imgCardPrincipal">
+            <img
+                src=""
+                alt=""
+                id="heroImagem"
+                class="hero-bg"
+            >
 
-        <h1 class="titulo-pagina">
-            DASHBOARD — PSICOLOGIA & NEUROCIÊNCIA
-        </h1>
+            <div class="hero-overlay"></div>
 
-        <p class="bemvindo-texto">
-            Bem-vinda, Dra. Mariana.
-        </p>
+            <div class="hero-content">
 
-        <p class="subtexto-inicial">
-            Um ambiente criado para apoiar psicólogos e psicoterapeutas
-            com conteúdos fundamentados em ciência, atividades terapêuticas,
-            estudos clínicos, neurociência, psicologia cognitiva,
-            psicanálise, TCC, comportamento humano e saúde emocional.
-        </p>
+                <span class="hero-badge">
 
-        <div id="fraseRotativa" class="dashboard-quote">
-            “A curiosidade sobre nós mesmos é a essência do crescimento psicológico.”
-        </div>
+                    Psicologia • Neurociência • Saúde Mental
 
-    </div>
+                </span>
 
-<!-- CARD DE ACESSO -->
-<div class="card card-acesso-destaque">
+                <h1
+                    class="hero-title"
+                    id="heroTitulo"
+                >
 
-    <img src="static/imagens/imgdestaque_psicologia.jpg"
-         alt=""
-         class="card-destaque-img"
-         id="imgCardDestaque">
+                    Carregando...
 
-    <div class="card-titulo" style="justify-content:center;">
-        <i class="fas fa-brain"></i>
-        Ferramentas Clínicas
-    </div>
+                </h1>
 
-    <p class="card-subtitulo destaque-texto destaque-texto-upper">
-        EXPLORE TÉCNICAS TERAPÊUTICAS, EXERCÍCIOS REFLEXIVOS,
-        MATERIAL CIENTÍFICO E FERRAMENTAS PARA SESSÕES
-    </p>
+                <p
+                    class="hero-subtitle"
+                    id="heroSubtitulo"
+                >
 
-    <div class="acoes-rapidas destaque-acoes">
+                    Carregando conteúdo clínico...
 
-        <button class="btn-gradient destaque-btn" id="btnSessao">
-            <i class="fas fa-comments"></i>
-            <span>Ferramentas de Sessão</span>
-        </button>
+                </p>
 
-        <button class="btn-gradient destaque-btn" id="btnAtividades">
-            <i class="fas fa-puzzle-piece"></i>
-            <span>Atividades Terapêuticas</span>
-        </button>
+                <div
+                    class="hero-legend"
+                    id="heroLegenda"
+                >
 
-    </div>
+                    MindFlow
 
-</div>
+                </div>
 
-<!-- GRID -->
-<div class="cards-grid-2x2">
-
-    <!-- DICA -->
-    <div class="card-novo card-dica" id="cardDica">
-
-        <h3 class="novo-titulo">
-            <i class="fas fa-lightbulb"></i>
-            Insight Terapêutico do Dia
-        </h3>
-
-        <p id="textoDica" class="novo-conteudo">
-            A validação emocional tende a reduzir mecanismos defensivos
-            e aumentar a abertura do paciente durante o processo terapêutico.
-        </p>
-
-        <div id="fonteDica" class="novo-fonte">
-            Baseado em abordagens da Terapia Cognitivo-Comportamental e Psicologia Humanista.
-        </div>
-
-    </div>
-
-    <!-- ESTATÍSTICA -->
-    <div class="card-novo card-stat">
-
-        <h3 class="novo-titulo">
-            <i class="fas fa-chart-line"></i>
-            Dado Científico
-        </h3>
-
-        <p class="novo-conteudo">
-            Estudos indicam que a psicoterapia associada ao vínculo terapêutico
-            consistente aumenta significativamente os índices de melhora emocional.
-        </p>
-
-        <div class="novo-fonte">
-            American Psychological Association (APA)
-        </div>
-
-    </div>
-
-    <!-- NEURO -->
-    <div class="card-novo card-stat">
-
-        <h3 class="novo-titulo">
-            <i class="fas fa-network-wired"></i>
-            Neurociência Aplicada
-        </h3>
-
-        <p class="novo-conteudo">
-            O cérebro mantém capacidade de reorganização neural ao longo da vida,
-            fenômeno conhecido como neuroplasticidade.
-        </p>
-
-        <div class="novo-fonte">
-            Referência: Norman Doidge — The Brain That Changes Itself
-        </div>
-
-    </div>
-
-    <!-- HERO -->
-    <div class="card-hero">
-
-        <h3 class="hero-titulo">
-            <i class="fas fa-bolt"></i>
-            Reflexão Clínica
-        </h3>
-
-        <p class="hero-frase">
-            “Nem todo silêncio em sessão representa resistência;
-            às vezes ele é exatamente o início da elaboração emocional.”
-        </p>
-
-    </div>
-
-</div>
-
-<!-- GRID SUPERIOR -->
-<div class="cards-topo">
-
-    <!-- ABORDAGEM -->
-    <div class="card">
-
-        <div class="card-titulo">
-            <i class="fas fa-brain"></i>
-            Tema Clínico do Dia
-        </div>
-
-        <div class="lista-insights">
-
-            <p>
-                <strong>TCC:</strong>
-                identificação de pensamentos automáticos
-                e reestruturação cognitiva.
-            </p>
-
-            <p>
-                <strong>Psicanálise:</strong>
-                análise de padrões inconscientes e simbolismos.
-            </p>
-
-            <p>
-                <strong>Humanista:</strong>
-                escuta empática e autenticidade terapêutica.
-            </p>
-
-        </div>
-
-    </div>
-
-    <!-- PERGUNTA -->
-    <div class="card">
-
-        <div class="card-titulo">
-            <i class="fas fa-question-circle"></i>
-            Pergunta Reflexiva
-        </div>
-
-        <div class="lista-insights">
-
-            “Quais emoções você percebe que costuma evitar sentir
-            no seu cotidiano?”
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- SIMULADOR -->
-<div class="insights-compatibilidade">
-
-    <h2>
-        <i class="fas fa-brain"></i>
-        Simulador de Emoções & Regulação
-    </h2>
-
-    <div class="compatibilidade-form">
-
-        <div class="form-row">
-
-            <div class="form-group">
-                <label>Estado Emocional:</label>
-
-                <select id="perfil1">
-                    <option>Ansiedade</option>
-                    <option>Estresse</option>
-                    <option>Tristeza</option>
-                    <option>Raiva</option>
-                </select>
             </div>
 
-            <div class="form-group">
-                <label>Técnica Terapêutica:</label>
+        </section>
 
-                <select id="perfil2">
-                    <option>Respiração Diafragmática</option>
-                    <option>Mindfulness</option>
-                    <option>Reestruturação Cognitiva</option>
-                    <option>Psicoeducação</option>
-                </select>
+            <!-- REFLEXÃO TERAPÊUTICA -->
+        <section class="section">
+
+            <article class="card pergunta-wrapper">
+
+                <div
+                    id="perguntaReflexiva"
+                >
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </div>
+
+        <!-- REFLEXÃO + ATIVIDADE -->
+        <section class="dashboard-grid-top">
+
+            <!-- FRASE -->
+            <article class="card frase-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2 class="card-title">
+
+                            Frase Terapêutica
+
+                        </h2>
+
+                        <p class="card-subtitle">
+
+                            Reflexão baseada em autores e abordagens reconhecidas.
+
+                        </p>
+
+                    </div>
+
+                    <div class="frase-icon">
+
+                        <i class="fa-solid fa-quote-left"></i>
+
+                    </div>
+
+                </div>
+
+                <blockquote
+                    class="frase-texto"
+                    id="fraseDia"
+                >
+
+                    Carregando frase...
+
+                </blockquote>
+
+                <div class="frase-footer">
+
+                    <span
+                        class="frase-autor"
+                        id="fraseAutor"
+                    >
+
+                        Autor
+
+                    </span>
+
+                    <span
+                        class="tag"
+                        id="fraseCategoria"
+                    >
+
+                        Categoria
+
+                    </span>
+
+                </div>
+
+            </article>
+
+            <!-- ATIVIDADE -->
+            <article
+                class="card atividade-wrapper"
+                id="atividadeDestaque"
+            >
+
+            </article>
+
+        </section>
+
+        <!-- INSIGHTS -->
+        <section class="section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2 class="section-title">
+
+                        Insights Científicos
+
+                    </h2>
+
+                    <p class="section-subtitle">
+
+                        Conteúdo baseado em evidências e referências clínicas.
+
+                    </p>
+
+                </div>
+
             </div>
 
-            <button class="btn-analisar">
-                <i class="fas fa-search"></i>
-                Gerar Insight
+            <div
+                class="grid-auto"
+                id="insightsGrid"
+            >
+
+            </div>
+
+        </section>
+
+        <!-- EDITORIAL — 3 COLUNAS -->
+        <section class="dashboard-grid-editorial">
+
+            <!-- REFLEXÃO CLÍNICA -->
+            <article class="card reflexao-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2 class="card-title">
+
+                            Reflexão Clínica
+
+                        </h2>
+
+                        <p class="card-subtitle">
+
+                            Rotação diária baseada em evidências.
+
+                        </p>
+
+                    </div>
+
+                    <div class="frase-icon">
+
+                        <i class="fa-solid fa-brain"></i>
+
+                    </div>
+
+                </div>
+
+                <blockquote
+                    class="reflexao-texto"
+                    id="reflexaoTexto"
+                >
+
+                    Carregando reflexão...
+
+                </blockquote>
+
+                <div class="reflexao-footer">
+
+                    <span
+                        class="tag"
+                        id="reflexaoTag"
+                    >
+
+                        Psicologia Clínica
+
+                    </span>
+
+                    <button
+                        class="btn-refresh"
+                        id="btnNovaReflexao"
+                        aria-label="Nova reflexão"
+                    >
+
+                        <i class="fa-solid fa-rotate-right"></i>
+
+                    </button>
+
+                </div>
+
+            </article>
+
+            <!-- NOTÍCIAS -->
+            <article class="card noticias-wrapper">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2 class="card-title">
+
+                            Notícias Científicas
+
+                        </h2>
+
+                        <p class="card-subtitle">
+
+                            Atualizações em psicologia e neurociência.
+
+                        </p>
+
+                    </div>
+
+                    <div class="frase-icon">
+
+                        <i class="fa-solid fa-newspaper"></i>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="noticias-grid"
+                    id="noticiasGrid"
+                >
+
+                </div>
+
+            </article>
+
+            <!-- FOTO DO DIA -->
+            <article class="card foto-dia-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2 class="card-title">
+
+                            Foto do Dia
+
+                        </h2>
+
+                        <p
+                            class="card-subtitle"
+                            id="fotoDiaTema"
+                        >
+
+                            Tema do dia
+
+                        </p>
+
+                    </div>
+
+                    <div class="frase-icon">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="foto-dia-wrapper">
+
+                    <img
+                        src=""
+                        id="fotoDiaImg"
+                        class="foto-dia-img"
+                        alt="Foto do dia"
+                    >
+
+                    <div class="foto-dia-overlay"></div>
+
+                    <div class="foto-dia-content">
+
+                        <p
+                            class="foto-dia-legenda"
+                            id="fotoDiaLegenda"
+                        >
+
+                            Carregando legenda...
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+</main>
+
+<!-- MODAL CLIMA -->
+<div
+    class="modal-clima"
+    id="modalClima"
+>
+
+    <div class="modal-clima-content">
+
+        <div class="modal-clima-header">
+
+            <h3>
+
+                Clima em Tatuí
+
+            </h3>
+
+            <button
+                id="closeModalClima"
+                class="modal-clima-close"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
             </button>
 
         </div>
 
-    </div>
+        <div
+            class="modal-clima-body"
+            id="modalClimaBody"
+        >
 
-</div>
+            <div class="previsao-loading">
 
-<!-- GRID 3 -->
-<div class="cards-3">
+                Carregando clima...
 
-    <!-- INSIGHTS -->
-    <div class="card">
-
-        <div class="card-titulo">
-            <i class="fas fa-lightbulb"></i>
-            Insights Psicológicos
-        </div>
-
-        <ul class="lista-insights">
-
-            <li>
-                O vínculo terapêutico é um dos fatores mais relevantes
-                para eficácia clínica.
-            </li>
-
-            <li>
-                Emoções reprimidas frequentemente aparecem em comportamentos indiretos.
-            </li>
-
-            <li>
-                Psicoeducação aumenta adesão ao tratamento.
-            </li>
-
-        </ul>
-
-    </div>
-
-    <!-- ARTIGOS -->
-    <div class="card">
-
-        <div class="card-titulo">
-            <i class="fas fa-newspaper"></i>
-            Artigos & Notícias
-        </div>
-
-        <ul class="lista-noticias">
-
-            <li>APA publica novos estudos sobre ansiedade social.</li>
-            <li>Neurociência reforça impacto do sono na saúde mental.</li>
-            <li>Pesquisas apontam crescimento da terapia online.</li>
-
-        </ul>
-
-    </div>
-
-    <!-- FOTO -->
-    <div class="card">
-
-        <div class="card-titulo">
-            <i class="fas fa-camera"></i>
-            Ambiente Terapêutico
-        </div>
-
-        <div class="card-foto-wrapper">
-
-            <img id="fotoDia"
-                 src="static/imagens/foto_psicologia.jpg"
-                 alt="">
-
-        </div>
-
-        <div class="foto-info">
-
-            <div class="foto-tema">
-                Espaços acolhedores favorecem sensação de segurança emocional.
-            </div>
-
-            <div class="foto-link">
-                Neuroarquitetura aplicada ao cuidado emocional.
             </div>
 
         </div>
@@ -462,18 +732,15 @@
 
 </div>
 
-</div>
-</main>
-
-<!-- ================================================================== -->
 <!-- JS -->
-<!-- ================================================================== -->
-<script src="static/js/auth.js"></script>
 <script src="static/js/main.js"></script>
-<script src="static/js/busca.js"></script>
-<script src="static/js/configuracoes.js"></script>
 
-<script type="module" src="static/js/dashboard.js"></script>
+<script src="static/js/noticias.js"></script>
+
+<script
+    type="module"
+    src="static/js/dashboard.js"
+></script>
 
 </body>
 </html>

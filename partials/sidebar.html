@@ -1,72 +1,147 @@
-<aside class="sidebar">
+<aside
+    class="sidebar"
+    id="sidebar"
+>
 
+    <!-- BOTÃO FECHAR MOBILE -->
+    <div class="sidebar-fechar">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+
+    <!-- TOPO -->
     <div class="sidebar-top">
 
-        <a class="menu-item active">
+        <!-- DASHBOARD -->
+        <a
+            href="dashboard.html"
+            class="menu-item"
+            data-page="dashboard"
+        >
 
             <i class="fa-solid fa-house"></i>
 
             <span>
-                Dashboard
+                Início
             </span>
 
         </a>
 
-        <a class="menu-item">
-
-            <i class="fa-solid fa-calendar-days"></i>
-
-            <span>
-                Sessões
-            </span>
-
-        </a>
-
-        <a class="menu-item">
-
-            <i class="fa-solid fa-user-group"></i>
-
-            <span>
-                Pacientes
-            </span>
-
-        </a>
-
-        <a class="menu-item">
+        <!-- FERRAMENTAS -->
+        <a
+            href="ferramentas.html"
+            class="menu-item"
+            data-page="ferramentas"
+        >
 
             <i class="fa-solid fa-brain"></i>
 
             <span>
-                Insights
+                Ferramentas Clínicas
             </span>
 
         </a>
 
-        <a class="menu-item">
+        <!-- ATIVIDADES -->
+        <a
+            href="atividades.html"
+            class="menu-item"
+            data-page="atividades"
+        >
 
-            <i class="fa-solid fa-book-open"></i>
+            <i class="fa-solid fa-puzzle-piece"></i>
 
             <span>
-                Materiais
+                Atividades Terapêuticas
             </span>
 
         </a>
 
-        <a class="menu-item">
+        <!-- INSIGHTS -->
+        <a
+            href="insights.html"
+            class="menu-item"
+            data-page="insights"
+        >
 
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <i class="fa-solid fa-lightbulb"></i>
 
             <span>
-                Ferramentas
+                Insights & IA
+            </span>
+
+        </a>
+
+        <!-- CASOS -->
+        <a
+            href="casos.html"
+            class="menu-item"
+            data-page="casos"
+        >
+
+            <i class="fa-solid fa-book-medical"></i>
+
+            <span>
+                Estudos de Caso
+            </span>
+
+        </a>
+
+        <!-- NEURO -->
+        <a
+            href="neurociencia.html"
+            class="menu-item"
+            data-page="neurociencia"
+        >
+
+            <i class="fa-solid fa-network-wired"></i>
+
+            <span>
+                Neurociência
+            </span>
+
+        </a>
+
+        <!-- ARTIGOS -->
+        <a
+            href="artigos.html"
+            class="menu-item"
+            data-page="artigos"
+        >
+
+            <i class="fa-solid fa-newspaper"></i>
+
+            <span>
+                Artigos Científicos
+            </span>
+
+        </a>
+
+        <!-- MINDFULNESS -->
+        <a
+            href="mindfulness.html"
+            class="menu-item"
+            data-page="mindfulness"
+        >
+
+            <i class="fa-solid fa-spa"></i>
+
+            <span>
+                Mindfulness
             </span>
 
         </a>
 
     </div>
 
+    <!-- BOTTOM -->
     <div class="sidebar-bottom">
 
-        <a class="menu-item">
+        <!-- CONFIG -->
+        <a
+            href="configuracoes.html"
+            class="menu-item"
+            data-page="configuracoes"
+        >
 
             <i class="fa-solid fa-gear"></i>
 
@@ -75,6 +150,34 @@
             </span>
 
         </a>
+
+        <!-- FOOTER -->
+        <div class="sidebar-footer">
+
+            <span>
+                Desenvolvido por
+            </span>
+
+            <div class="sidebar-logo">
+
+                <img
+                    src="static/imagens/logo2.png"
+                    alt="Logo CRV"
+                >
+
+            </div>
+
+        </div>
+
+        <!-- TOGGLE -->
+        <button
+            class="sidebar-toggle"
+            id="btnMenu"
+        >
+
+            <i class="fa-solid fa-angle-left"></i>
+
+        </button>
 
     </div>
 

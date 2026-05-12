@@ -1,19 +1,49 @@
 <header class="header">
 
+    <!-- LEFT -->
     <div class="header-left">
 
+        <!-- MENU MOBILE -->
+        <button
+            id="btnMenuMobile"
+            class="menu-mobile-btn"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <!-- LOGOS -->
         <div class="logo-box">
 
-            <div class="logo-icon">
-                <i class="fa-solid fa-brain"></i>
-            </div>
+            <!-- CRV -->
+            <img
+                src="static/imagens/logo1.png"
+                class="logo-crv"
+                alt="CRV"
+            >
 
+            <!-- LOGO LIGHT -->
+            <img
+                src="static/imagens/logoclaro.png"
+                class="logo-mindflow logo-light"
+                alt="MindFlow"
+            >
+
+            <!-- LOGO DARK -->
+            <img
+                src="static/imagens/logoescuro.png"
+                class="logo-mindflow logo-dark"
+                alt="MindFlow"
+            >
+
+            <!-- TEXTO -->
             <div class="logo-texts">
 
-                <h1>CRV MindFlow</h1>
+                <span class="logo-subtitle">
 
-                <span>
-                    Painel Inteligente para Psicólogos
+                    Dashboard Inteligente para Psicólogos
+
                 </span>
 
             </div>
@@ -22,6 +52,7 @@
 
     </div>
 
+    <!-- CENTER -->
     <div class="header-center">
 
         <div class="search-box">
@@ -30,47 +61,86 @@
 
             <input
                 type="text"
-                placeholder="Buscar insights, materiais, artigos..."
+                id="searchInput"
+                placeholder="Buscar conteúdos, técnicas, artigos..."
             >
 
         </div>
 
     </div>
 
+    <!-- RIGHT -->
     <div class="header-right">
 
-        <div class="weather-box">
+        <!-- RELÓGIO -->
+        <span
+            id="relogio"
+            class="clock-box"
+        >
 
-            <i class="fa-solid fa-cloud-sun"></i>
+            00:00:00
 
-            <span>22°C</span>
+        </span>
+
+        <!-- CLIMA -->
+        <div
+            class="weather-box"
+            id="weatherBox"
+        >
+
+            <img
+                src="static/imagens/ico_dia.png"
+                alt="Clima"
+                class="icone-clima-img"
+                id="iconeClimaImg"
+            >
+
+            <span
+                class="weather-temp"
+                id="temperatura"
+            >
+
+                --°C
+
+            </span>
 
         </div>
 
-        <div class="clock-box" id="headerClock">
-            00:00
-        </div>
+        <!-- TEMA -->
+        <button
+            id="btnTema"
+            class="theme-toggle"
+        >
 
-        <button class="theme-toggle" id="themeToggle">
-
-            <i class="fa-solid fa-moon"></i>
+            <i class="fas fa-moon"></i>
 
         </button>
 
+        <!-- USER -->
         <div class="user-box">
 
+            <!-- AVATAR -->
             <div class="user-avatar">
-                V
+
+                <span class="user-avatar-letter">
+                    V
+                </span>
+
             </div>
 
+            <!-- INFO -->
             <div class="user-info">
 
-                <strong>
+                <strong class="user-name">
+
                     Visitante
+
                 </strong>
 
-                <span>
+                <span class="user-role">
+
                     Acesso limitado
+
                 </span>
 
             </div>
@@ -80,3 +150,49 @@
     </div>
 
 </header>
+
+<!-- MODAL CLIMA -->
+<div
+    class="modal-clima"
+    id="modalClima"
+>
+
+    <div class="modal-clima-content">
+
+        <!-- HEADER -->
+        <div class="modal-clima-header">
+
+            <h3>
+
+                Clima em Tatuí
+
+            </h3>
+
+            <button
+                id="closeModalClima"
+                class="modal-clima-close"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+        <!-- BODY -->
+        <div
+            class="modal-clima-body"
+            id="modalClimaBody"
+        >
+
+            <div class="previsao-loading">
+
+                Carregando clima...
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

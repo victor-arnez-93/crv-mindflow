@@ -9,7 +9,6 @@ const CHAVE_NOTAS= "mindflow_notas";
 // ============================================================================
 // STORAGE
 // ============================================================================
-
 function carregarConfig() {
     return JSON.parse(localStorage.getItem(CHAVE_CFG) || "{}");
 }
@@ -19,6 +18,11 @@ function salvarConfig(obj) {
 }
 
 let cfg = carregarConfig();
+
+// LIMPAR COR ANTIGA BUGADA
+delete cfg.corDestaque;
+
+salvarConfig(cfg);
 
 // ============================================================================
 // TOAST
@@ -92,20 +96,48 @@ function salvarPerfil() {
 // ============================================================================
 // APARÊNCIA
 // ============================================================================
-
 function carregarAparencia() {
-    // Tema
-    const tema = cfg.tema || document.documentElement.getAttribute("data-theme") || "dark";
-    marcarTemaBotao(tema);
 
-    // Cor
-    const cor = cfg.corDestaque || "#D5B942";
-    marcarCorAtiva(cor);
-    aplicarCor(cor);
+    // Tema salvo
+    const temaSalvo =
+        cfg.tema ||
+        localStorage.getItem("mindflow_tema") ||
+        "dark";
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        temaSalvo
+    );
+
+    marcarTemaBotao(temaSalvo);
+
+const corSalva = cfg.corDestaque || null;
+
+if (corSalva) {
+    document.documentElement.style.setProperty(
+        "--cor-primaria",
+        corSalva
+    );
+
+    document.documentElement.style.setProperty(
+        "--cor-primaria-soft",
+        corSalva + "18"
+    );
+
+    document.documentElement.style.setProperty(
+        "--shadow-glow",
+        `0 0 20px ${corSalva}30, 0 0 40px ${corSalva}18`
+    );
+
+    marcarCorAtiva(corSalva);
+}
 
     // Toggles
-    document.getElementById("cfgSidebarExpand").checked = cfg.sidebarExpand !== false;
-    document.getElementById("cfgAnimacoes").checked     = cfg.animacoes     !== false;
+    document.getElementById("cfgSidebarExpand").checked =
+        cfg.sidebarExpand !== false;
+
+    document.getElementById("cfgAnimacoes").checked =
+        cfg.animacoes !== false;
 }
 
 function marcarTemaBotao(tema) {
@@ -120,21 +152,29 @@ function marcarCorAtiva(cor) {
     });
 }
 
-function aplicarCor(cor) {
-    document.documentElement.style.setProperty("--cor-primaria", cor);
-    // Derivar soft (10% opacidade) e glow
-    document.documentElement.style.setProperty("--cor-primaria-soft", cor + "18");
-    document.documentElement.style.setProperty("--shadow-glow",
-        `0 0 20px ${cor}30, 0 0 40px ${cor}18`);
-}
-
 function salvarAparencia() {
-    const tema = cfg.tema || "dark";
-    cfg.corDestaque    = document.querySelector(".cfg-cor-item.active")?.dataset.cor || "#D5B942";
-    cfg.sidebarExpand  = document.getElementById("cfgSidebarExpand").checked;
-    cfg.animacoes      = document.getElementById("cfgAnimacoes").checked;
+
+    const tema =
+        document.documentElement.getAttribute("data-theme");
+
+    const corSelecionada =
+        document.querySelector(".cfg-cor-item.active")?.dataset.cor;
+
+    cfg.tema = tema;
+
+    // SALVA somente se for diferente da padrão
+    cfg.corDestaque = corSelecionada;
+
+    cfg.sidebarExpand =
+        document.getElementById("cfgSidebarExpand").checked;
+
+    cfg.animacoes =
+        document.getElementById("cfgAnimacoes").checked;
+
     salvarConfig(cfg);
-    aplicarCor(cfg.corDestaque);
+
+    aplicarCor(corSelecionada);
+
     toast("✓ Aparência salva com sucesso.");
 }
 
@@ -303,9 +343,17 @@ function iniciarEventos() {
     document.querySelectorAll(".cfg-tema-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             const tema = btn.dataset.tema;
-            cfg.tema   = tema;
-            document.documentElement.setAttribute("data-theme", tema);
-            marcarTemaBotao(tema);
+cfg.tema = tema;
+
+document.documentElement.setAttribute(
+    "data-theme",
+    tema
+);
+
+marcarTemaBotao(tema);
+
+// RESETAR COR PADRÃO DO TEMA
+resetarCorPadraoTema(tema);
             // Sincronizar imagens
             document.querySelectorAll(".card-principal-img").forEach(img => {
                 img.src = tema === "dark" ? "static/imagens/imgfundo2.png" : "static/imagens/imgfundo1.png";
@@ -321,7 +369,22 @@ function iniciarEventos() {
     document.querySelectorAll(".cfg-cor-item").forEach(btn => {
         btn.addEventListener("click", () => {
             marcarCorAtiva(btn.dataset.cor);
-            aplicarCor(btn.dataset.cor);
+            const cor = btn.dataset.cor;
+
+document.documentElement.style.setProperty(
+    "--cor-primaria",
+    cor
+);
+
+document.documentElement.style.setProperty(
+    "--cor-primaria-soft",
+    cor + "18"
+);
+
+document.documentElement.style.setProperty(
+    "--shadow-glow",
+    `0 0 20px ${cor}30, 0 0 40px ${cor}18`
+);
         });
     });
 

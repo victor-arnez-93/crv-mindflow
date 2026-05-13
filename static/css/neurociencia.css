@@ -1,0 +1,104 @@
+/* ============================================
+   NEUROCIENCIA.CSS — MINDFLOW
+============================================ */
+
+/* ─── TABS ────────────────────────────────── */
+.neuro-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.neuro-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--cor-border);
+    background: var(--cor-card);
+    color: var(--cor-texto-muted);
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--trans);
+}
+
+.neuro-tab i { font-size: 14px; }
+
+.neuro-tab:hover {
+    border-color: var(--cor-primaria);
+    color: var(--cor-primaria);
+}
+
+.neuro-tab.active {
+    background: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    color: #fff;
+    box-shadow: var(--shadow-glow);
+}
+
+/* ─── GRID ────────────────────────────────── */
+.neuro-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+/* ─── CARD ────────────────────────────────── */
+.neuro-card {
+    background: var(--cor-card);
+    border: 1px solid var(--cor-border);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all var(--trans);
+    animation: cardPop 0.4s ease both;
+}
+
+.neuro-card:hover {
+    border-color: var(--cor-primaria);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    transform: translateY(-3px);
+}
+
+.neuro-card-topo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.neuro-clinica-preview {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--cor-primaria-soft);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--cor-texto-muted);
+    line-height: 1.5;
+    flex: 1;
+}
+
+.neuro-clinica-preview i {
+    color: var(--cor-primaria);
+    font-size: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* ─── RESPONSIVO ──────────────────────────── */
+@media (max-width: 1024px) {
+    .neuro-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .neuro-grid { grid-template-columns: 1fr; gap: 14px; }
+    .neuro-tabs { gap: 8px; }
+    .neuro-tab  { padding: 8px 14px; font-size: 12px; }
+}

@@ -1,810 +1,187 @@
 <!DOCTYPE html>
-<html lang="pt-br" data-theme="light">
-
+<html lang="pt-BR" data-theme="dark">
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindFlow — Atividades Terapêuticas</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <link rel="icon" href="static/imagens/favicon.ico" type="image/x-icon">
 
-    <title>
-        Atividades Terapêuticas | MindFlow
-    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <!-- FAVICON -->
-    <link
-        rel="icon"
-        href="static/imagens/favicon.ico"
-    >
-
-    <!-- GOOGLE FONTS -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <!-- FONT AWESOME -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    >
-
-    <!-- CSS GLOBAL -->
-    <link
-        rel="stylesheet"
-        href="static/css/main.css"
-    >
-
-    <!-- CSS DA PÁGINA -->
-    <link
-        rel="stylesheet"
-        href="static/css/atividades.css"
-    >
-
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/inicio.css">
+    <link rel="stylesheet" href="static/css/ferramentas.css">
+    <link rel="stylesheet" href="static/css/atividades.css">
 </head>
-
 <body>
 
-<!-- ===================================================== -->
-<!-- SIDEBAR -->
-<!-- ===================================================== -->
-
-<aside class="sidebar">
-
-    <div class="sidebar-top">
-
-        <a
-            class="menu-item"
-            href="dashboard.html"
-        >
-
-            <i class="fa-solid fa-house"></i>
-
-            <span>
-                Dashboard
-            </span>
-
-        </a>
-
-        <a
-            class="menu-item"
-            href="sessoes.html"
-        >
-
-            <i class="fa-solid fa-calendar-days"></i>
-
-            <span>
-                Sessões
-            </span>
-
-        </a>
-
-        <a
-            class="menu-item"
-            href="pacientes.html"
-        >
-
-            <i class="fa-solid fa-user-group"></i>
-
-            <span>
-                Pacientes
-            </span>
-
-        </a>
-
-        <a
-            class="menu-item"
-            href="insights.html"
-        >
-
-            <i class="fa-solid fa-brain"></i>
-
-            <span>
-                Insights
-            </span>
-
-        </a>
-
-        <a
-            class="menu-item"
-            href="materiais.html"
-        >
-
-            <i class="fa-solid fa-book-open"></i>
-
-            <span>
-                Materiais
-            </span>
-
-        </a>
-
-        <a
-            class="menu-item active"
-            href="atividades.html"
-        >
-
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-
-            <span>
-                Atividades
-            </span>
-
-        </a>
-
-    </div>
-
-    <div class="sidebar-bottom">
-
-        <a
-            class="menu-item"
-            href="configuracoes.html"
-        >
-
-            <i class="fa-solid fa-gear"></i>
-
-            <span>
-                Configurações
-            </span>
-
-        </a>
-
-    </div>
-
-</aside>
-
-<!-- ===================================================== -->
-<!-- HEADER -->
-<!-- ===================================================== -->
-
 <header class="header">
-
     <div class="header-left">
-
+        <button id="btnMenuMobile" class="menu-mobile-btn"><i class="fa-solid fa-bars"></i></button>
         <div class="logo-box">
-
-            <img
-                src="static/imagens/logo1.png"
-                class="logo-crv"
-                alt="CRV"
-            >
-
-            <img
-                src="static/imagens/logoclaro.png"
-                class="logo-mindflow logo-light"
-                alt="MindFlow"
-            >
-
-            <img
-                src="static/imagens/logoescuro.png"
-                class="logo-mindflow logo-dark"
-                alt="MindFlow"
-            >
-
+            <img src="static/imagens/logoclaro.png" class="logo-crv logo-dark" alt="CRV">
             <div class="logo-texts">
-
-                <span class="logo-subtitle">
-                    Dashboard Inteligente para Psicólogos
-                </span>
-
+                <span class="logo-subtitle">Painel Inteligente para Psicólogos</span>
             </div>
-
         </div>
-
     </div>
-
     <div class="header-center">
-
         <div class="search-box">
-
             <i class="fa-solid fa-magnifying-glass"></i>
-
-            <input
-                type="text"
-                id="buscarAtividades"
-                placeholder="Buscar atividades terapêuticas..."
-            >
-
+            <input type="text" id="searchInput" placeholder="Buscar atividades terapêuticas...">
         </div>
-
     </div>
-
     <div class="header-right">
-
-        <div class="weather-box">
-
-            <i class="fa-solid fa-cloud-sun"></i>
-
-            <span>
-                22°C
-            </span>
-
+        <span id="relogio" class="clock-box">00:00:00</span>
+        <div class="weather-box" id="weatherBox">
+            <img src="static/imagens/ico_dia.png" alt="Clima" class="icone-clima-img" id="iconeClimaImg">
+            <span class="weather-temp" id="temperatura">--°C</span>
         </div>
-
-        <div
-            class="clock-box"
-            id="headerClock"
-        >
-
-            00:00
-
-        </div>
-
-        <button
-            class="theme-toggle"
-            id="themeToggle"
-        >
-
-            <i class="fa-solid fa-moon"></i>
-
-        </button>
-
+        <button id="btnTema" class="theme-toggle" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
         <div class="user-box">
-
-            <div class="user-avatar">
-                V
-            </div>
-
+            <div class="user-avatar"><span class="user-avatar-letter">P</span></div>
             <div class="user-info">
-
-                <strong>
-                    Visitante
-                </strong>
-
-                <span>
-                    Acesso limitado
-                </span>
-
+                <strong class="user-name">Psicólogo(a)</strong>
+                <span class="user-role">Modo Clínico</span>
             </div>
-
         </div>
-
     </div>
-
 </header>
 
-<!-- ===================================================== -->
-<!-- MAIN -->
-<!-- ===================================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-fechar"><i class="fa-solid fa-xmark"></i></div>
+    <div class="sidebar-top">
+        <a href="dashboard.html"    class="menu-item" data-page="dashboard">   <i class="fa-solid fa-house"></i>          <span>Dashboard</span></a>
+        <a href="sessoes.html"      class="menu-item" data-page="sessoes">     <i class="fa-solid fa-comments"></i>       <span>Sessões</span></a>
+        <a href="ferramentas.html"  class="menu-item" data-page="ferramentas"> <i class="fa-solid fa-brain"></i>          <span>Ferramentas Clínicas</span></a>
+        <a href="insights.html"     class="menu-item" data-page="insights">    <i class="fa-solid fa-lightbulb"></i>      <span>Insights & IA</span></a>
+        <a href="atividades.html"   class="menu-item active" data-page="atividades"><i class="fa-solid fa-puzzle-piece"></i><span>Atividades Terapêuticas</span></a>
+        <a href="neurociencia.html" class="menu-item" data-page="neurociencia"><i class="fa-solid fa-network-wired"></i>  <span>Neurociência</span></a>
+        <a href="artigos.html"      class="menu-item" data-page="artigos">     <i class="fa-solid fa-newspaper"></i>      <span>Notícias de psicologia</span></a>
+        <a href="mindfulness.html"  class="menu-item" data-page="mindfulness"> <i class="fa-solid fa-spa"></i>            <span>Mindfulness</span></a>
+    </div>
+    <div class="sidebar-bottom">
+        <a href="configuracoes.html" class="menu-item" data-page="configuracoes"><i class="fa-solid fa-gear"></i><span>Configurações</span></a>
+        <div class="sidebar-footer">
+            <span class="dev-label">Desenvolvido por</span>
+            <div class="sidebar-logo">
+                <a href="https://crvsolucoesti.com" target="_blank" rel="noopener noreferrer">
+                    <img src="static/imagens/logo2.png" alt="CRV Soluções em TI">
+                </a>
+            </div>
+        </div>
+        <button class="sidebar-toggle" id="btnMenu"><i class="fa-solid fa-angle-left"></i></button>
+    </div>
+</aside>
 
-<main class="main-content">
+<main class="main-content" id="mainContent">
+<div class="dashboard-container">
 
-<div class="atividades-container">
-
-    <!-- ================================================= -->
     <!-- HERO -->
-    <!-- ================================================= -->
-
-    <section class="atividades-hero">
-
-        <img
-            src="static/imagens/imgfundo1.png"
-            class="atividades-hero-bg"
-            id="atividadesHeroBg"
-            alt=""
-        >
-
-        <div class="atividades-hero-content">
-
-            <span class="hero-badge">
-
-                Dinâmicas práticas para sessões terapêuticas
-
-            </span>
-
-            <h1>
-
-                Atividades Terapêuticas Inteligentes
-
-            </h1>
-
-            <p>
-
-                Exercícios emocionais, dinâmicas clínicas,
-                experiências reflexivas e atividades guiadas
-                desenvolvidas para utilização prática
-                durante sessões psicológicas.
-
-            </p>
-
-            <div class="hero-actions">
-
-                <button
-                    class="hero-btn"
-                    id="btnAtividadeAleatoria"
-                >
-
-                    <i class="fa-solid fa-shuffle"></i>
-
-                    Atividade Aleatória
-
-                </button>
-
-                <button
-                    class="hero-btn secondary"
-                    id="btnModoSessao"
-                >
-
-                    <i class="fa-solid fa-eye-low-vision"></i>
-
-                    Modo Sessão
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- FILTROS -->
-    <!-- ================================================= -->
-
-    <section class="atividades-filtros">
-
-        <button class="filtro-btn active">
-            Todas
-        </button>
-
-        <button class="filtro-btn">
-            Emoções
-        </button>
-
-        <button class="filtro-btn">
-            Ansiedade
-        </button>
-
-        <button class="filtro-btn">
-            Reflexão
-        </button>
-
-        <button class="filtro-btn">
-            Autoestima
-        </button>
-
-        <button class="filtro-btn">
-            Relacionamentos
-        </button>
-
-    </section>
-
-    <!-- ================================================= -->
-    <!-- GRID -->
-    <!-- ================================================= -->
-
-    <section class="atividades-grid">
-
-        <!-- ============================================= -->
-        <!-- CARD -->
-        <!-- ============================================= -->
-
-        <div
-            class="atividade-card"
-            data-categoria="emoções"
-        >
-
-            <img
-                src="static/imagens/imgfundo1.png"
-                class="atividade-bg"
-                alt=""
-            >
-
-            <div class="atividade-icon">
-
-                <i class="fa-solid fa-heart"></i>
-
-            </div>
-
-            <div class="atividade-content">
-
-                <h3>
-                    Termômetro Emocional
-                </h3>
-
-                <p>
-
-                    Atividade utilizada para ajudar
-                    o paciente a identificar e quantificar
-                    emoções e intensidade emocional.
-
-                </p>
-
-                <div class="atividade-tags">
-
-                    <span>
-                        Emoções
-                    </span>
-
-                    <span>
-                        Sessão
-                    </span>
-
-                    <span>
-                        Interativo
-                    </span>
-
-                </div>
-
-                <button
-                    class="btn-atividade"
-                    data-modal="termometro"
-                >
-
-                    Iniciar Atividade
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- ============================================= -->
-        <!-- CARD -->
-        <!-- ============================================= -->
-
-        <div
-            class="atividade-card"
-            data-categoria="ansiedade"
-        >
-
-            <img
-                src="static/imagens/imgfundo1.png"
-                class="atividade-bg"
-                alt=""
-            >
-
-            <div class="atividade-icon">
-
-                <i class="fa-solid fa-wind"></i>
-
-            </div>
-
-            <div class="atividade-content">
-
-                <h3>
-                    Respiração Guiada
-                </h3>
-
-                <p>
-
-                    Exercício visual e guiado para
-                    redução fisiológica da ansiedade
-                    e regulação emocional.
-
-                </p>
-
-                <div class="atividade-tags">
-
-                    <span>
-                        Ansiedade
-                    </span>
-
-                    <span>
-                        Respiração
-                    </span>
-
-                    <span>
-                        Grounding
-                    </span>
-
-                </div>
-
-                <button
-                    class="btn-atividade"
-                    data-modal="respiracao"
-                >
-
-                    Iniciar Exercício
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- ============================================= -->
-        <!-- CARD -->
-        <!-- ============================================= -->
-
-        <div
-            class="atividade-card"
-            data-categoria="reflexão"
-        >
-
-            <img
-                src="static/imagens/imgfundo1.png"
-                class="atividade-bg"
-                alt=""
-            >
-
-            <div class="atividade-icon">
-
-                <i class="fa-solid fa-lightbulb"></i>
-
-            </div>
-
-            <div class="atividade-content">
-
-                <h3>
-                    Perguntas Reflexivas
-                </h3>
-
-                <p>
-
-                    Perguntas profundas para estimular
-                    autopercepção, consciência emocional
-                    e reflexão terapêutica.
-
-                </p>
-
-                <div class="atividade-tags">
-
-                    <span>
-                        Reflexão
-                    </span>
-
-                    <span>
-                        Humanista
-                    </span>
-
-                    <span>
-                        Profundo
-                    </span>
-
-                </div>
-
-                <button
-                    class="btn-atividade"
-                    data-modal="perguntas"
-                >
-
-                    Abrir Perguntas
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- ============================================= -->
-        <!-- CARD -->
-        <!-- ============================================= -->
-
-        <div
-            class="atividade-card"
-            data-categoria="autoestima"
-        >
-
-            <img
-                src="static/imagens/imgfundo1.png"
-                class="atividade-bg"
-                alt=""
-            >
-
-            <div class="atividade-icon">
-
-                <i class="fa-solid fa-seedling"></i>
-
-            </div>
-
-            <div class="atividade-content">
-
-                <h3>
-                    Inventário de Qualidades
-                </h3>
-
-                <p>
-
-                    Exercício terapêutico focado
-                    em fortalecimento da autoestima,
-                    identidade e autovalidação.
-
-                </p>
-
-                <div class="atividade-tags">
-
-                    <span>
-                        Autoestima
-                    </span>
-
-                    <span>
-                        Identidade
-                    </span>
-
-                    <span>
-                        ACT
-                    </span>
-
-                </div>
-
-                <button
-                    class="btn-atividade"
-                    data-modal="qualidades"
-                >
-
-                    Abrir Exercício
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- ============================================= -->
-        <!-- CARD -->
-        <!-- ============================================= -->
-
-        <div
-            class="atividade-card"
-            data-categoria="relacionamentos"
-        >
-
-            <img
-                src="static/imagens/imgfundo1.png"
-                class="atividade-bg"
-                alt=""
-            >
-
-            <div class="atividade-icon">
-
-                <i class="fa-solid fa-comments"></i>
-
-            </div>
-
-            <div class="atividade-content">
-
-                <h3>
-                    Comunicação Assertiva
-                </h3>
-
-                <p>
-
-                    Dinâmica voltada para expressão
-                    emocional saudável e construção
-                    de limites emocionais.
-
-                </p>
-
-                <div class="atividade-tags">
-
-                    <span>
-                        Relacionamentos
-                    </span>
-
-                    <span>
-                        Comunicação
-                    </span>
-
-                    <span>
-                        Limites
-                    </span>
-
-                </div>
-
-                <button
-                    class="btn-atividade"
-                    data-modal="comunicacao"
-                >
-
-                    Iniciar Dinâmica
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- ============================================= -->
-        <!-- CARD -->
-        <!-- ============================================= -->
-
-        <div
-            class="atividade-card"
-            data-categoria="emoções"
-        >
-
-            <img
-                src="static/imagens/imgfundo1.png"
-                class="atividade-bg"
-                alt=""
-            >
-
-            <div class="atividade-icon">
-
-                <i class="fa-solid fa-face-smile"></i>
-
-            </div>
-
-            <div class="atividade-content">
-
-                <h3>
-                    Nomeação Emocional
-                </h3>
-
-                <p>
-
-                    Exercício para desenvolvimento
-                    de consciência afetiva e expressão
-                    emocional saudável.
-
-                </p>
-
-                <div class="atividade-tags">
-
-                    <span>
-                        Emoções
-                    </span>
-
-                    <span>
-                        Afetivo
-                    </span>
-
-                    <span>
-                        Sessão
-                    </span>
-
-                </div>
-
-                <button
-                    class="btn-atividade"
-                    data-modal="nomeacao"
-                >
-
-                    Iniciar Atividade
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-
-</main>
-
-<!-- ===================================================== -->
-<!-- MODAL -->
-<!-- ===================================================== -->
-
-<div
-    class="modal-atividade"
-    id="modalAtividade"
->
-
-    <div class="modal-content">
-
-        <button
-            class="modal-close"
-            id="fecharModal"
-        >
-
-            <i class="fa-solid fa-xmark"></i>
-
-        </button>
-
-        <div
-            class="modal-body"
-            id="modalBody"
-        >
-
-        </div>
-
+    <div class="card-principal">
+        <img src="static/imagens/imgfundo2.png" alt="" class="card-principal-img" id="imgCardPrincipal" loading="lazy">
+        <h1 class="titulo-pagina">Atividades Terapêuticas</h1>
+        <p class="bemvindo-texto">Exercícios estruturados para uso em sessão ou como tarefas entre sessões</p>
+        <p class="subtexto-inicial">
+            Cada atividade inclui objetivo clínico, instruções detalhadas, faixa etária recomendada e material necessário.
+        </p>
     </div>
 
-</div>
+    <!-- FILTROS -->
+    <div class="filtros-wrapper">
+        <div class="filtros-grupo">
+            <span class="filtros-label">Categoria</span>
+            <div class="filtros-pills" id="filtroCategoria">
+                <button class="pill active" data-filtro="todos">Todas</button>
+                <button class="pill" data-filtro="Emoções">Emoções</button>
+                <button class="pill" data-filtro="Autoestima">Autoestima</button>
+                <button class="pill" data-filtro="Ansiedade">Ansiedade</button>
+                <button class="pill" data-filtro="Reflexão">Reflexão</button>
+                <button class="pill" data-filtro="Relacionamentos">Relacionamentos</button>
+                <button class="pill" data-filtro="Infantil">Infantil</button>
+                <button class="pill" data-filtro="Criatividade">Criatividade</button>
+            </div>
+        </div>
+        <div class="filtros-grupo">
+            <span class="filtros-label">Duração</span>
+            <div class="filtros-pills" id="filtroDuracao">
+                <button class="pill active" data-filtro="todos">Qualquer</button>
+                <button class="pill" data-filtro="curta">Até 10 min</button>
+                <button class="pill" data-filtro="media">10–20 min</button>
+                <button class="pill" data-filtro="longa">+20 min</button>
+            </div>
+        </div>
+        <div class="filtros-busca">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscaAtividade" placeholder="Buscar por nome ou objetivo...">
+        </div>
+    </div>
 
-<!-- ===================================================== -->
-<!-- JS -->
-<!-- ===================================================== -->
+    <div class="ferramentas-meta">
+        <span id="contadorAtiv">Carregando atividades...</span>
+    </div>
+
+    <!-- GRID -->
+    <div class="atividades-grid" id="atividadesGrid"></div>
+
+    <!-- MODAL -->
+    <div class="modal-ferr" id="modalAtiv">
+        <div class="modal-ferr-content">
+            <div class="modal-ferr-header">
+                <div class="modal-ferr-topo">
+                    <span class="modal-ferr-tag" id="modalAtivTag"></span>
+                    <span class="modal-ferr-duracao">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="modalAtivDuracao"></span>
+                    </span>
+                </div>
+                <button class="modal-ferr-close" id="modalAtivClose"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <h2 class="modal-ferr-titulo" id="modalAtivTitulo"></h2>
+            <p class="modal-ferr-objetivo" id="modalAtivObjetivo"></p>
+
+            <div class="ativ-modal-badges" id="modalAtivBadges"></div>
+
+            <div class="modal-ferr-secao">
+                <h4><i class="fa-solid fa-list-ol"></i> Instruções</h4>
+                <ol class="modal-ferr-passos" id="modalAtivPassos"></ol>
+            </div>
+
+            <div class="modal-ferr-secao" id="modalAtivMatSecao">
+                <h4><i class="fa-solid fa-box-open"></i> Material necessário</h4>
+                <p class="modal-ferr-ref" id="modalAtivMaterial"></p>
+            </div>
+
+            <div class="modal-ferr-secao">
+                <h4><i class="fa-solid fa-graduation-cap"></i> Embasamento</h4>
+                <p id="modalAtivEmb"></p>
+            </div>
+
+            <div class="modal-ferr-acoes">
+                <button class="btn-gradient" id="modalAtivImprimir">
+                    <i class="fa-solid fa-print"></i> Imprimir / PDF
+                </button>
+                <button class="btn-secondary" id="modalAtivFechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="modalAtivOverlay"></div>
+
+</div>
+</main>
 
 <script src="static/js/main.js"></script>
-
-<script src="static/js/atividades.js"></script>
-
+<script type="module" src="static/js/atividades.js"></script>
+<script>
+(function() {
+    const img = document.getElementById("imgCardPrincipal");
+    const tema = document.documentElement.getAttribute("data-theme");
+    if (img) img.src = tema === "dark" ? "static/imagens/imgfundo2.png" : "static/imagens/imgfundo1.png";
+})();
+</script>
 </body>
 </html>

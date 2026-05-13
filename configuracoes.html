@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindFlow — Configurações</title>
+
+    <link rel="icon" href="static/imagens/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/inicio.css">
+    <link rel="stylesheet" href="static/css/configuracoes.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <button id="btnMenuMobile" class="menu-mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo-box">
+            <img src="static/imagens/logoclaro.png" class="logo-crv logo-dark" alt="CRV">
+            <div class="logo-texts">
+                <span class="logo-subtitle">Painel Inteligente para Psicólogos</span>
+            </div>
+        </div>
+    </div>
+    <div class="header-center">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Buscar configuração...">
+        </div>
+    </div>
+    <div class="header-right">
+        <span id="relogio" class="clock-box">00:00:00</span>
+        <div class="weather-box" id="weatherBox">
+            <img src="static/imagens/ico_dia.png" alt="Clima" class="icone-clima-img" id="iconeClimaImg">
+            <span class="weather-temp" id="temperatura">--°C</span>
+        </div>
+        <button id="btnTema" class="theme-toggle" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
+        <div class="user-box">
+            <div class="user-avatar"><span class="user-avatar-letter" id="cfgAvatarLetra">P</span></div>
+            <div class="user-info">
+                <strong class="user-name" id="cfgHeaderNome">Psicólogo(a)</strong>
+                <span class="user-role">Modo Clínico</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-fechar"><i class="fa-solid fa-xmark"></i></div>
+    <div class="sidebar-top">
+        <a href="dashboard.html"    class="menu-item" data-page="dashboard">      <i class="fa-solid fa-house"></i>         <span>Dashboard</span></a>
+        <a href="sessoes.html"      class="menu-item" data-page="sessoes">        <i class="fa-solid fa-comments"></i>      <span>Sessões</span></a>
+        <a href="ferramentas.html"  class="menu-item" data-page="ferramentas">    <i class="fa-solid fa-brain"></i>         <span>Ferramentas Clínicas</span></a>
+        <a href="insights.html"     class="menu-item" data-page="insights">       <i class="fa-solid fa-lightbulb"></i>     <span>Insights & IA</span></a>
+        <a href="atividades.html"   class="menu-item" data-page="atividades">     <i class="fa-solid fa-puzzle-piece"></i>  <span>Atividades Terapêuticas</span></a>
+        <a href="neurociencia.html" class="menu-item" data-page="neurociencia">   <i class="fa-solid fa-network-wired"></i> <span>Neurociência</span></a>
+        <a href="artigos.html"      class="menu-item" data-page="artigos">        <i class="fa-solid fa-newspaper"></i>     <span>Notícias de psicologia</span></a>
+        <a href="mindfulness.html"  class="menu-item" data-page="mindfulness">    <i class="fa-solid fa-spa"></i>           <span>Mindfulness</span></a>
+    </div>
+    <div class="sidebar-bottom">
+        <a href="configuracoes.html" class="menu-item active" data-page="configuracoes"><i class="fa-solid fa-gear"></i><span>Configurações</span></a>
+        <div class="sidebar-footer">
+            <span class="dev-label">Desenvolvido por</span>
+            <div class="sidebar-logo">
+                <a href="https://crvsolucoes.com" target="_blank" rel="noopener noreferrer">
+                    <img src="static/imagens/logo2.png" alt="CRV Soluções em TI">
+                </a>
+            </div>
+        </div>
+        <button class="sidebar-toggle" id="btnMenu"><i class="fa-solid fa-angle-left"></i></button>
+    </div>
+</aside>
+
+<main class="main-content" id="mainContent">
+<div class="dashboard-container">
+
+    <!-- HERO -->
+    <div class="card-principal">
+        <img src="static/imagens/imgfundo2.png" alt="" class="card-principal-img" id="imgCardPrincipal" loading="lazy">
+        <h1 class="titulo-pagina">Configurações</h1>
+        <p class="bemvindo-texto">Personalize sua experiência no MindFlow</p>
+        <p class="subtexto-inicial">
+            Todas as preferências são salvas localmente no seu navegador — sem servidores externos.
+        </p>
+    </div>
+
+    <!-- GRID DE SEÇÕES -->
+    <div class="cfg-layout">
+
+        <!-- NAVEGAÇÃO LATERAL -->
+        <nav class="cfg-nav">
+            <button class="cfg-nav-item active" data-section="perfil">
+                <i class="fa-solid fa-user-circle"></i> Perfil
+            </button>
+            <button class="cfg-nav-item" data-section="aparencia">
+                <i class="fa-solid fa-palette"></i> Aparência
+            </button>
+            <button class="cfg-nav-item" data-section="sessao">
+                <i class="fa-solid fa-clock"></i> Sessão
+            </button>
+            <button class="cfg-nav-item" data-section="notificacoes">
+                <i class="fa-solid fa-bell"></i> Notificações
+            </button>
+            <button class="cfg-nav-item" data-section="dados">
+                <i class="fa-solid fa-database"></i> Dados
+            </button>
+            <button class="cfg-nav-item" data-section="sobre">
+                <i class="fa-solid fa-circle-info"></i> Sobre
+            </button>
+        </nav>
+
+        <!-- CONTEÚDO -->
+        <div class="cfg-conteudo">
+
+            <!-- ── PERFIL ─────────────────────────── -->
+            <section class="cfg-section active" id="sec-perfil">
+                <h2 class="cfg-section-titulo"><i class="fa-solid fa-user-circle"></i> Perfil Profissional</h2>
+                <p class="cfg-section-desc">Suas informações são usadas apenas localmente para personalizar a interface.</p>
+
+                <div class="cfg-avatar-area">
+                    <div class="cfg-avatar-circle" id="cfgAvatarPreview">P</div>
+                    <div class="cfg-avatar-info">
+                        <strong id="cfgAvatarNomePreview">Psicólogo(a)</strong>
+                        <span id="cfgAvatarCrpPreview">—</span>
+                    </div>
+                </div>
+
+                <div class="cfg-form-grid">
+                    <div class="cfg-form-group">
+                        <label>Nome de exibição</label>
+                        <input type="text" id="cfgNome" class="cfg-input" placeholder="Dr(a). Nome Sobrenome" maxlength="60">
+                    </div>
+                    <div class="cfg-form-group">
+                        <label>CRP</label>
+                        <input type="text" id="cfgCrp" class="cfg-input" placeholder="XX/XXXXX" maxlength="20">
+                    </div>
+                    <div class="cfg-form-group">
+                        <label>Abordagem principal</label>
+                        <select id="cfgAbordagem" class="cfg-input">
+                            <option value="">Selecionar...</option>
+                            <option>TCC</option>
+                            <option>Psicanálise</option>
+                            <option>ACT</option>
+                            <option>DBT</option>
+                            <option>Humanista</option>
+                            <option>Sistêmica</option>
+                            <option>EMDR</option>
+                            <option>Integrativa</option>
+                            <option>Fenomenológica</option>
+                        </select>
+                    </div>
+                    <div class="cfg-form-group">
+                        <label>Especialidade</label>
+                        <input type="text" id="cfgEspecialidade" class="cfg-input" placeholder="Ex: Trauma, Infância, Casais..." maxlength="60">
+                    </div>
+                    <div class="cfg-form-group cfg-form-full">
+                        <label>Instituição / Clínica</label>
+                        <input type="text" id="cfgInstituicao" class="cfg-input" placeholder="Nome da clínica ou consultório" maxlength="80">
+                    </div>
+                </div>
+
+                <div class="cfg-acoes">
+                    <button class="btn-gradient" id="btnSalvarPerfil">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Perfil
+                    </button>
+                </div>
+            </section>
+
+            <!-- ── APARÊNCIA ──────────────────────── -->
+            <section class="cfg-section" id="sec-aparencia">
+                <h2 class="cfg-section-titulo"><i class="fa-solid fa-palette"></i> Aparência</h2>
+                <p class="cfg-section-desc">Personalize cores, tema e densidade da interface.</p>
+
+                <!-- Tema -->
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Tema</span>
+                    <div class="cfg-tema-opcoes">
+                        <button class="cfg-tema-btn" id="btnTemaDark" data-tema="dark">
+                            <i class="fa-solid fa-moon"></i>
+                            <span>Escuro</span>
+                        </button>
+                        <button class="cfg-tema-btn" id="btnTemaLight" data-tema="light">
+                            <i class="fa-solid fa-sun"></i>
+                            <span>Claro</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cor de destaque -->
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Cor de Destaque</span>
+                    <div class="cfg-cores-grid" id="cfgCoresGrid">
+                        <button class="cfg-cor-item active" data-cor="#D5B942" style="background:#D5B942" title="Âmbar (padrão)"></button>
+                        <button class="cfg-cor-item" data-cor="#5CC88C" style="background:#5CC88C" title="Verde"></button>
+                        <button class="cfg-cor-item" data-cor="#5A8CD2" style="background:#5A8CD2" title="Azul"></button>
+                        <button class="cfg-cor-item" data-cor="#B97DD4" style="background:#B97DD4" title="Roxo"></button>
+                        <button class="cfg-cor-item" data-cor="#E07A5F" style="background:#E07A5F" title="Terracota"></button>
+                        <button class="cfg-cor-item" data-cor="#4DBFBF" style="background:#4DBFBF" title="Teal"></button>
+                        <button class="cfg-cor-item" data-cor="#E8A838" style="background:#E8A838" title="Laranja"></button>
+                        <button class="cfg-cor-item" data-cor="#E05C8A" style="background:#E05C8A" title="Rosa"></button>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Sidebar padrão</span>
+                    <div class="cfg-toggle-row">
+                        <span class="cfg-toggle-desc">Iniciar com sidebar expandida</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgSidebarExpand" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Animações -->
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Animações</span>
+                    <div class="cfg-toggle-row">
+                        <span class="cfg-toggle-desc">Ativar animações de entrada dos cards</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgAnimacoes" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cfg-acoes">
+                    <button class="btn-gradient" id="btnSalvarAparencia">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Aparência
+                    </button>
+                </div>
+            </section>
+
+            <!-- ── SESSÃO ──────────────────────────── -->
+            <section class="cfg-section" id="sec-sessao">
+                <h2 class="cfg-section-titulo"><i class="fa-solid fa-clock"></i> Configurações de Sessão</h2>
+                <p class="cfg-section-desc">Personalize o comportamento do timer e anotações clínicas.</p>
+
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Duração padrão da sessão</span>
+                    <div class="cfg-range-row">
+                        <input type="range" id="cfgDuracaoSessao" min="30" max="120" step="10" value="50" class="cfg-range">
+                        <span class="cfg-range-valor" id="cfgDuracaoSessaoVal">50 min</span>
+                    </div>
+                </div>
+
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Alerta de tempo restante</span>
+                    <div class="cfg-range-row">
+                        <input type="range" id="cfgAlertaMin" min="0" max="15" step="1" value="5" class="cfg-range">
+                        <span class="cfg-range-valor" id="cfgAlertaMinVal">5 min antes</span>
+                    </div>
+                </div>
+
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Opções do timer</span>
+                    <div class="cfg-toggle-row">
+                        <span class="cfg-toggle-desc">Som de alerta ao fim da sessão</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgSomFim" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="cfg-toggle-row" style="margin-top:10px">
+                        <span class="cfg-toggle-desc">Confirmar antes de resetar timer</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgConfirmReset" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Anotações</span>
+                    <div class="cfg-toggle-row">
+                        <span class="cfg-toggle-desc">Mostrar contagem de caracteres</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgMostrarChars" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cfg-acoes">
+                    <button class="btn-gradient" id="btnSalvarSessao">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Configurações
+                    </button>
+                </div>
+            </section>
+
+            <!-- ── NOTIFICAÇÕES ───────────────────── -->
+            <section class="cfg-section" id="sec-notificacoes">
+                <h2 class="cfg-section-titulo"><i class="fa-solid fa-bell"></i> Notificações</h2>
+                <p class="cfg-section-desc">Controle os avisos e lembretes do painel.</p>
+
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Dashboard</span>
+                    <div class="cfg-toggle-row">
+                        <span class="cfg-toggle-desc">Exibir insight do dia ao abrir o painel</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgInsightDia" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="cfg-toggle-row" style="margin-top:10px">
+                        <span class="cfg-toggle-desc">Exibir citação motivacional</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgCitacao" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Clima</span>
+                    <div class="cfg-toggle-row">
+                        <span class="cfg-toggle-desc">Exibir temperatura no cabeçalho</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgClima" checked>
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Mindfulness</span>
+                    <div class="cfg-toggle-row">
+                        <span class="cfg-toggle-desc">Lembrete de prática ao abrir o painel</span>
+                        <label class="cfg-toggle-switch">
+                            <input type="checkbox" id="cfgLembreteMind">
+                            <span class="cfg-toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cfg-acoes">
+                    <button class="btn-gradient" id="btnSalvarNotif">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Notificações
+                    </button>
+                </div>
+            </section>
+
+            <!-- ── DADOS ──────────────────────────── -->
+            <section class="cfg-section" id="sec-dados">
+                <h2 class="cfg-section-titulo"><i class="fa-solid fa-database"></i> Gestão de Dados</h2>
+                <p class="cfg-section-desc">Exporte, importe ou limpe os dados armazenados localmente.</p>
+
+                <!-- Estatísticas -->
+                <div class="cfg-stats-grid" id="cfgStatsGrid"></div>
+
+                <!-- Exportar -->
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Exportar Dados</span>
+                    <p class="cfg-bloco-desc">Baixe todos os seus dados (pacientes e anotações) em formato JSON.</p>
+                    <button class="btn-gradient" id="btnExportar">
+                        <i class="fa-solid fa-download"></i> Exportar JSON
+                    </button>
+                </div>
+
+                <!-- Importar -->
+                <div class="cfg-bloco">
+                    <span class="cfg-bloco-label">Importar Dados</span>
+                    <p class="cfg-bloco-desc">Restaure um backup previamente exportado. Os dados atuais serão substituídos.</p>
+                    <label class="btn-secondary cfg-file-label" for="cfgImportFile">
+                        <i class="fa-solid fa-upload"></i> Selecionar arquivo JSON
+                    </label>
+                    <input type="file" id="cfgImportFile" accept=".json" style="display:none">
+                </div>
+
+                <!-- Limpar -->
+                <div class="cfg-bloco cfg-bloco-danger">
+                    <span class="cfg-bloco-label">Zona de Perigo</span>
+                    <p class="cfg-bloco-desc">As ações abaixo são irreversíveis.</p>
+                    <div class="cfg-danger-btns">
+                        <button class="btn-danger-outline" id="btnLimparSessoes">
+                            <i class="fa-solid fa-trash"></i> Limpar Pacientes & Anotações
+                        </button>
+                        <button class="btn-danger-outline" id="btnLimparTudo">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Restaurar Padrões de Fábrica
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── SOBRE ───────────────────────────── -->
+            <section class="cfg-section" id="sec-sobre">
+                <h2 class="cfg-section-titulo"><i class="fa-solid fa-circle-info"></i> Sobre o MindFlow</h2>
+
+                <div class="sobre-logo-area">
+                    <img src="static/imagens/logoclaro.png" class="sobre-logo logo-dark" alt="MindFlow">
+                    <div class="sobre-versao-badge">v1.0.0</div>
+                </div>
+
+                <div class="sobre-bloco">
+                    <h3>O que é o MindFlow?</h3>
+                    <p>MindFlow é um painel clínico inteligente desenvolvido para psicólogos que desejam integrar tecnologia, neurociência e recursos terapêuticos em uma única interface elegante e funcional.</p>
+                </div>
+
+                <div class="sobre-bloco">
+                    <h3>Privacidade & Segurança</h3>
+                    <p>Todos os dados clínicos são armazenados exclusivamente no <code>localStorage</code> do seu navegador. Nenhuma informação é enviada a servidores externos. O MindFlow não coleta, transmite nem armazena dados em nuvem.</p>
+                </div>
+
+                <div class="sobre-grid">
+                    <div class="sobre-stat">
+                        <i class="fa-solid fa-brain"></i>
+                        <strong>8</strong>
+                        <span>Módulos clínicos</span>
+                    </div>
+                    <div class="sobre-stat">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <strong>15</strong>
+                        <span>Atividades terapêuticas</span>
+                    </div>
+                    <div class="sobre-stat">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        <strong>18</strong>
+                        <span>Insights científicos</span>
+                    </div>
+                    <div class="sobre-stat">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <strong>18</strong>
+                        <span>Artigos de referência</span>
+                    </div>
+                    <div class="sobre-stat">
+                        <i class="fa-solid fa-network-wired"></i>
+                        <strong>26</strong>
+                        <span>Conceitos de neurociência</span>
+                    </div>
+                    <div class="sobre-stat">
+                        <i class="fa-solid fa-spa"></i>
+                        <strong>12</strong>
+                        <span>Práticas de mindfulness</span>
+                    </div>
+                </div>
+
+                <div class="sobre-bloco">
+                    <h3>Desenvolvido por</h3>
+                    <div class="sobre-dev">
+                        <img src="static/imagens/logo2.png" alt="CRV Soluções em TI" class="sobre-dev-logo">
+                        <div>
+                            <strong>CRV Soluções em TI</strong>
+                            <a href="https://crvsolucoes.com" target="_blank" rel="noopener noreferrer">crvsolucoes.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sobre-bloco">
+                    <h3>Tecnologias utilizadas</h3>
+                    <div class="sobre-techs">
+                        <span class="sobre-tech-badge">HTML5</span>
+                        <span class="sobre-tech-badge">CSS3</span>
+                        <span class="sobre-tech-badge">JavaScript ES6+</span>
+                        <span class="sobre-tech-badge">Font Awesome 6</span>
+                        <span class="sobre-tech-badge">Google Fonts</span>
+                        <span class="sobre-tech-badge">localStorage API</span>
+                        <span class="sobre-tech-badge">Geolocation API</span>
+                        <span class="sobre-tech-badge">Open-Meteo API</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="cfg-toast" id="cfgToast"></div>
+
+</div>
+</main>
+
+<script src="static/js/main.js"></script>
+<script type="module" src="static/js/configuracoes.js"></script>
+<script>
+(function() {
+    const img = document.getElementById("imgCardPrincipal");
+    const tema = document.documentElement.getAttribute("data-theme");
+    if (img) img.src = tema === "dark" ? "static/imagens/imgfundo2.png" : "static/imagens/imgfundo1.png";
+})();
+</script>
+</body>
+</html>

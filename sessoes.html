@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindFlow — Sessões</title>
+
+    <link rel="icon" href="static/imagens/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/inicio.css">
+    <link rel="stylesheet" href="static/css/ferramentas.css">
+    <link rel="stylesheet" href="static/css/sessoes.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <button id="btnMenuMobile" class="menu-mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo-box">
+            <img src="static/imagens/logoclaro.png" class="logo-crv logo-dark" alt="CRV">
+            <div class="logo-texts">
+                <span class="logo-subtitle">Painel Inteligente para Psicólogos</span>
+            </div>
+        </div>
+    </div>
+    <div class="header-center">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Buscar paciente ou sessão...">
+        </div>
+    </div>
+    <div class="header-right">
+        <span id="relogio" class="clock-box">00:00:00</span>
+        <div class="weather-box" id="weatherBox">
+            <img src="static/imagens/ico_dia.png" alt="Clima" class="icone-clima-img" id="iconeClimaImg">
+            <span class="weather-temp" id="temperatura">--°C</span>
+        </div>
+        <button id="btnTema" class="theme-toggle" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
+        <div class="user-box">
+            <div class="user-avatar"><span class="user-avatar-letter">P</span></div>
+            <div class="user-info">
+                <strong class="user-name">Psicólogo(a)</strong>
+                <span class="user-role">Modo Clínico</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-fechar"><i class="fa-solid fa-xmark"></i></div>
+    <div class="sidebar-top">
+        <a href="dashboard.html"    class="menu-item" data-page="dashboard">    <i class="fa-solid fa-house"></i>         <span>Dashboard</span></a>
+        <a href="sessoes.html"      class="menu-item active" data-page="sessoes"><i class="fa-solid fa-comments"></i>     <span>Sessões</span></a>
+        <a href="ferramentas.html"  class="menu-item" data-page="ferramentas">  <i class="fa-solid fa-brain"></i>         <span>Ferramentas Clínicas</span></a>
+        <a href="insights.html"     class="menu-item" data-page="insights">     <i class="fa-solid fa-lightbulb"></i>     <span>Insights & IA</span></a>
+        <a href="atividades.html"   class="menu-item" data-page="atividades">   <i class="fa-solid fa-puzzle-piece"></i>  <span>Atividades Terapêuticas</span></a>
+        <a href="neurociencia.html" class="menu-item" data-page="neurociencia"> <i class="fa-solid fa-network-wired"></i> <span>Neurociência</span></a>
+        <a href="artigos.html"      class="menu-item" data-page="artigos">      <i class="fa-solid fa-newspaper"></i>     <span>Notícias de psicologia</span></a>
+        <a href="mindfulness.html"  class="menu-item" data-page="mindfulness">  <i class="fa-solid fa-spa"></i>           <span>Mindfulness</span></a>
+    </div>
+    <div class="sidebar-bottom">
+        <a href="configuracoes.html" class="menu-item" data-page="configuracoes"><i class="fa-solid fa-gear"></i><span>Configurações</span></a>
+        <div class="sidebar-footer">
+            <span class="dev-label">Desenvolvido por</span>
+            <div class="sidebar-logo">
+                <a href="https://crvsolucoesti.com" target="_blank" rel="noopener noreferrer">
+                    <img src="static/imagens/logo2.png" alt="CRV Soluções em TI">
+                </a>
+            </div>
+        </div>
+        <button class="sidebar-toggle" id="btnMenu"><i class="fa-solid fa-angle-left"></i></button>
+    </div>
+</aside>
+
+<main class="main-content" id="mainContent">
+<div class="dashboard-container">
+
+    <!-- HERO -->
+    <div class="card-principal">
+        <img src="static/imagens/imgfundo2.png" alt="" class="card-principal-img" id="imgCardPrincipal" loading="lazy">
+        <h1 class="titulo-pagina">Sessões</h1>
+        <p class="bemvindo-texto">Gestão de pacientes, anotações clínicas e timer de sessão</p>
+        <p class="subtexto-inicial">
+            Registre evoluções, acompanhe o progresso terapêutico e mantenha suas anotações organizadas com segurança local.
+        </p>
+    </div>
+
+    <!-- BARRA DE AÇÕES -->
+    <div class="sessoes-acoes-bar">
+        <button class="btn-gradient" id="btnNovoPaciente">
+            <i class="fa-solid fa-user-plus"></i> Novo Paciente
+        </button>
+        <div class="sessoes-busca-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscaPaciente" placeholder="Buscar paciente...">
+        </div>
+        <div class="filtros-pills" id="filtroStatusPac">
+            <button class="pill active" data-filtro="todos">Todos</button>
+            <button class="pill" data-filtro="ativo">Ativos</button>
+            <button class="pill" data-filtro="pausa">Em Pausa</button>
+            <button class="pill" data-filtro="alta">Alta</button>
+        </div>
+    </div>
+
+    <!-- LAYOUT PRINCIPAL: LISTA + DETALHE -->
+    <div class="sessoes-layout">
+
+        <!-- COLUNA ESQUERDA: LISTA DE PACIENTES -->
+        <div class="sessoes-col-lista">
+            <div class="sessoes-lista-header">
+                <span class="sessoes-lista-titulo">Pacientes</span>
+                <span class="sessoes-lista-count" id="contPacientes">0 pacientes</span>
+            </div>
+            <div class="sessoes-lista" id="listaPacientes"></div>
+        </div>
+
+        <!-- COLUNA DIREITA: DETALHE / SESSÃO ATIVA -->
+        <div class="sessoes-col-detalhe" id="sessaoDetalhe">
+
+            <!-- ESTADO VAZIO -->
+            <div class="sessoes-vazio" id="sessaoVazio">
+                <i class="fa-regular fa-comments"></i>
+                <p>Selecione um paciente para ver o histórico<br>ou registrar uma nova sessão.</p>
+            </div>
+
+            <!-- PAINEL DO PACIENTE (oculto inicialmente) -->
+            <div class="sessao-painel" id="sessaoPainel" style="display:none">
+
+                <!-- Cabeçalho do paciente -->
+                <div class="sessao-pac-header">
+                    <div class="sessao-pac-avatar" id="sessaoPacAvatar">P</div>
+                    <div class="sessao-pac-info">
+                        <h2 class="sessao-pac-nome" id="sessaoPacNome">—</h2>
+                        <div class="sessao-pac-meta" id="sessaoPacMeta"></div>
+                    </div>
+                    <div class="sessao-pac-acoes">
+                        <button class="btn-icon-sm" id="btnEditarPaciente" title="Editar paciente">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn-icon-sm btn-danger-sm" id="btnRemoverPaciente" title="Remover paciente">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TIMER DE SESSÃO -->
+                <div class="sessao-timer-card">
+                    <div class="sessao-timer-info">
+                        <span class="sessao-timer-label">Timer de Sessão</span>
+                        <span class="sessao-timer-display" id="sessaoTimerDisplay">00:00</span>
+                    </div>
+                    <div class="sessao-timer-btns">
+                        <button class="btn-gradient btn-sm" id="btnTimerIniciar">
+                            <i class="fa-solid fa-play"></i> Iniciar
+                        </button>
+                        <button class="btn-secondary btn-sm" id="btnTimerPausar" disabled>
+                            <i class="fa-solid fa-pause"></i> Pausar
+                        </button>
+                        <button class="btn-secondary btn-sm" id="btnTimerReset" disabled>
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NOVA ANOTAÇÃO -->
+                <div class="sessao-nota-form">
+                    <div class="sessao-nota-form-header">
+                        <span class="sessao-nota-form-titulo">
+                            <i class="fa-solid fa-pen-to-square"></i> Nova Anotação
+                        </span>
+                        <div class="sessao-nota-tags">
+                            <button class="pill active" data-tag="Evolução">Evolução</button>
+                            <button class="pill" data-tag="Intercorrência">Intercorrência</button>
+                            <button class="pill" data-tag="Objetivo">Objetivo</button>
+                            <button class="pill" data-tag="Tarefa">Tarefa</button>
+                        </div>
+                    </div>
+                    <textarea id="notaTexto" class="sessao-textarea"
+                        placeholder="Registre as observações clínicas da sessão..."></textarea>
+                    <div class="sessao-nota-footer">
+                        <span class="sessao-nota-chars" id="notaChars">0 / 2000</span>
+                        <button class="btn-gradient btn-sm" id="btnSalvarNota">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar Anotação
+                        </button>
+                    </div>
+                </div>
+
+                <!-- HISTÓRICO -->
+                <div class="sessao-historico">
+                    <div class="sessao-historico-header">
+                        <span class="sessao-historico-titulo">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Histórico
+                        </span>
+                        <span class="sessao-historico-count" id="sessaoHistCount">0 registros</span>
+                    </div>
+                    <div class="sessao-historico-lista" id="sessaoHistorico"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</main>
+
+<!-- MODAL NOVO / EDITAR PACIENTE -->
+<div class="modal-ferr" id="modalPaciente">
+    <div class="modal-ferr-content">
+        <div class="modal-ferr-header">
+            <div class="modal-ferr-topo">
+                <span class="modal-ferr-tag" id="modalPacTag">Novo Paciente</span>
+            </div>
+            <button class="modal-ferr-close" id="modalPacClose"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <h2 class="modal-ferr-titulo" id="modalPacTitulo">Cadastrar Paciente</h2>
+
+        <div class="sessao-form-grid">
+            <div class="sessao-form-group">
+                <label>Nome (iniciais ou código) *</label>
+                <input type="text" id="pacNome" class="sessao-input" placeholder="Ex: P.S. ou Paciente 01" maxlength="60">
+            </div>
+            <div class="sessao-form-group">
+                <label>Abordagem Terapêutica</label>
+                <select id="pacAbordagem" class="sessao-input">
+                    <option value="">Selecionar...</option>
+                    <option>TCC</option>
+                    <option>Psicanálise</option>
+                    <option>ACT</option>
+                    <option>DBT</option>
+                    <option>Humanista</option>
+                    <option>Sistêmica</option>
+                    <option>EMDR</option>
+                    <option>Integrativa</option>
+                </select>
+            </div>
+            <div class="sessao-form-group">
+                <label>Demanda Principal</label>
+                <input type="text" id="pacDemanda" class="sessao-input" placeholder="Ex: Ansiedade, Depressão..." maxlength="80">
+            </div>
+            <div class="sessao-form-group">
+                <label>Status</label>
+                <select id="pacStatus" class="sessao-input">
+                    <option value="ativo">Ativo</option>
+                    <option value="pausa">Em Pausa</option>
+                    <option value="alta">Alta</option>
+                </select>
+            </div>
+            <div class="sessao-form-group sessao-form-full">
+                <label>Observações iniciais</label>
+                <textarea id="pacObs" class="sessao-input sessao-textarea-sm"
+                    placeholder="Contexto clínico inicial, objetivos terapêuticos..." maxlength="500"></textarea>
+            </div>
+        </div>
+
+        <div class="modal-ferr-acoes">
+            <button class="btn-gradient" id="btnSalvarPaciente">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar
+            </button>
+            <button class="btn-secondary" id="btnCancelarPaciente">Cancelar</button>
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="modalPacOverlay"></div>
+
+<script src="static/js/main.js"></script>
+<script type="module" src="static/js/sessoes.js"></script>
+<script>
+(function() {
+    const img = document.getElementById("imgCardPrincipal");
+    const tema = document.documentElement.getAttribute("data-theme");
+    if (img) img.src = tema === "dark" ? "static/imagens/imgfundo2.png" : "static/imagens/imgfundo1.png";
+})();
+</script>
+</body>
+</html>

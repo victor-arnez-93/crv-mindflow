@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindFlow — Mindfulness</title>
+
+    <link rel="icon" href="static/imagens/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/inicio.css">
+    <link rel="stylesheet" href="static/css/ferramentas.css">
+    <link rel="stylesheet" href="static/css/mindfulness.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <button id="btnMenuMobile" class="menu-mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo-box">
+            <img src="static/imagens/logoclaro.png" class="logo-crv logo-dark" alt="CRV">
+            <div class="logo-texts">
+                <span class="logo-subtitle">Painel Inteligente para Psicólogos</span>
+            </div>
+        </div>
+    </div>
+    <div class="header-center">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Buscar práticas, protocolos, exercícios...">
+        </div>
+    </div>
+    <div class="header-right">
+        <span id="relogio" class="clock-box">00:00:00</span>
+        <div class="weather-box" id="weatherBox">
+            <img src="static/imagens/ico_dia.png" alt="Clima" class="icone-clima-img" id="iconeClimaImg">
+            <span class="weather-temp" id="temperatura">--°C</span>
+        </div>
+        <button id="btnTema" class="theme-toggle" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
+        <div class="user-box">
+            <div class="user-avatar"><span class="user-avatar-letter">P</span></div>
+            <div class="user-info">
+                <strong class="user-name">Psicólogo(a)</strong>
+                <span class="user-role">Modo Clínico</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-fechar"><i class="fa-solid fa-xmark"></i></div>
+    <div class="sidebar-top">
+        <a href="dashboard.html"    class="menu-item" data-page="dashboard">    <i class="fa-solid fa-house"></i>         <span>Dashboard</span></a>
+        <a href="sessoes.html"      class="menu-item" data-page="sessoes">      <i class="fa-solid fa-comments"></i>      <span>Sessões</span></a>
+        <a href="ferramentas.html"  class="menu-item" data-page="ferramentas">  <i class="fa-solid fa-brain"></i>         <span>Ferramentas Clínicas</span></a>
+        <a href="insights.html"     class="menu-item" data-page="insights">     <i class="fa-solid fa-lightbulb"></i>     <span>Insights & IA</span></a>
+        <a href="atividades.html"   class="menu-item" data-page="atividades">   <i class="fa-solid fa-puzzle-piece"></i>  <span>Atividades Terapêuticas</span></a>
+        <a href="neurociencia.html" class="menu-item" data-page="neurociencia"> <i class="fa-solid fa-network-wired"></i> <span>Neurociência</span></a>
+        <a href="artigos.html"      class="menu-item" data-page="artigos">      <i class="fa-solid fa-newspaper"></i>     <span>Notícias de psicologia</span></a>
+        <a href="mindfulness.html"  class="menu-item active" data-page="mindfulness"><i class="fa-solid fa-spa"></i>      <span>Mindfulness</span></a>
+    </div>
+    <div class="sidebar-bottom">
+        <a href="configuracoes.html" class="menu-item" data-page="configuracoes"><i class="fa-solid fa-gear"></i><span>Configurações</span></a>
+        <div class="sidebar-footer">
+            <span class="dev-label">Desenvolvido por</span>
+            <div class="sidebar-logo">
+                <a href="https://crvsolucoesti.com" target="_blank" rel="noopener noreferrer">
+                    <img src="static/imagens/logo2.png" alt="CRV Soluções em TI">
+                </a>
+            </div>
+        </div>
+        <button class="sidebar-toggle" id="btnMenu"><i class="fa-solid fa-angle-left"></i></button>
+    </div>
+</aside>
+
+<main class="main-content" id="mainContent">
+<div class="dashboard-container">
+
+    <!-- HERO -->
+    <div class="card-principal">
+        <img src="static/imagens/imgfundo2.png" alt="" class="card-principal-img" id="imgCardPrincipal" loading="lazy">
+        <h1 class="titulo-pagina">Mindfulness Clínico</h1>
+        <p class="bemvindo-texto">Práticas contemplativas baseadas em evidências para uso em sessão</p>
+        <p class="subtexto-inicial">
+            Protocolos MBSR, MBCT e práticas avulsas com timer integrado, instruções guiadas e embasamento científico.
+        </p>
+    </div>
+
+    <!-- TIMER DE RESPIRAÇÃO -->
+    <div class="card mind-timer-card">
+        <div class="card-titulo">
+            <i class="fa-solid fa-wind"></i>
+            Respiração Guiada
+        </div>
+
+        <div class="mind-timer-body">
+
+            <!-- Círculo animado -->
+            <div class="breath-circle-wrapper">
+                <div class="breath-circle" id="breathCircle">
+                    <span class="breath-instruction" id="breathInstruction">Pronto</span>
+                    <span class="breath-count" id="breathCount"></span>
+                </div>
+                <svg class="breath-ring" viewBox="0 0 120 120">
+                    <circle class="breath-ring-track" cx="60" cy="60" r="52"/>
+                    <circle class="breath-ring-fill" id="breathRingFill" cx="60" cy="60" r="52"
+                        stroke-dasharray="326.7"
+                        stroke-dashoffset="326.7"/>
+                </svg>
+            </div>
+
+            <!-- Controles -->
+            <div class="breath-controls">
+                <div class="breath-pattern-select">
+                    <label class="breath-label">Padrão</label>
+                    <div class="filtros-pills" id="breathPatterns">
+                        <button class="pill active" data-in="4" data-hold="0" data-out="6">Relaxamento (4-0-6)</button>
+                        <button class="pill" data-in="4" data-hold="7" data-out="8">4-7-8</button>
+                        <button class="pill" data-in="4" data-hold="4" data-out="4">Box (4-4-4)</button>
+                        <button class="pill" data-in="5" data-hold="0" data-out="5">Coerência (5-5)</button>
+                    </div>
+                </div>
+
+                <div class="breath-ciclos">
+                    <label class="breath-label">Ciclos</label>
+                    <div class="filtros-pills">
+                        <button class="pill active" data-ciclos="3">3</button>
+                        <button class="pill" data-ciclos="5">5</button>
+                        <button class="pill" data-ciclos="8">8</button>
+                        <button class="pill" data-ciclos="12">12</button>
+                    </div>
+                </div>
+
+                <div class="breath-btn-row">
+                    <button class="btn-gradient" id="btnBreathStart">
+                        <i class="fa-solid fa-play"></i> Iniciar
+                    </button>
+                    <button class="btn-secondary" id="btnBreathStop" disabled>
+                        <i class="fa-solid fa-stop"></i> Parar
+                    </button>
+                </div>
+
+                <div class="breath-stats">
+                    <span>Ciclos: <strong id="breathCiclosFeitos">0</strong></span>
+                    <span>Tempo: <strong id="breathTempo">0:00</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros-wrapper">
+        <div class="filtros-grupo">
+            <span class="filtros-label">Protocolo</span>
+            <div class="filtros-pills" id="filtroProtocolo">
+                <button class="pill active" data-filtro="todos">Todos</button>
+                <button class="pill" data-filtro="MBSR">MBSR</button>
+                <button class="pill" data-filtro="MBCT">MBCT</button>
+                <button class="pill" data-filtro="DBT">DBT</button>
+                <button class="pill" data-filtro="ACT">ACT</button>
+                <button class="pill" data-filtro="Avulso">Avulso</button>
+            </div>
+        </div>
+        <div class="filtros-grupo">
+            <span class="filtros-label">Duração</span>
+            <div class="filtros-pills" id="filtroDurMind">
+                <button class="pill active" data-filtro="todos">Qualquer</button>
+                <button class="pill" data-filtro="curta">Até 5 min</button>
+                <button class="pill" data-filtro="media">5–15 min</button>
+                <button class="pill" data-filtro="longa">+15 min</button>
+            </div>
+        </div>
+        <div class="filtros-busca">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscaMind" placeholder="Buscar prática...">
+        </div>
+    </div>
+
+    <div class="ferramentas-meta">
+        <span id="contadorMind">Carregando práticas...</span>
+    </div>
+
+    <!-- GRID DE PRÁTICAS -->
+    <div class="mind-grid" id="mindGrid"></div>
+
+    <!-- MODAL PRÁTICA -->
+    <div class="modal-ferr" id="modalMind">
+        <div class="modal-ferr-content">
+            <div class="modal-ferr-header">
+                <div class="modal-ferr-topo">
+                    <span class="modal-ferr-tag"  id="modalMindTag"></span>
+                    <span class="modal-ferr-duracao">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="modalMindDuracao"></span>
+                    </span>
+                </div>
+                <button class="modal-ferr-close" id="modalMindClose"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <h2 class="modal-ferr-titulo" id="modalMindTitulo"></h2>
+            <p class="modal-ferr-objetivo" id="modalMindObjetivo"></p>
+
+            <div class="modal-ferr-secao">
+                <h4><i class="fa-solid fa-list-ol"></i> Roteiro Guiado</h4>
+                <ol class="modal-ferr-passos" id="modalMindPassos"></ol>
+            </div>
+            <div class="modal-ferr-secao">
+                <h4><i class="fa-solid fa-graduation-cap"></i> Embasamento</h4>
+                <p id="modalMindEmb"></p>
+            </div>
+            <div class="modal-ferr-secao">
+                <h4><i class="fa-solid fa-book-open"></i> Referência</h4>
+                <p class="modal-ferr-ref" id="modalMindRef"></p>
+            </div>
+            <div class="modal-ferr-acoes">
+                <button class="btn-gradient" id="modalMindTimer">
+                    <i class="fa-solid fa-stopwatch"></i> Usar timer
+                </button>
+                <button class="btn-secondary" id="modalMindFechar">Fechar</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="modalMindOverlay"></div>
+
+</div>
+</main>
+
+<script src="static/js/main.js"></script>
+<script type="module" src="static/js/mindfulness.js"></script>
+<script>
+(function() {
+    const img = document.getElementById("imgCardPrincipal");
+    const tema = document.documentElement.getAttribute("data-theme");
+    if (img) img.src = tema === "dark" ? "static/imagens/imgfundo2.png" : "static/imagens/imgfundo1.png";
+})();
+</script>
+</body>
+</html>

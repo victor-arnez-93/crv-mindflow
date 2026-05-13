@@ -1,921 +1,301 @@
-// ===================================================================
-// MAIN.JS — MINDFLOW PSICOLOGIA
-// Tema • Relógio • Clima • Sidebar • Busca Global
-// ===================================================================
+// ============================================================
+// MAIN.JS — MINDFLOW DASHBOARD
+// Relógio · Tema · Clima · Sidebar · Busca · Menu Ativo
+// ============================================================
 
-window.MindFlow = {};
-
-// ======================================================
-// REFERÊNCIAS GLOBAIS
-// ======================================================
-
-const sidebar =
-    document.getElementById("sidebar");
-
-const btnMenuDesktop =
-    document.getElementById("btnMenu");
-
-const btnMenuMobile =
-    document.getElementById("btnMenuMobile");
-
-const botaoTema =
-    document.getElementById("btnTema");
-
-const weatherBox =
-    document.getElementById("weatherBox");
-
-const modalClima =
-    document.getElementById("modalClima");
-
-const closeModalClima =
-    document.getElementById("closeModalClima");
-
-// ======================================================
-// INIT
-// ======================================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        iniciarRelogio();
-
-        aplicarTema(
-            localStorage.getItem("temaMindFlow")
-            || "light"
-        );
-
-        carregarClima();
-
-        iniciarTema();
-
-        iniciarSidebarDesktop();
-
-        iniciarSidebarMobile();
-
-        iniciarModalClima();
-
-        iniciarBuscaGlobal();
-
-        carregarPerfil();
-
-        ajustarMenuResponsivo();
-
-        marcarMenuAtivo();
-
-        console.log(
-            "🧠 MindFlow iniciado."
-        );
+// ─── RELÓGIO ────────────────────────────────────────────────
+function iniciarRelogio() {
+    const el = document.getElementById("relogio");
+    if (!el) return;
+    function tick() {
+        const n = new Date();
+        const h = String(n.getHours()).padStart(2, "0");
+        const m = String(n.getMinutes()).padStart(2, "0");
+        const s = String(n.getSeconds()).padStart(2, "0");
+        el.textContent = `${h}:${m}:${s}`;
     }
-);
-
-// ======================================================
-// RELÓGIO
-// ======================================================
-
-function iniciarRelogio(){
-
-    const relogio =
-        document.getElementById("relogio");
-
-    if(!relogio) return;
-
-    function atualizar(){
-
-        const agora = new Date();
-
-        const h = String(
-            agora.getHours()
-        ).padStart(2,"0");
-
-        const m = String(
-            agora.getMinutes()
-        ).padStart(2,"0");
-
-        const s = String(
-            agora.getSeconds()
-        ).padStart(2,"0");
-
-        relogio.textContent =
-            `${h}:${m}:${s}`;
-    }
-
-    atualizar();
-
-    setInterval(atualizar,1000);
+    tick();
+    setInterval(tick, 1000);
 }
+iniciarRelogio();
 
-// ======================================================
-// DIA / NOITE
-// ======================================================
+// ─── TEMA CLARO / ESCURO ─────────────────────────────────────
+const btnTema = document.getElementById("btnTema");
 
-function isDia(){
-
-    const hora =
-        new Date().getHours();
-
-    return hora >= 6 && hora < 18;
-}
-
-// ======================================================
-// ÍCONES CLIMA
-// ======================================================
-
-function getIcone(code){
-
-    if(code >= 51 && code <= 82){
-
-        return "static/imagens/ico_chuva.png";
-    }
-
-    if(code > 82){
-
-        return "static/imagens/ico_chuva.png";
-    }
-
-    if(!isDia()){
-
-        return "static/imagens/ico_noite.png";
-    }
-
-    if(code <= 1){
-
-        return "static/imagens/ico_dia.png";
-    }
-
-    if(code <= 3){
-
-        return "static/imagens/ico_nublado.png";
-    }
-
-    return "static/imagens/ico_chuva.png";
-}
-
-function atualizarIconeClimaPorHora(){
-
-    const icone =
-        document.getElementById("iconeClimaImg");
-
-    if(!icone) return;
-
-    const src =
-        icone.src || "";
-
-    if(
-        src.includes("ico_dia")
-        ||
-        src.includes("ico_noite")
-    ){
-
-        icone.src =
-            isDia()
-            ? "static/imagens/ico_dia.png"
-            : "static/imagens/ico_noite.png";
-    }
-
-    if(
-        src.includes("ico_nublado")
-        &&
-        !isDia()
-    ){
-
-        icone.src =
-            "static/imagens/ico_noite.png";
+function aplicarTema(tema) {
+    document.documentElement.setAttribute("data-theme", tema);
+    localStorage.setItem("temaMindFlow", tema);
+    const ico = btnTema?.querySelector("i");
+    if (ico) {
+        ico.className = tema === "dark" ? "fas fa-sun" : "fas fa-moon";
     }
 }
 
-setInterval(
-    atualizarIconeClimaPorHora,
-    60000
-);
+function alternarTema() {
+    const atual = document.documentElement.getAttribute("data-theme") || "dark";
+    aplicarTema(atual === "dark" ? "light" : "dark");
+}
 
-// ======================================================
-// TEMA
-// ======================================================
+if (btnTema) btnTema.addEventListener("click", alternarTema);
 
-function aplicarTema(tema){
+// Aplica tema salvo ou escuro como padrão
+aplicarTema(localStorage.getItem("temaMindFlow") || "dark");
 
-    document.documentElement
-        .setAttribute(
-            "data-theme",
-            tema
-        );
+// ─── SIDEBAR — DESKTOP (recolher/expandir) ──────────────────
+const sidebar         = document.getElementById("sidebar");
+const btnMenuDesktop  = document.getElementById("btnMenu");
 
-    localStorage.setItem(
-        "temaMindFlow",
-        tema
-    );
+if (btnMenuDesktop && sidebar) {
+    btnMenuDesktop.addEventListener("click", () => {
+        sidebar.classList.toggle("closed");
+        localStorage.setItem("sidebarClosed", sidebar.classList.contains("closed"));
+    });
+}
 
-    const iconeTema =
-        botaoTema?.querySelector("i");
-
-    if(iconeTema){
-
-        iconeTema.className =
-            tema === "dark"
-            ? "fas fa-sun"
-            : "fas fa-moon";
+// Restaura estado da sidebar no desktop
+(function restaurarSidebar() {
+    if (window.innerWidth > 768) {
+        const fechada = localStorage.getItem("sidebarClosed") === "true";
+        if (fechada && sidebar) sidebar.classList.add("closed");
     }
+})();
 
-    atualizarIconeClimaPorHora();
+// ─── SIDEBAR — MOBILE ────────────────────────────────────────
+const btnMenuMobile = document.getElementById("btnMenuMobile");
+const btnFechar     = document.querySelector(".sidebar-fechar");
+
+// Cria overlay se não existir
+let overlay = document.getElementById("sidebar-overlay");
+if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id        = "sidebar-overlay";
+    overlay.className = "sidebar-overlay";
+    document.body.appendChild(overlay);
 }
 
-function alternarTema(){
-
-    const temaAtual =
-        document.documentElement
-            .getAttribute("data-theme")
-            || "light";
-
-    aplicarTema(
-
-        temaAtual === "light"
-        ? "dark"
-        : "light"
-    );
+function abrirSidebar() {
+    sidebar?.classList.add("aberta");
+    overlay.classList.add("mostrar");
+    document.body.classList.add("menu-aberto");
 }
 
-function iniciarTema(){
-
-    if(!botaoTema) return;
-
-    botaoTema.addEventListener(
-        "click",
-        alternarTema
-    );
+function fecharSidebar() {
+    sidebar?.classList.remove("aberta");
+    overlay.classList.remove("mostrar");
+    document.body.classList.remove("menu-aberto");
 }
 
-// ======================================================
-// SIDEBAR DESKTOP
-// ======================================================
-
-function iniciarSidebarDesktop(){
-
-    if(!btnMenuDesktop || !sidebar)
-        return;
-
-    btnMenuDesktop.addEventListener(
-        "click",
-        () => {
-
-            sidebar.classList.toggle(
-                "closed"
-            );
-        }
-    );
-}
-
-// ======================================================
-// MODAL CLIMA
-// ======================================================
-
-function iniciarModalClima(){
-
-    if(!weatherBox || !modalClima)
-        return;
-
-    weatherBox.addEventListener(
-        "click",
-        (e) => {
-
-            e.stopPropagation();
-
-            modalClima.classList.toggle(
-                "ativo"
-            );
-        }
-    );
-
-    if(closeModalClima){
-
-        closeModalClima.addEventListener(
-            "click",
-            (e) => {
-
-                e.stopPropagation();
-
-                modalClima.classList.remove(
-                    "ativo"
-                );
-            }
-        );
-    }
-
-    document.addEventListener(
-        "click",
-        (e) => {
-
-            if(
-                !weatherBox.contains(e.target)
-            ){
-
-                modalClima.classList.remove(
-                    "ativo"
-                );
-            }
-        }
-    );
-}
-
-// ======================================================
-// CLIMA REAL
-// ======================================================
-
-async function carregarClima(){
-
-    const temperatura =
-        document.getElementById(
-            "temperatura"
-        );
-
-    const modalBody =
-        document.getElementById(
-            "modalClimaBody"
-        );
-
-    const icone =
-        document.getElementById(
-            "iconeClimaImg"
-        );
-
-    if(
-        !temperatura
-        ||
-        !modalBody
-    ) return;
-
-    try{
-
-        const url =
-            "https://api.open-meteo.com/v1/forecast?latitude=-23.35&longitude=-47.85&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=America/Sao_Paulo&forecast_days=3";
-
-        const resp =
-            await fetch(url);
-
-        const data =
-            await resp.json();
-
-        temperatura.textContent =
-            Math.round(
-                data.current_weather.temperature
-            ) + "°C";
-
-        if(icone){
-
-            icone.src =
-                getIcone(
-                    data.current_weather.weathercode
-                );
-        }
-
-        const diasSemana = [
-            "dom.",
-            "seg.",
-            "ter.",
-            "qua.",
-            "qui.",
-            "sex.",
-            "sáb."
-        ];
-
-        const getEmoji = (code) => {
-
-            if(code === 0) return "☀️";
-            if(code <= 2) return "🌤️";
-            if(code === 3) return "☁️";
-            if(code <= 49) return "🌫️";
-            if(code <= 67) return "🌧️";
-            if(code <= 82) return "🌦️";
-
-            return "⛈️";
-        };
-
-        const previsoes =
-            data.daily.time.map(
-                (d,i) => {
-
-                const dt =
-                    new Date(
-                        d + "T12:00:00"
-                    );
-
-                return {
-
-                    dia:
-                        i === 0
-                        ? "Hoje"
-                        : diasSemana[
-                            dt.getDay()
-                        ],
-
-                    max:
-                        Math.round(
-                            data.daily
-                            .temperature_2m_max[i]
-                        ),
-
-                    min:
-                        Math.round(
-                            data.daily
-                            .temperature_2m_min[i]
-                        ),
-
-                    emoji:
-                        getEmoji(
-                            data.daily
-                            .weathercode[i]
-                        )
-                };
-            });
-
-        atualizarModalClima(
-            previsoes
-        );
-
-    }catch(e){
-
-        console.error(
-            "Erro clima:",
-            e
-        );
-
-        temperatura.textContent =
-            "--°";
-
-        modalBody.innerHTML =
-            `
-                <p style="opacity:.6">
-                    Clima indisponível
-                </p>
-            `;
-    }
-}
-
-setInterval(
-    carregarClima,
-    600000
-);
-
-function atualizarModalClima(
-    previsoes
-){
-
-    const modal =
-        document.getElementById(
-            "modalClimaBody"
-        );
-
-    if(!modal) return;
-
-    modal.innerHTML =
-        previsoes.map(p => `
-
-            <div class="previsao-dia">
-
-                <p class="dia-nome">
-                    ${p.dia}
-                </p>
-
-                <p class="temperaturas">
-                    ${p.max}° / ${p.min}°
-                </p>
-
-                <p class="emoji-clima">
-                    ${p.emoji}
-                </p>
-
-            </div>
-
-        `).join("");
-}
-
-// ======================================================
-// PERFIL
-// ======================================================
-
-function carregarPerfil(){
-
-    const nome =
-        localStorage.getItem(
-            "config_nome"
-        );
-
-    const email =
-        localStorage.getItem(
-            "config_email"
-        );
-
-    const avatarURL =
-        localStorage.getItem(
-            "config_avatar"
-        );
-
-    if(nome){
-
-        document
-            .querySelectorAll(
-                ".user-name"
-            )
-            .forEach(el => {
-
-                el.textContent = nome;
-            });
-    }
-
-    if(email){
-
-        document
-            .querySelectorAll(
-                ".user-role"
-            )
-            .forEach(el => {
-
-                el.textContent = email;
-            });
-    }
-
-    if(avatarURL){
-
-        document
-            .querySelectorAll(
-                ".user-avatar-img"
-            )
-            .forEach(img => {
-
-                img.src = avatarURL;
-            });
-    }
-}
-
-// ======================================================
-// BUSCA GLOBAL
-// ======================================================
-
-function iniciarBuscaGlobal(){
-
-    const campo =
-        document.getElementById(
-            "searchInput"
-        );
-
-    if(!campo) return;
-
-    let timeoutBusca;
-
-    campo.addEventListener(
-        "input",
-        () => {
-
-            clearTimeout(timeoutBusca);
-
-            timeoutBusca =
-                setTimeout(() => {
-
-                executarBusca(
-                    campo.value.trim()
-                );
-
-            },250);
-        }
-    );
-}
-
-function executarBusca(texto){
-
-    limparResultadosBusca();
-
-    if(texto.length < 2)
-        return;
-
-    const elementos =
-        document.querySelectorAll(
-            `
-            h1,h2,h3,h4,
-            p,
-            span,
-            .card-title,
-            .section-title
-            `
-        );
-
-    elementos.forEach(el => {
-
-        if(
-            el.closest(".sidebar")
-            ||
-            el.closest(".header")
-            ||
-            el.closest(".modal")
-        ) return;
-
-        const conteudo =
-            el.textContent
-                .toLowerCase();
-
-        if(
-            conteudo.includes(
-                texto.toLowerCase()
-            )
-        ){
-
-            el.classList.add(
-                "highlight-busca"
-            );
+if (btnMenuMobile) btnMenuMobile.addEventListener("click", e => { e.stopPropagation(); abrirSidebar(); });
+if (btnFechar)     btnFechar.addEventListener("click",     e => { e.stopPropagation(); fecharSidebar(); });
+if (overlay)       overlay.addEventListener("click",       () => fecharSidebar());
+
+// Fecha ao clicar em item (mobile)
+document.querySelectorAll(".sidebar .menu-item").forEach(item => {
+    item.addEventListener("click", () => {
+        if (window.innerWidth <= 768) fecharSidebar();
+    });
+});
+
+// Ajusta no resize
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) fecharSidebar();
+});
+
+// ─── MENU ATIVO — MARCA AUTOMÁTICO ──────────────────────────
+(function marcarMenuAtivo() {
+    const pagina = window.location.pathname.split("/").pop().replace(".html", "") || "dashboard";
+    document.querySelectorAll(".menu-item").forEach(item => {
+        item.classList.remove("active");
+        const dp = (item.dataset.page || "").toLowerCase().trim();
+        if (dp && dp === pagina.toLowerCase().trim()) {
+            item.classList.add("active");
         }
     });
+})();
 
-    const primeiro =
-        document.querySelector(
-            ".highlight-busca"
-        );
+// ─── CLIMA — OPEN-METEO ──────────────────────────────────────
+// Coordenadas: Tatuí/SP
+const LAT = -23.35;
+const LON = -47.85;
 
-    if(primeiro){
+function isDia() {
+    const h = new Date().getHours();
+    return h >= 6 && h < 18;
+}
 
-        primeiro.scrollIntoView({
+function getIconeClima(code) {
+    if (code >= 51) return "static/imagens/ico_chuva.png";
+    if (!isDia())   return "static/imagens/ico_noite.png";
+    if (code <= 1)  return "static/imagens/ico_dia.png";
+    if (code <= 3)  return "static/imagens/ico_nublado.png";
+    return "static/imagens/ico_dia.png";
+}
 
-            behavior:"smooth",
-            block:"center"
-        });
+function getEmojiClima(code) {
+    if (code === 0)        return "☀️";
+    if (code <= 2)         return "🌤️";
+    if (code === 3)        return "☁️";
+    if (code <= 49)        return "🌫️";
+    if (code <= 67)        return "🌧️";
+    if (code <= 82)        return "🌦️";
+    return "⛈️";
+}
+
+async function carregarClima() {
+    const elTemp  = document.getElementById("temperatura");
+    const elIco   = document.getElementById("iconeClimaImg");
+    const elBody  = document.getElementById("modalClimaBody");
+
+    if (!elTemp) return;
+
+    try {
+        const url = `https://api.open-meteo.com/v1/forecast`
+            + `?latitude=${LAT}&longitude=${LON}`
+            + `&daily=weathercode,temperature_2m_max,temperature_2m_min`
+            + `&current_weather=true`
+            + `&timezone=America%2FSao_Paulo`
+            + `&forecast_days=4`;
+
+        const res  = await fetch(url);
+        const data = await res.json();
+        const cw   = data.current_weather;
+
+        // Temperatura e ícone atuais
+        elTemp.textContent = Math.round(cw.temperature) + "°C";
+        if (elIco) elIco.src = getIconeClima(cw.weathercode);
+
+        // Modal — previsão 4 dias
+        if (elBody) {
+            const nomes = ["dom.", "seg.", "ter.", "qua.", "qui.", "sex.", "sáb."];
+            const linhas = data.daily.time.map((t, i) => {
+                const dt  = new Date(t + "T12:00:00");
+                const dia = i === 0 ? "Hoje" : nomes[dt.getDay()];
+                return `
+                <div class="previsao-dia">
+                    <p class="dia-nome">${dia}</p>
+                    <p class="temperaturas">
+                        ${Math.round(data.daily.temperature_2m_max[i])}° /
+                        ${Math.round(data.daily.temperature_2m_min[i])}°
+                    </p>
+                    <p class="emoji-clima">${getEmojiClima(data.daily.weathercode[i])}</p>
+                </div>`;
+            });
+            elBody.innerHTML = linhas.join("");
+        }
+
+    } catch (err) {
+        console.warn("[MindFlow] Clima indisponível:", err);
+        if (elTemp) elTemp.textContent = "--°C";
+        if (elBody) elBody.innerHTML = `<div class="previsao-loading">Clima indisponível.</div>`;
     }
 }
 
-function limparResultadosBusca(){
+carregarClima();
+setInterval(carregarClima, 10 * 60 * 1000); // atualiza a cada 10 min
 
-    document
-        .querySelectorAll(
-            ".highlight-busca"
-        )
-        .forEach(el => {
+// ─── MODAL CLIMA — ABRIR/FECHAR ──────────────────────────────
+const weatherBox      = document.getElementById("weatherBox");
+const modalClima      = document.getElementById("modalClima");
+const closeModalClima = document.getElementById("closeModalClima");
 
-            el.classList.remove(
-                "highlight-busca"
-            );
+if (weatherBox && modalClima) {
+    weatherBox.addEventListener("click", e => {
+        e.stopPropagation();
+        modalClima.classList.toggle("ativo");
+    });
+
+    if (closeModalClima) {
+        closeModalClima.addEventListener("click", e => {
+            e.stopPropagation();
+            modalClima.classList.remove("ativo");
         });
+    }
+
+    document.addEventListener("click", e => {
+        if (!weatherBox.contains(e.target)) {
+            modalClima.classList.remove("ativo");
+        }
+    });
 }
 
-// ======================================================
-// SIDEBAR MOBILE
-// ======================================================
+// ─── BUSCA GLOBAL ────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+    const campo = document.getElementById("searchInput");
+    if (!campo) return;
 
-let overlay =
-    document.getElementById(
-        "sidebar-overlay"
-    );
+    function limparDestaques() {
+        document.querySelectorAll(".highlight-busca").forEach(el => {
+            el.replaceWith(document.createTextNode(el.textContent));
+        });
+        // Normaliza text nodes adjacentes
+        document.body.normalize();
+    }
 
-if(!overlay){
+    function destacarTexto(termo) {
+        limparDestaques();
+        if (termo.length < 2) return;
 
-    overlay =
-        document.createElement("div");
-
-    overlay.id =
-        "sidebar-overlay";
-
-    overlay.className =
-        "sidebar-overlay";
-
-    document.body.appendChild(
-        overlay
-    );
-}
-
-function iniciarSidebarMobile(){
-
-    const btnFechar =
-        document.querySelector(
-            ".sidebar-fechar"
+        const walker = document.createTreeWalker(
+            document.querySelector(".main-content") || document.body,
+            NodeFilter.SHOW_TEXT
         );
 
-    if(btnMenuMobile && sidebar){
-
-        btnMenuMobile.addEventListener(
-            "click",
-            (e) => {
-
-                e.stopPropagation();
-
-                sidebar.classList.add(
-                    "aberta"
-                );
-
-                overlay.classList.add(
-                    "mostrar"
-                );
-
-                document.body.classList.add(
-                    "menu-aberto"
-                );
+        const encontrados = [];
+        while (walker.nextNode()) {
+            const node = walker.currentNode;
+            if (!node.nodeValue.trim()) continue;
+            if (node.parentElement?.closest("script, style, .highlight-busca")) continue;
+            const lower = node.nodeValue.toLowerCase();
+            if (lower.includes(termo.toLowerCase())) {
+                encontrados.push(node);
             }
-        );
-    }
+        }
 
-    if(btnFechar && sidebar){
+        encontrados.forEach(node => {
+            const idx    = node.nodeValue.toLowerCase().indexOf(termo.toLowerCase());
+            const antes  = node.nodeValue.slice(0, idx);
+            const match  = node.nodeValue.slice(idx, idx + termo.length);
+            const depois = node.nodeValue.slice(idx + termo.length);
 
-        btnFechar.addEventListener(
-            "click",
-            (e) => {
+            const span = document.createElement("span");
+            span.className   = "highlight-busca";
+            span.textContent = match;
 
-                e.stopPropagation();
-
-                fecharSidebarMobile();
-            }
-        );
-    }
-
-    overlay.addEventListener(
-        "click",
-        fecharSidebarMobile
-    );
-
-    document
-        .querySelectorAll(
-            ".sidebar .menu-item"
-        )
-        .forEach(item => {
-
-            item.addEventListener(
-                "click",
-                () => {
-
-                    if(
-                        window.innerWidth <= 768
-                    ){
-
-                        fecharSidebarMobile();
-                    }
-                }
-            );
+            const frag = document.createDocumentFragment();
+            if (antes)  frag.appendChild(document.createTextNode(antes));
+            frag.appendChild(span);
+            if (depois) frag.appendChild(document.createTextNode(depois));
+            node.parentNode.replaceChild(frag, node);
         });
-}
 
-function fecharSidebarMobile(){
-
-    sidebar.classList.remove(
-        "aberta"
-    );
-
-    overlay.classList.remove(
-        "mostrar"
-    );
-
-    document.body.classList.remove(
-        "menu-aberto"
-    );
-}
-
-// ======================================================
-// RESPONSIVIDADE
-// ======================================================
-
-function ajustarMenuResponsivo(){
-
-    if(window.innerWidth <= 768){
-
-        fecharSidebarMobile();
-
-    }else{
-
-        sidebar?.classList.remove(
-            "aberta"
-        );
-
-        document.body.classList.remove(
-            "menu-aberto"
-        );
+        // Scroll até primeiro resultado
+        const primeiro = document.querySelector(".highlight-busca");
+        if (primeiro) primeiro.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-}
 
-window.addEventListener(
-    "resize",
-    ajustarMenuResponsivo
-);
+    campo.addEventListener("input", () => destacarTexto(campo.value.trim()));
 
-// ======================================================
-// MENU ATIVO
-// ======================================================
+    campo.addEventListener("keydown", e => {
+        if (e.key === "Escape") {
+            campo.value = "";
+            limparDestaques();
+        }
+    });
+});
 
-function marcarMenuAtivo(){
+// ─── PERFIL DO USUÁRIO (localStorage) ───────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+    const nome   = localStorage.getItem("mindflow_nome");
+    const cargo  = localStorage.getItem("mindflow_cargo");
+    const letra  = localStorage.getItem("mindflow_letra");
 
-    const pagina =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .replace(".html","")
-            || "dashboard";
-
-    document
-        .querySelectorAll(
-            ".menu-item"
-        )
-        .forEach(btn => {
-
-            btn.classList.remove(
-                "active"
-            );
-
-            const dp =
-                (
-                    btn.dataset.page
-                    || ""
-                )
-                .toLowerCase()
-                .trim();
-
-            if(
-                dp
-                &&
-                dp === pagina
-            ){
-
-                btn.classList.add(
-                    "active"
-                );
-            }
-        });
-}
-
-// ======================================================
-// TOAST GLOBAL
-// ======================================================
-
-MindFlow.toast =
-    function(
-        mensagem,
-        tipo = "success"
-    ){
-
-    const toast =
-        document.createElement("div");
-
-    toast.className =
-        `mindflow-toast ${tipo}`;
-
-    toast.innerHTML = `
-        <span>${mensagem}</span>
-    `;
-
-    document.body.appendChild(
-        toast
-    );
-
-    setTimeout(() => {
-
-        toast.classList.add(
-            "mostrar"
-        );
-
-    },50);
-
-    setTimeout(() => {
-
-        toast.classList.remove(
-            "mostrar"
-        );
-
-        setTimeout(() => {
-
-            toast.remove();
-
-        },300);
-
-    },3000);
-};
-
-// ======================================================
-// MODAL GLOBAL
-// ======================================================
-
-MindFlow.abrirModal =
-    function(id){
-
-    const modal =
-        document.getElementById(id);
-
-    if(!modal) return;
-
-    modal.classList.add("ativo");
-
-    document.body.style.overflow =
-        "hidden";
-};
-
-MindFlow.fecharModal =
-    function(id){
-
-    const modal =
-        document.getElementById(id);
-
-    if(!modal) return;
-
-    modal.classList.remove("ativo");
-
-    document.body.style.overflow =
-        "auto";
-};
-
-// ======================================================
-// LOG
-// ======================================================
-
-console.log(
-    "🧠 MAIN.JS consolidado."
-);
+    if (nome) {
+        document.querySelectorAll(".user-name").forEach(el => el.textContent = nome);
+    }
+    if (cargo) {
+        document.querySelectorAll(".user-role").forEach(el => el.textContent = cargo);
+    }
+    if (letra) {
+        document.querySelectorAll(".user-avatar-letter").forEach(el => el.textContent = letra);
+    }
+});

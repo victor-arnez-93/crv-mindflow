@@ -1,699 +1,410 @@
-/* =========================================================
-   SESSAO.JS — FERRAMENTAS CLÍNICAS
-========================================================= */
+// ============================================================================
+// sessoes.js — MindFlow · Gestão de Sessões
+// Dados salvos em localStorage — sem servidor, sem exposição de dados
+// ============================================================================
 
-/* =========================================================
-   ELEMENTOS
-========================================================= */
+const CHAVE_PAC  = "mindflow_pacientes";
+const CHAVE_NOTAS= "mindflow_notas";
 
-const modal =
-    document.getElementById('modalFerramenta');
+// ============================================================================
+// STORAGE
+// ============================================================================
 
-const modalBody =
-    document.getElementById('modalBody');
+function carregarPacientes()  { return JSON.parse(localStorage.getItem(CHAVE_PAC)  || "[]"); }
+function salvarPacientes(arr) { localStorage.setItem(CHAVE_PAC, JSON.stringify(arr)); }
+function carregarNotas()      { return JSON.parse(localStorage.getItem(CHAVE_NOTAS) || "{}"); }
+function salvarNotas(obj)     { localStorage.setItem(CHAVE_NOTAS, JSON.stringify(obj)); }
 
-const fecharModal =
-    document.getElementById('fecharModal');
+function gerarId() { return "p_" + Date.now() + "_" + Math.random().toString(36).slice(2, 7); }
 
-const botoesFerramenta =
-    document.querySelectorAll('.btn-ferramenta');
+// ============================================================================
+// ESTADO
+// ============================================================================
 
-const filtros =
-    document.querySelectorAll('.filtro-btn');
+let pacientes      = carregarPacientes();
+let notas          = carregarNotas();
+let pacienteSelecionado = null;
+let filtroStatus   = "todos";
+let termoBusca     = "";
+let tagAtiva       = "Evolução";
+let editandoId     = null;
 
-const cards =
-    document.querySelectorAll('.ferramenta-card');
+// Timer
+let timerInterval  = null;
+let timerSegundos  = 0;
+let timerRodando   = false;
 
-const busca =
-    document.getElementById('buscarFerramentas');
+// ============================================================================
+// RENDERIZAR LISTA
+// ============================================================================
 
-const heroImg =
-    document.getElementById('sessaoHeroImg');
-
-const btnModoSessao =
-    document.getElementById('btnModoSessao');
-
-const btnFerramentaAleatoria =
-    document.getElementById('btnFerramentaAleatoria');
-
-/* =========================================================
-   IMAGEM DINÂMICA HERO
-========================================================= */
-
-function atualizarImagemTema(){
-
-    const tema =
-        document.documentElement
-            .getAttribute('data-theme');
-
-    if(!heroImg) return;
-
-    heroImg.src =
-        tema === 'dark'
-        ? 'static/imagens/imgfundo2.png'
-        : 'static/imagens/imgfundo1.png';
+function filtrarPacientes() {
+    return pacientes.filter(p => {
+        const matchStatus = filtroStatus === "todos" || p.status === filtroStatus;
+        const matchBusca  = termoBusca === "" || p.nome.toLowerCase().includes(termoBusca);
+        return matchStatus && matchBusca;
+    });
 }
 
-atualizarImagemTema();
+function renderizarLista() {
+    const lista  = document.getElementById("listaPacientes");
+    const cont   = document.getElementById("contPacientes");
+    const filtrados = filtrarPacientes();
 
-new MutationObserver(
-    atualizarImagemTema
-).observe(
+    cont.textContent = `${filtrados.length} paciente${filtrados.length !== 1 ? "s" : ""}`;
 
-    document.documentElement,
-
-    {
-        attributes:true,
-        attributeFilter:['data-theme']
+    if (!filtrados.length) {
+        lista.innerHTML = `
+            <div class="sessoes-lista-vazio">
+                <i class="fa-solid fa-user-slash"></i>
+                <p>Nenhum paciente encontrado.</p>
+            </div>`;
+        return;
     }
-);
 
-/* =========================================================
-   FILTROS
-========================================================= */
+    lista.innerHTML = filtrados.map(p => {
+        const qtdNotas = (notas[p.id] || []).length;
+        const ativa    = pacienteSelecionado?.id === p.id ? "ativo" : "";
+        const inicial  = p.nome.charAt(0).toUpperCase();
+        const statusLabel = { ativo: "Ativo", pausa: "Em Pausa", alta: "Alta" }[p.status] || "Ativo";
+        const statusCls   = { ativo: "status-ativo", pausa: "status-pausa", alta: "status-alta" }[p.status] || "status-ativo";
+        return `
+            <div class="sessoes-pac-item ${ativa}" data-id="${p.id}">
+                <div class="pac-item-avatar">${inicial}</div>
+                <div class="pac-item-info">
+                    <strong class="pac-item-nome">${p.nome}</strong>
+                    <span class="pac-item-abordagem">${p.abordagem || "—"} · ${p.demanda || "—"}</span>
+                </div>
+                <div class="pac-item-right">
+                    <span class="pac-status-badge ${statusCls}">${statusLabel}</span>
+                    <span class="pac-item-notas">${qtdNotas} nota${qtdNotas !== 1 ? "s" : ""}</span>
+                </div>
+            </div>`;
+    }).join("");
 
-filtros.forEach(btn => {
-
-    btn.addEventListener('click', () => {
-
-        filtros.forEach(b =>
-            b.classList.remove('active')
-        );
-
-        btn.classList.add('active');
-
-        const filtro =
-            btn.innerText
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g,'');
-
-        cards.forEach(card => {
-
-            const categoria =
-                card.dataset.categoria
-                    .toLowerCase()
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g,'');
-
-            if(
-                filtro === 'todas'
-                ||
-                categoria.includes(filtro)
-            ){
-
-                card.style.display = 'flex';
-
-                setTimeout(() => {
-
-                    card.style.opacity = '1';
-
-                    card.style.transform =
-                        'translateY(0px)';
-
-                }, 40);
-
-            }else{
-
-                card.style.opacity = '0';
-
-                card.style.transform =
-                    'translateY(14px)';
-
-                setTimeout(() => {
-
-                    card.style.display = 'none';
-
-                }, 180);
-
-            }
-
+    lista.querySelectorAll(".sessoes-pac-item").forEach(el => {
+        el.addEventListener("click", () => {
+            const pac = pacientes.find(p => p.id === el.dataset.id);
+            if (pac) selecionarPaciente(pac);
         });
-
     });
-
-});
-
-/* =========================================================
-   BUSCA
-========================================================= */
-
-if(busca){
-
-    busca.addEventListener('input', () => {
-
-        const termo =
-            busca.value.toLowerCase();
-
-        cards.forEach(card => {
-
-            const texto =
-                card.innerText.toLowerCase();
-
-            if(texto.includes(termo)){
-
-                card.style.display = 'flex';
-
-            }else{
-
-                card.style.display = 'none';
-            }
-
-        });
-
-    });
-
 }
 
-/* =========================================================
-   ANIMAÇÃO ENTRADA
-========================================================= */
+// ============================================================================
+// SELECIONAR PACIENTE
+// ============================================================================
 
-const observer =
-    new IntersectionObserver((entries) => {
+function selecionarPaciente(pac) {
+    pacienteSelecionado = pac;
+    pararTimer();
+    timerSegundos = 0;
+    atualizarTimerDisplay();
 
-    entries.forEach((entry, index) => {
+    document.getElementById("sessaoVazio").style.display  = "none";
+    document.getElementById("sessaoPainel").style.display = "flex";
 
-        if(entry.isIntersecting){
+    const inicial = pac.nome.charAt(0).toUpperCase();
+    document.getElementById("sessaoPacAvatar").textContent = inicial;
+    document.getElementById("sessaoPacNome").textContent   = pac.nome;
 
-            entry.target.style.opacity = '1';
+    const statusLabel = { ativo: "Ativo", pausa: "Em Pausa", alta: "Alta" }[pac.status] || "Ativo";
+    const statusCls   = { ativo: "status-ativo", pausa: "status-pausa", alta: "status-alta" }[pac.status] || "status-ativo";
+    document.getElementById("sessaoPacMeta").innerHTML = `
+        ${pac.abordagem ? `<span>${pac.abordagem}</span>` : ""}
+        ${pac.demanda   ? `<span>${pac.demanda}</span>`   : ""}
+        <span class="pac-status-badge ${statusCls}">${statusLabel}</span>
+    `;
 
-            entry.target.style.transform =
-                'translateY(0px)';
+    renderizarHistorico();
+    renderizarLista();
 
-            entry.target.style.transition =
-                `all .55s ease ${index * 0.04}s`;
+    document.getElementById("notaTexto").value = "";
+    document.getElementById("notaChars").textContent = "0 / 2000";
+}
+
+// ============================================================================
+// HISTÓRICO
+// ============================================================================
+
+function renderizarHistorico() {
+    const hist   = document.getElementById("sessaoHistorico");
+    const count  = document.getElementById("sessaoHistCount");
+    if (!pacienteSelecionado) return;
+
+    const lista = (notas[pacienteSelecionado.id] || []).slice().reverse();
+    count.textContent = `${lista.length} registro${lista.length !== 1 ? "s" : ""}`;
+
+    if (!lista.length) {
+        hist.innerHTML = `
+            <div class="sessoes-lista-vazio">
+                <i class="fa-regular fa-file-lines"></i>
+                <p>Nenhuma anotação ainda.</p>
+            </div>`;
+        return;
+    }
+
+    hist.innerHTML = lista.map((n, idx) => `
+        <div class="sessao-nota-item">
+            <div class="nota-item-header">
+                <span class="nota-item-tag nota-tag-${n.tag?.toLowerCase().replace(/ê/g,'e').replace(/ã/g,'a') || 'evolucao'}">${n.tag || "Evolução"}</span>
+                <span class="nota-item-data">${n.data} · ${n.hora}</span>
+                <button class="btn-icon-xs btn-danger-sm nota-del" data-idx="${lista.length - 1 - idx}" title="Excluir">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+            <p class="nota-item-texto">${n.texto.replace(/\n/g, "<br>")}</p>
+        </div>
+    `).join("");
+
+    hist.querySelectorAll(".nota-del").forEach(btn => {
+        btn.addEventListener("click", () => excluirNota(parseInt(btn.dataset.idx)));
+    });
+}
+
+function excluirNota(idx) {
+    if (!pacienteSelecionado) return;
+    if (!confirm("Excluir esta anotação?")) return;
+    const lista = notas[pacienteSelecionado.id] || [];
+    lista.splice(idx, 1);
+    notas[pacienteSelecionado.id] = lista;
+    salvarNotas(notas);
+    renderizarHistorico();
+    renderizarLista();
+}
+
+// ============================================================================
+// SALVAR NOTA
+// ============================================================================
+
+function salvarNota() {
+    if (!pacienteSelecionado) return;
+    const texto = document.getElementById("notaTexto").value.trim();
+    if (!texto) return;
+
+    const agora = new Date();
+    const nota  = {
+        tag:   tagAtiva,
+        texto,
+        data:  agora.toLocaleDateString("pt-BR"),
+        hora:  agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+        timer: timerSegundos > 0 ? formatarTimer(timerSegundos) : null
+    };
+
+    if (!notas[pacienteSelecionado.id]) notas[pacienteSelecionado.id] = [];
+    notas[pacienteSelecionado.id].push(nota);
+    salvarNotas(notas);
+
+    document.getElementById("notaTexto").value = "";
+    document.getElementById("notaChars").textContent = "0 / 2000";
+    renderizarHistorico();
+    renderizarLista();
+}
+
+// ============================================================================
+// TIMER
+// ============================================================================
+
+function formatarTimer(s) {
+    const m = Math.floor(s / 60).toString().padStart(2, "0");
+    const seg = (s % 60).toString().padStart(2, "0");
+    return `${m}:${seg}`;
+}
+
+function atualizarTimerDisplay() {
+    document.getElementById("sessaoTimerDisplay").textContent = formatarTimer(timerSegundos);
+}
+
+function iniciarTimer() {
+    if (timerRodando) return;
+    timerRodando = true;
+    document.getElementById("btnTimerIniciar").disabled = true;
+    document.getElementById("btnTimerPausar").disabled  = false;
+    document.getElementById("btnTimerReset").disabled   = false;
+    timerInterval = setInterval(() => {
+        timerSegundos++;
+        atualizarTimerDisplay();
+    }, 1000);
+}
+
+function pausarTimer() {
+    timerRodando = false;
+    clearInterval(timerInterval);
+    document.getElementById("btnTimerIniciar").disabled = false;
+    document.getElementById("btnTimerPausar").disabled  = true;
+}
+
+function pararTimer() {
+    timerRodando = false;
+    clearInterval(timerInterval);
+    document.getElementById("btnTimerIniciar").disabled = false;
+    document.getElementById("btnTimerPausar").disabled  = true;
+    document.getElementById("btnTimerReset").disabled   = true;
+}
+
+function resetTimer() {
+    pararTimer();
+    timerSegundos = 0;
+    atualizarTimerDisplay();
+}
+
+// ============================================================================
+// MODAL PACIENTE
+// ============================================================================
+
+function abrirModalPaciente(pac = null) {
+    editandoId = pac ? pac.id : null;
+    document.getElementById("modalPacTag").textContent    = pac ? "Editar Paciente" : "Novo Paciente";
+    document.getElementById("modalPacTitulo").textContent = pac ? "Editar Paciente" : "Cadastrar Paciente";
+    document.getElementById("pacNome").value        = pac?.nome       || "";
+    document.getElementById("pacAbordagem").value   = pac?.abordagem  || "";
+    document.getElementById("pacDemanda").value     = pac?.demanda    || "";
+    document.getElementById("pacStatus").value      = pac?.status     || "ativo";
+    document.getElementById("pacObs").value         = pac?.obs        || "";
+
+    document.getElementById("modalPaciente").classList.add("ativo");
+    document.getElementById("modalPacOverlay").classList.add("ativo");
+    document.body.style.overflow = "hidden";
+    document.getElementById("pacNome").focus();
+}
+
+function fecharModalPaciente() {
+    document.getElementById("modalPaciente").classList.remove("ativo");
+    document.getElementById("modalPacOverlay").classList.remove("ativo");
+    document.body.style.overflow = "";
+    editandoId = null;
+}
+
+function salvarPaciente() {
+    const nome = document.getElementById("pacNome").value.trim();
+    if (!nome) {
+        document.getElementById("pacNome").focus();
+        return;
+    }
+
+    if (editandoId) {
+        const idx = pacientes.findIndex(p => p.id === editandoId);
+        if (idx > -1) {
+            pacientes[idx] = {
+                ...pacientes[idx],
+                nome,
+                abordagem: document.getElementById("pacAbordagem").value,
+                demanda:   document.getElementById("pacDemanda").value.trim(),
+                status:    document.getElementById("pacStatus").value,
+                obs:       document.getElementById("pacObs").value.trim()
+            };
+            if (pacienteSelecionado?.id === editandoId) {
+                pacienteSelecionado = pacientes[idx];
+                selecionarPaciente(pacientes[idx]);
+            }
         }
-
-    });
-
-},{
-    threshold:0.12
-});
-
-cards.forEach(card => {
-
-    card.style.opacity = '0';
-
-    card.style.transform =
-        'translateY(18px)';
-
-    observer.observe(card);
-
-});
-
-/* =========================================================
-   CONTEÚDOS DOS MODAIS
-========================================================= */
-
-const conteudos = {
-
-    respiracao:`
-
-        <h2>
-            Respiração Diafragmática
-        </h2>
-
-        <p>
-            Técnica baseada em ativação do sistema
-            parassimpático e redução da hiperatividade
-            fisiológica associada à ansiedade.
-        </p>
-
-        <h3>
-            Aplicação em Sessão
-        </h3>
-
-        <ul>
-
-            <li>
-                Inspirar lentamente por 4 segundos
-            </li>
-
-            <li>
-                Segurar por 2 segundos
-            </li>
-
-            <li>
-                Expirar lentamente por 6 segundos
-            </li>
-
-            <li>
-                Repetir entre 2 e 5 minutos
-            </li>
-
-        </ul>
-
-        <h3>
-            Benefícios Observados
-        </h3>
-
-        <ul>
-
-            <li>
-                Redução da frequência cardíaca
-            </li>
-
-            <li>
-                Diminuição da tensão muscular
-            </li>
-
-            <li>
-                Redução de cortisol
-            </li>
-
-            <li>
-                Sensação de estabilidade emocional
-            </li>
-
-        </ul>
-
-        <h3>
-            Referências Científicas
-        </h3>
-
-        <p>
-            Brown & Gerbarg (2005),
-            Frontiers in Psychology,
-            APA Anxiety Guidelines.
-        </p>
-    `,
-
-    tcc:`
-
-        <h2>
-            Reestruturação Cognitiva
-        </h2>
-
-        <p>
-            Técnica central da Terapia Cognitivo-Comportamental
-            utilizada para identificação e modificação
-            de pensamentos automáticos negativos.
-        </p>
-
-        <h3>
-            Objetivos Clínicos
-        </h3>
-
-        <ul>
-
-            <li>
-                Identificar distorções cognitivas
-            </li>
-
-            <li>
-                Reduzir pensamentos catastróficos
-            </li>
-
-            <li>
-                Melhorar percepção emocional
-            </li>
-
-            <li>
-                Desenvolver interpretações funcionais
-            </li>
-
-        </ul>
-
-        <h3>
-            Aplicações
-        </h3>
-
-        <ul>
-
-            <li>
-                Ansiedade
-            </li>
-
-            <li>
-                Depressão
-            </li>
-
-            <li>
-                Autoestima
-            </li>
-
-            <li>
-                Fobia Social
-            </li>
-
-        </ul>
-
-        <h3>
-            Referência Científica
-        </h3>
-
-        <p>
-            Aaron Beck — Cognitive Therapy and Emotional Disorders.
-        </p>
-    `,
-
-    emocoes:`
-
-        <h2>
-            Roda das Emoções
-        </h2>
-
-        <p>
-            Ferramenta utilizada para ampliação
-            do repertório emocional e melhora
-            da consciência afetiva.
-        </p>
-
-        <h3>
-            Objetivos
-        </h3>
-
-        <ul>
-
-            <li>
-                Nomeação emocional
-            </li>
-
-            <li>
-                Reconhecimento afetivo
-            </li>
-
-            <li>
-                Ampliação emocional
-            </li>
-
-            <li>
-                Expressão emocional
-            </li>
-
-        </ul>
-
-        <h3>
-            Aplicações Terapêuticas
-        </h3>
-
-        <ul>
-
-            <li>
-                TCC
-            </li>
-
-            <li>
-                ACT
-            </li>
-
-            <li>
-                Terapia Humanista
-            </li>
-
-            <li>
-                DBT
-            </li>
-
-        </ul>
-    `,
-
-    grounding:`
-
-        <h2>
-            Grounding 5-4-3-2-1
-        </h2>
-
-        <p>
-            Técnica de ancoragem sensorial
-            muito utilizada em ansiedade,
-            dissociação e crises emocionais.
-        </p>
-
-        <h3>
-            Exercício Guiado
-        </h3>
-
-        <ul>
-
-            <li>
-                5 coisas que você vê
-            </li>
-
-            <li>
-                4 coisas que você sente
-            </li>
-
-            <li>
-                3 coisas que você ouve
-            </li>
-
-            <li>
-                2 coisas que você cheira
-            </li>
-
-            <li>
-                1 coisa que você saboreia
-            </li>
-
-        </ul>
-
-        <h3>
-            Benefícios
-        </h3>
-
-        <ul>
-
-            <li>
-                Redução da hiperativação emocional
-            </li>
-
-            <li>
-                Retorno ao momento presente
-            </li>
-
-            <li>
-                Estabilização emocional
-            </li>
-
-        </ul>
-    `,
-
-    autoestima:`
-
-        <h2>
-            Construção de Autoestima
-        </h2>
-
-        <p>
-            Exercícios terapêuticos voltados
-            para fortalecimento emocional,
-            identidade e autocompaixão.
-        </p>
-
-        <h3>
-            Objetivos
-        </h3>
-
-        <ul>
-
-            <li>
-                Redução da autocrítica
-            </li>
-
-            <li>
-                Desenvolvimento de autocompaixão
-            </li>
-
-            <li>
-                Fortalecimento identitário
-            </li>
-
-            <li>
-                Validação emocional
-            </li>
-
-        </ul>
-
-        <h3>
-            Abordagens Relacionadas
-        </h3>
-
-        <ul>
-
-            <li>
-                ACT
-            </li>
-
-            <li>
-                Humanista
-            </li>
-
-            <li>
-                Terapia Cognitiva
-            </li>
-
-        </ul>
-    `,
-
-    escala:`
-
-        <h2>
-            Escala de Ansiedade
-        </h2>
-
-        <p>
-            Ferramenta subjetiva utilizada
-            para monitoramento clínico
-            da intensidade da ansiedade.
-        </p>
-
-        <h3>
-            Escala Recomendada
-        </h3>
-
-        <ul>
-
-            <li>
-                0-2 → leve
-            </li>
-
-            <li>
-                3-5 → moderada
-            </li>
-
-            <li>
-                6-8 → elevada
-            </li>
-
-            <li>
-                9-10 → intensa
-            </li>
-
-        </ul>
-
-        <h3>
-            Utilização Clínica
-        </h3>
-
-        <p>
-            Auxilia no acompanhamento terapêutico,
-            percepção de evolução emocional
-            e monitoramento de sintomas.
-        </p>
-    `
-};
-
-/* =========================================================
-   ABRIR MODAL
-========================================================= */
-
-botoesFerramenta.forEach(botao => {
-
-    botao.addEventListener('click', () => {
-
-        const id =
-            botao.dataset.modal;
-
-        modal.classList.add('ativo');
-
-        document.body.style.overflow =
-            'hidden';
-
-        modalBody.innerHTML =
-            conteudos[id] ||
-            `
-                <h2>
-                    Conteúdo em desenvolvimento
-                </h2>
-
-                <p>
-                    Esta ferramenta receberá
-                    novos exercícios clínicos,
-                    aplicações práticas e
-                    referências científicas.
-                </p>
-            `;
-    });
-
-});
-
-/* =========================================================
-   FECHAR MODAL
-========================================================= */
-
-function fechar(){
-
-    modal.classList.remove('ativo');
-
-    document.body.style.overflow =
-        'auto';
-}
-
-fecharModal.addEventListener(
-    'click',
-    fechar
-);
-
-modal.addEventListener('click', (e) => {
-
-    if(e.target === modal){
-
-        fechar();
+    } else {
+        const novo = {
+            id:        gerarId(),
+            nome,
+            abordagem: document.getElementById("pacAbordagem").value,
+            demanda:   document.getElementById("pacDemanda").value.trim(),
+            status:    document.getElementById("pacStatus").value,
+            obs:       document.getElementById("pacObs").value.trim(),
+            criado:    new Date().toLocaleDateString("pt-BR")
+        };
+        pacientes.unshift(novo);
     }
-});
 
-/* =========================================================
-   FERRAMENTA ALEATÓRIA
-========================================================= */
+    salvarPacientes(pacientes);
+    fecharModalPaciente();
+    renderizarLista();
+}
 
-if(btnFerramentaAleatoria){
+function removerPaciente() {
+    if (!pacienteSelecionado) return;
+    if (!confirm(`Remover "${pacienteSelecionado.nome}" e todas as suas anotações? Esta ação não pode ser desfeita.`)) return;
 
-    btnFerramentaAleatoria.addEventListener('click', () => {
+    delete notas[pacienteSelecionado.id];
+    salvarNotas(notas);
 
-        const cardsVisiveis =
-            [...cards].filter(card =>
-                card.style.display !== 'none'
-            );
+    pacientes = pacientes.filter(p => p.id !== pacienteSelecionado.id);
+    salvarPacientes(pacientes);
 
-        const randomCard =
-            cardsVisiveis[
-                Math.floor(
-                    Math.random() *
-                    cardsVisiveis.length
-                )
-            ];
+    pacienteSelecionado = null;
+    pararTimer();
+    timerSegundos = 0;
 
-        randomCard.scrollIntoView({
+    document.getElementById("sessaoPainel").style.display = "none";
+    document.getElementById("sessaoVazio").style.display  = "flex";
 
-            behavior:'smooth',
-            block:'center'
+    renderizarLista();
+}
+
+// ============================================================================
+// EVENTOS
+// ============================================================================
+
+function iniciarEventos() {
+    // Novo paciente
+    document.getElementById("btnNovoPaciente")?.addEventListener("click", () => abrirModalPaciente());
+    document.getElementById("modalPacClose")?.addEventListener("click", fecharModalPaciente);
+    document.getElementById("btnCancelarPaciente")?.addEventListener("click", fecharModalPaciente);
+    document.getElementById("modalPacOverlay")?.addEventListener("click", fecharModalPaciente);
+    document.getElementById("btnSalvarPaciente")?.addEventListener("click", salvarPaciente);
+
+    // Editar / Remover
+    document.getElementById("btnEditarPaciente")?.addEventListener("click", () => {
+        if (pacienteSelecionado) abrirModalPaciente(pacienteSelecionado);
+    });
+    document.getElementById("btnRemoverPaciente")?.addEventListener("click", removerPaciente);
+
+    // Filtros
+    document.getElementById("filtroStatusPac")?.querySelectorAll(".pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.getElementById("filtroStatusPac").querySelectorAll(".pill")
+                .forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            filtroStatus = btn.dataset.filtro;
+            renderizarLista();
         });
-
-        randomCard.style.transform =
-            'scale(1.02)';
-
-        setTimeout(() => {
-
-            randomCard.style.transform = '';
-
-        }, 700);
-
     });
 
-}
-
-/* =========================================================
-   MODO SESSÃO
-========================================================= */
-
-if(btnModoSessao){
-
-    btnModoSessao.addEventListener('click', () => {
-
-        document.body.classList.toggle(
-            'modo-sessao'
-        );
-
+    document.getElementById("buscaPaciente")?.addEventListener("input", e => {
+        termoBusca = e.target.value.toLowerCase().trim();
+        renderizarLista();
     });
 
+    // Tags de nota
+    document.querySelectorAll(".sessao-nota-tags .pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".sessao-nota-tags .pill").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            tagAtiva = btn.dataset.tag;
+        });
+    });
+
+    // Salvar nota
+    document.getElementById("btnSalvarNota")?.addEventListener("click", salvarNota);
+
+    // Contador de caracteres
+    document.getElementById("notaTexto")?.addEventListener("input", e => {
+        const len = e.target.value.length;
+        document.getElementById("notaChars").textContent = `${len} / 2000`;
+        if (len > 2000) e.target.value = e.target.value.slice(0, 2000);
+    });
+
+    // Timer
+    document.getElementById("btnTimerIniciar")?.addEventListener("click", iniciarTimer);
+    document.getElementById("btnTimerPausar")?.addEventListener("click", pausarTimer);
+    document.getElementById("btnTimerReset")?.addEventListener("click", resetTimer);
+
+    // Escape
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") fecharModalPaciente();
+    });
 }
 
-/* =========================================================
-   LOG
-========================================================= */
+// ============================================================================
+// INIT
+// ============================================================================
 
-console.log(
-    '🧠 MindFlow — Ferramentas Clínicas carregado.'
-);
+document.addEventListener("DOMContentLoaded", () => {
+    renderizarLista();
+    iniciarEventos();
+    console.log("💬 Sessões carregadas —", pacientes.length, "pacientes no localStorage.");
+});

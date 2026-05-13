@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindFlow — Insights & IA</title>
+
+    <link rel="icon" href="static/imagens/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/inicio.css">
+    <link rel="stylesheet" href="static/css/ferramentas.css">
+    <link rel="stylesheet" href="static/css/insights.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <button id="btnMenuMobile" class="menu-mobile-btn"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo-box">
+            <img src="static/imagens/logoclaro.png" class="logo-crv logo-dark" alt="CRV">
+            <div class="logo-texts">
+                <span class="logo-subtitle">Painel Inteligente para Psicólogos</span>
+            </div>
+        </div>
+    </div>
+    <div class="header-center">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Buscar insights, estudos, evidências...">
+        </div>
+    </div>
+    <div class="header-right">
+        <span id="relogio" class="clock-box">00:00:00</span>
+        <div class="weather-box" id="weatherBox">
+            <img src="static/imagens/ico_dia.png" alt="Clima" class="icone-clima-img" id="iconeClimaImg">
+            <span class="weather-temp" id="temperatura">--°C</span>
+        </div>
+        <button id="btnTema" class="theme-toggle" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
+        <div class="user-box">
+            <div class="user-avatar"><span class="user-avatar-letter">P</span></div>
+            <div class="user-info">
+                <strong class="user-name">Psicólogo(a)</strong>
+                <span class="user-role">Modo Clínico</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-fechar"><i class="fa-solid fa-xmark"></i></div>
+    <div class="sidebar-top">
+        <a href="dashboard.html"    class="menu-item" data-page="dashboard">    <i class="fa-solid fa-house"></i>          <span>Dashboard</span></a>
+        <a href="sessoes.html"      class="menu-item" data-page="sessoes">      <i class="fa-solid fa-comments"></i>       <span>Sessões</span></a>
+        <a href="ferramentas.html"  class="menu-item" data-page="ferramentas">  <i class="fa-solid fa-brain"></i>          <span>Ferramentas Clínicas</span></a>
+        <a href="insights.html"     class="menu-item active" data-page="insights"><i class="fa-solid fa-lightbulb"></i>    <span>Insights & IA</span></a>
+        <a href="atividades.html"   class="menu-item" data-page="atividades">   <i class="fa-solid fa-puzzle-piece"></i>   <span>Atividades Terapêuticas</span></a>
+        <a href="neurociencia.html" class="menu-item" data-page="neurociencia"> <i class="fa-solid fa-network-wired"></i>  <span>Neurociência</span></a>
+        <a href="artigos.html"      class="menu-item" data-page="artigos">      <i class="fa-solid fa-newspaper"></i>      <span>Notícias de psicologia</span></a>
+        <a href="mindfulness.html"  class="menu-item" data-page="mindfulness">  <i class="fa-solid fa-spa"></i>            <span>Mindfulness</span></a>
+    </div>
+    <div class="sidebar-bottom">
+        <a href="configuracoes.html" class="menu-item" data-page="configuracoes"><i class="fa-solid fa-gear"></i><span>Configurações</span></a>
+        <div class="sidebar-footer">
+            <span class="dev-label">Desenvolvido por</span>
+            <div class="sidebar-logo">
+                <a href="https://crvsolucoesti.com" target="_blank" rel="noopener noreferrer">
+                    <img src="static/imagens/logo2.png" alt="CRV Soluções em TI">
+                </a>
+            </div>
+        </div>
+        <button class="sidebar-toggle" id="btnMenu"><i class="fa-solid fa-angle-left"></i></button>
+    </div>
+</aside>
+
+<main class="main-content" id="mainContent">
+<div class="dashboard-container">
+
+    <!-- HERO -->
+    <div class="card-principal">
+        <img src="static/imagens/imgfundo2.png" alt="" class="card-principal-img" id="imgCardPrincipal" loading="lazy">
+        <h1 class="titulo-pagina">Insights & IA</h1>
+        <p class="bemvindo-texto">Evidências científicas recentes curadas para a prática clínica</p>
+        <p class="subtexto-inicial">
+            Estudos, descobertas e insights da psicologia e neurociência organizados por categoria. Atualizados 2× ao dia.
+        </p>
+    </div>
+
+    <!-- DESTAQUE DO DIA -->
+    <div class="card-acesso-destaque" id="insightDestaque">
+        <span class="destaque-texto-upper" id="insightDestaqueTag"></span>
+        <h2 class="titulo-pagina" id="insightDestaqueTitulo" style="text-align:left; margin-bottom:10px"></h2>
+        <p class="destaque-texto" id="insightDestaqueDesc"></p>
+        <div class="conceito-ref" id="insightDestaqueFonte" style="margin-bottom:16px"></div>
+        <div class="destaque-acoes">
+            <a id="insightDestaqueLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-gradient">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver fonte
+            </a>
+        </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros-wrapper">
+        <div class="filtros-grupo">
+            <span class="filtros-label">Categoria</span>
+            <div class="filtros-pills" id="filtroInsight">
+                <button class="pill active" data-filtro="todos">Todos</button>
+                <button class="pill" data-filtro="Neurociência">Neurociência</button>
+                <button class="pill" data-filtro="TCC">TCC</button>
+                <button class="pill" data-filtro="Emoções">Emoções</button>
+                <button class="pill" data-filtro="Mindfulness">Mindfulness</button>
+                <button class="pill" data-filtro="Trauma">Trauma</button>
+                <button class="pill" data-filtro="Sono">Sono</button>
+                <button class="pill" data-filtro="Relacionamentos">Relacionamentos</button>
+            </div>
+        </div>
+        <div class="filtros-busca">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="buscaInsight" placeholder="Buscar por título ou descrição...">
+        </div>
+    </div>
+
+    <div class="ferramentas-meta">
+        <span id="contadorInsights">Carregando insights...</span>
+    </div>
+
+    <!-- GRID -->
+    <div class="insights-grid-full" id="insightsGridFull"></div>
+
+</div>
+</main>
+
+<script src="static/js/main.js"></script>
+<script type="module" src="static/js/insights.js"></script>
+<script>
+(function() {
+    const img = document.getElementById("imgCardPrincipal");
+    const tema = document.documentElement.getAttribute("data-theme");
+    if (img) img.src = tema === "dark" ? "static/imagens/imgfundo2.png" : "static/imagens/imgfundo1.png";
+})();
+</script>
+</body>
+</html>

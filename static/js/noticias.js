@@ -1,283 +1,220 @@
 // ============================================================================
-// MINDFLOW — NOTÍCIAS CIENTÍFICAS
+// NOTICIAS.JS — MINDFLOW
+// Feeds RSS aprovados — adapta ao #noticiasList existente no dashboard
 // ============================================================================
 
 const RSS_FEEDS = [
-
+    // ── PRINCIPAIS ────────────────────────────────────────────────────────────
     {
-        nome:"Psicologia Viva",
-        rss:"https://api.rss2json.com/v1/api.json?rss_url=https://blog.psicologiaviva.com.br/feed/",
-        limite:3,
-        categoria:"Psicologia"
+        nome:      "CNN Brasil",
+        rss:       "https://api.rss2json.com/v1/api.json?rss_url=https://www.cnnbrasil.com.br/tudo-sobre/psicologia/feed/",
+        limite:    2,
+        categoria: "Psicologia"
     },
-
     {
-        nome:"Vittude",
-        rss:"https://api.rss2json.com/v1/api.json?rss_url=https://www.vittude.com/blog/feed/",
-        limite:2,
-        categoria:"Saúde Mental"
+        nome:      "Veja",
+        rss:       "https://api.rss2json.com/v1/api.json?rss_url=https://veja.abril.com.br/noticias-sobre/psicologia/feed/",
+        limite:    2,
+        categoria: "Psicologia"
     },
-
     {
-        nome:"Neuroscience News",
-        rss:"https://api.rss2json.com/v1/api.json?rss_url=https://neurosciencenews.com/feed/",
-        limite:2,
-        categoria:"Neurociência"
+        nome:      "BBC Brasil",
+        rss:       "https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/portuguese/rss.xml",
+        limite:    2,
+        categoria: "Saúde Mental"
+    },
+    // ── BACKUP ────────────────────────────────────────────────────────────────
+    {
+        nome:      "CFP",
+        rss:       "https://api.rss2json.com/v1/api.json?rss_url=https://site.cfp.org.br/feed/",
+        limite:    2,
+        categoria: "Psicologia"
+    },
+    {
+        nome:      "SBP",
+        rss:       "https://api.rss2json.com/v1/api.json?rss_url=https://sbponline.org.br/feed/",
+        limite:    2,
+        categoria: "Pesquisa"
+    },
+    // ── CIENTÍFICO ────────────────────────────────────────────────────────────
+    {
+        nome:      "Neuroscience News",
+        rss:       "https://api.rss2json.com/v1/api.json?rss_url=https://neurosciencenews.com/feed/",
+        limite:    2,
+        categoria: "Neurociência"
     }
-
 ];
 
 // ============================================================================
 // ESTADO
 // ============================================================================
 
-let noticiasMindFlow = [];
-let noticiaAtual = 0;
+let todasNoticias    = [];
+let noticiaAtual     = 0;
+let rotacaoInterval  = null;
 
 // ============================================================================
-// DATA RELATIVA
+// UTILITÁRIOS
 // ============================================================================
 
-function formatarDataRelativa(data){
-
-    const agora = new Date();
-    const pub = new Date(data);
-
+function formatarDataRelativa(data) {
+    if (!data) return "";
+    const agora  = new Date();
+    const pub    = new Date(data);
     const diffMs = agora - pub;
+    const min    = Math.floor(diffMs / 60000);
+    const hrs    = Math.floor(min / 60);
+    const dias   = Math.floor(hrs / 24);
 
-    const min = Math.floor(diffMs / 60000);
-    const hrs = Math.floor(min / 60);
-    const dias = Math.floor(hrs / 24);
-
-    if(min < 60){
-        return `Há ${min} min`;
-    }
-
-    if(hrs < 24){
-        return `Há ${hrs}h`;
-    }
-
-    if(dias === 1){
-        return "Ontem";
-    }
-
-    if(dias < 7){
-        return `Há ${dias} dias`;
-    }
-
+    if (min  < 1)   return "Agora";
+    if (min  < 60)  return `Há ${min} min`;
+    if (hrs  < 24)  return `Há ${hrs}h`;
+    if (dias === 1) return "Ontem";
+    if (dias < 7)   return `Há ${dias} dias`;
     return pub.toLocaleDateString("pt-BR");
 }
 
-// ============================================================================
-// IMAGEM FALLBACK
-// ============================================================================
-
-function obterImagem(item){
-
-    if(item.thumbnail && item.thumbnail.length > 10){
-        return item.thumbnail;
-    }
-
-    if(item.enclosure?.link){
-        return item.enclosure.link;
-    }
-
-    return "static/imagens/imgfundo2.png";
+function sanitizar(html) {
+    return (html || "")
+        .replace(/<[^>]*>/g, "")
+        .replace(/&amp;/g,  "&")
+        .replace(/&nbsp;/g, " ")
+        .replace(/&lt;/g,   "<")
+        .replace(/&gt;/g,   ">")
+        .replace(/&quot;/g, '"')
+        .replace(/&#8217;/g,"'")
+        .replace(/&#8220;/g,'"')
+        .replace(/&#8221;/g,'"')
+        .trim();
 }
 
 // ============================================================================
-// BUSCA RSS
+// BUSCA
 // ============================================================================
 
-async function buscarNoticias(){
+async function buscarNoticias() {
+    const lista = document.getElementById("noticiasList");
+    if (!lista) return;
 
-    let todasNoticias = [];
+    // Loading state
+    lista.innerHTML = `
+        <li class="noticia-loading-item">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <span>Carregando notícias...</span>
+        </li>`;
 
-    for(const feed of RSS_FEEDS){
+    let todas = [];
 
-        try{
+    for (const feed of RSS_FEEDS) {
+        try {
+            const res  = await fetch(`${feed.rss}&count=10&_=${Date.now()}`, { cache: "no-store" });
+            const data = await res.json();
+            if (!data.items?.length) continue;
 
-            const resposta = await fetch(
-                feed.rss + "&cache=" + Date.now()
-            );
-
-            const data = await resposta.json();
-
-            if(!data.items) continue;
-
-            const noticiasConvertidas = data.items
+            const convertidas = data.items
                 .slice(0, feed.limite)
                 .map(item => ({
+                    titulo:    sanitizar(item.title),
+                    fonte:     feed.nome,
+                    categoria: feed.categoria,
+                    data:      item.pubDate || null,
+                    link:      item.link    || "#"
+                }))
+                .filter(n => n.titulo && n.link !== "#");
 
-                    titulo:item.title,
-
-                    resumo:(item.description || "")
-                        .replace(/<[^>]*>/g,"")
-                        .substring(0,160) + "...",
-
-                    categoria:feed.categoria,
-
-                    fonte:feed.nome,
-
-                    data:item.pubDate,
-
-                    imagem:obterImagem(item),
-
-                    link:item.link
-
-                }));
-
-            todasNoticias =
-                todasNoticias.concat(noticiasConvertidas);
-
-        }catch(erro){
-
-            console.warn(
-                "[MindFlow] erro feed:",
-                feed.nome,
-                erro
-            );
+            todas = todas.concat(convertidas);
+        } catch (err) {
+            console.warn(`[MindFlow Notícias] ${feed.nome} falhou:`, err.message);
         }
     }
 
-    noticiasMindFlow = todasNoticias;
+    todasNoticias = todas;
 
-    renderizarNoticias();
+    if (!todasNoticias.length) {
+        renderizarFallback();
+        return;
+    }
+
+    renderizarLista(todasNoticias.slice(0, 4));
+    iniciarRotacao();
 }
 
 // ============================================================================
-// RENDER
+// RENDER — adapta ao <ul id="noticiasList"> já existente
 // ============================================================================
 
-function renderizarNoticias(){
+function criarItemNoticia(noticia) {
+    const li = document.createElement("li");
+    li.className = "noticia-item";
+    li.innerHTML = `
+        <a href="${noticia.link}" target="_blank" rel="noopener noreferrer" class="noticia-item-link">
+            <div class="noticia-item-badges">
+                <span class="noticia-fonte-badge">${noticia.fonte}</span>
+                <span class="noticia-cat-badge">${noticia.categoria}</span>
+                ${noticia.data ? `<span class="noticia-tempo">${formatarDataRelativa(noticia.data)}</span>` : ""}
+            </div>
+            <p class="noticia-item-titulo">${noticia.titulo}</p>
+            <span class="noticia-item-cta">
+                Ler matéria <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </span>
+        </a>`;
+    return li;
+}
 
-    const container =
-        document.getElementById("noticiasGrid");
+function renderizarLista(lista, fade = false) {
+    const ul = document.getElementById("noticiasList");
+    if (!ul) return;
 
-    if(!container) return;
+    const executar = () => {
+        ul.innerHTML = "";
+        lista.slice(0, 4).forEach(n => ul.appendChild(criarItemNoticia(n)));
+        if (fade) {
+            requestAnimationFrame(() => {
+                ul.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+                ul.style.opacity    = "1";
+                ul.style.transform  = "translateY(0)";
+            });
+        }
+    };
 
-    container.innerHTML = "";
+    if (fade) {
+        ul.style.opacity   = "0";
+        ul.style.transform = "translateY(6px)";
+        setTimeout(executar, 320);
+    } else {
+        executar();
+    }
+}
 
-    noticiasMindFlow
-        .slice(0,2)
-        .forEach(noticia => {
-
-            const card =
-                document.createElement("article");
-
-            card.className = "noticia-card";
-
-            card.innerHTML = `
-
-                <span class="noticia-fonte">
-                    ${noticia.fonte}
-                </span>
-
-                <h3>
-                    ${noticia.titulo}
-                </h3>
-
-                <a
-                    href="${noticia.link}"
-                    target="_blank"
-                    class="noticia-link"
-                >
-                    Ler artigo
-                </a>
-
-            `;
-
-            container.appendChild(card);
-
-        });
+function renderizarFallback() {
+    const ul = document.getElementById("noticiasList");
+    if (!ul) return;
+    ul.innerHTML = `
+        <li class="noticia-fallback-item">
+            <i class="fa-solid fa-satellite-dish"></i>
+            <span>Nenhuma notícia disponível. Verifique sua conexão.</span>
+        </li>`;
 }
 
 // ============================================================================
-// ROTAÇÃO
+// ROTAÇÃO — 12s, avança de 4 em 4
 // ============================================================================
 
-function iniciarRotacaoNoticias(){
-
-    setInterval(() => {
-
-        if(noticiasMindFlow.length <= 2) return;
-
-        noticiaAtual++;
-
-        if(noticiaAtual >= noticiasMindFlow.length){
-            noticiaAtual = 0;
-        }
-
-        const reorganizadas = [
-
-            ...noticiasMindFlow.slice(noticiaAtual),
-            ...noticiasMindFlow.slice(0, noticiaAtual)
-
-        ];
-
-        const container =
-            document.getElementById("noticiasGrid");
-
-        if(container){
-
-            container.style.opacity = 0;
-
-            setTimeout(() => {
-
-                container.innerHTML = "";
-
-                reorganizadas
-                    .slice(0,2)
-                    .forEach(noticia => {
-
-                        const card =
-                            document.createElement("article");
-
-                        card.className = "noticia-card";
-
-                        card.innerHTML = `
-
-                            <span class="noticia-fonte">
-                                ${noticia.fonte}
-                            </span>
-
-                            <h3>
-                                ${noticia.titulo}
-                            </h3>
-
-                            <a
-                                href="${noticia.link}"
-                                target="_blank"
-                                class="noticia-link"
-                            >
-                                Ler artigo
-                            </a>
-
-                        `;
-
-                        container.appendChild(card);
-
-                    });
-
-                container.style.opacity = 1;
-
-            },300);
-        }
-
-    },12000);
+function iniciarRotacao() {
+    if (rotacaoInterval) clearInterval(rotacaoInterval);
+    rotacaoInterval = setInterval(() => {
+        if (todasNoticias.length <= 4) return;
+        noticiaAtual = (noticiaAtual + 4) % todasNoticias.length;
+        const faixa  = [
+            ...todasNoticias.slice(noticiaAtual),
+            ...todasNoticias.slice(0, noticiaAtual)
+        ].slice(0, 4);
+        renderizarLista(faixa, true);
+    }, 12000);
 }
 
 // ============================================================================
 // INIT
 // ============================================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        buscarNoticias();
-
-        iniciarRotacaoNoticias();
-
-    }
-);
+document.addEventListener("DOMContentLoaded", buscarNoticias);

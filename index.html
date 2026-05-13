@@ -5,40 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRV MindFlow — Inteligência Terapêutica</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-
-  <!-- CSS Global -->
   <link rel="stylesheet" href="static/css/main.css" />
+  <link rel="stylesheet" href="static/css/index.css" />
 </head>
 
 <body class="index-page">
 
-  <!-- ============================================================
-       CURSOR PERSONALIZADO
-  ============================================================ -->
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- ============================================================
-       CANVAS DE PARTÍCULAS (BACKGROUND VIVO)
-  ============================================================ -->
-  anvas id="particleCanvas" class="particle-canvas"></canvas>
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
 
-  <!-- ============================================================
-       NAVBAR DA LANDING
-  ============================================================ -->
   <nav class="landing-nav glass-panel" id="landingNav">
     <div class="nav-inner">
       <div class="nav-brand">
         <div class="brand-orb"></div>
         <span class="brand-name">CRV <strong>MindFlow</strong></span>
       </div>
+
       <div class="nav-links">
         <a href="#diferenciais" class="nav-link">Diferenciais</a>
         <a href="#insights" class="nav-link">Insights</a>
@@ -49,15 +38,13 @@
           Começar Agora
         </button>
       </div>
+
       <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
         <i data-lucide="menu" width="22" height="22"></i>
       </button>
     </div>
   </nav>
 
-  <!-- ============================================================
-       HERO PRINCIPAL
-  ============================================================ -->
   <section class="hero-section" id="hero">
     <div class="hero-ambient">
       <div class="ambient-orb ambient-orb--1"></div>
@@ -68,7 +55,7 @@
     <div class="hero-content">
       <div class="hero-badge glass-badge animate-fade-up">
         <span class="badge-dot pulse-dot"></span>
-        <span>Plataforma em desenvolvimento ativo · 2025</span>
+        <span>Plataforma em desenvolvimento ativo · 2026</span>
       </div>
 
       <h1 class="hero-title animate-fade-up" style="animation-delay:0.1s">
@@ -78,8 +65,7 @@
       </h1>
 
       <p class="hero-subtitle animate-fade-up" style="animation-delay:0.2s">
-        CRV MindFlow integra inteligência clínica, insights científicos e organização terapêutica<br />
-        numa experiência que transmite calma, clareza e profissionalismo.
+        CRV MindFlow reúne notícias, curiosidades, atividades para sessão e conteúdos científicos em uma experiência limpa, dinâmica e útil para o dia a dia do psicólogo.
       </p>
 
       <div class="hero-actions animate-fade-up" style="animation-delay:0.3s">
@@ -96,12 +82,12 @@
       <div class="hero-stats animate-fade-up" style="animation-delay:0.4s">
         <div class="stat-item">
           <span class="stat-value">∞</span>
-          <span class="stat-label">Insights Científicos</span>
+          <span class="stat-label">Conteúdo útil</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
           <span class="stat-value">IA</span>
-          <span class="stat-label">Assistente Clínico</span>
+          <span class="stat-label">Assistente clínico</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
@@ -123,11 +109,13 @@
             <span>Live</span>
           </div>
         </div>
+
         <div class="preview-body">
           <div class="preview-greeting">
             <p class="preview-time" id="previewTime">--:--</p>
             <p class="preview-msg">Bem-vindo de volta, <strong>Dr. Silva</strong></p>
           </div>
+
           <div class="preview-cards">
             <div class="preview-card glass-card">
               <i data-lucide="brain" width="20" height="20"></i>
@@ -136,18 +124,20 @@
                 <p class="pcard-text">Nem todo silêncio em sessão representa resistência.</p>
               </div>
             </div>
+
             <div class="preview-card glass-card">
-              <i data-lucide="calendar-check" width="20" height="20"></i>
+              <i data-lucide="newspaper" width="20" height="20"></i>
               <div>
-                <p class="pcard-label">Próxima Sessão</p>
-                <p class="pcard-text">14h30 · Paciente M.F.</p>
+                <p class="pcard-label">Notícias</p>
+                <p class="pcard-text">Fontes confiáveis em psicologia e saúde mental.</p>
               </div>
             </div>
+
             <div class="preview-card glass-card">
               <i data-lucide="sparkles" width="20" height="20"></i>
               <div>
-                <p class="pcard-label">IA · Sugestão</p>
-                <p class="pcard-text">3 artigos relevantes encontrados.</p>
+                <p class="pcard-label">Ações rápidas</p>
+                <p class="pcard-text">Atividades, técnicas e apoio prático.</p>
               </div>
             </div>
           </div>
@@ -160,85 +150,77 @@
     </div>
   </section>
 
-  <!-- ============================================================
-       SEÇÃO: DIFERENCIAIS
-  ============================================================ -->
   <section class="section-diferenciais" id="diferenciais">
     <div class="section-container">
       <div class="section-header">
         <div class="section-label">Por que MindFlow?</div>
         <h2 class="section-title">Projetado para a <span class="gradient-text">mente clínica</span></h2>
-        <p class="section-desc">Cada detalhe foi pensado para eliminar ruído e amplificar clareza terapêutica.</p>
+        <p class="section-desc">Cada detalhe foi pensado para oferecer utilidade real no cotidiano do psicólogo.</p>
       </div>
 
       <div class="diferenciais-grid">
-
-        <div class="diferencial-card glass-card hover-lift" data-delay="0">
+        <div class="diferencial-card glass-card hover-lift">
           <div class="dc-icon icon-purple">
-            <i data-lucide="brain-circuit" width="28" height="28"></i>
+            <i data-lucide="sparkles" width="28" height="28"></i>
           </div>
           <h3>IA Clínica Ética</h3>
-          <p>Assistente treinado com fundamentos da psicologia científica. Sugere, organiza e inspira — jamais diagnostica.</p>
-          <div class="dc-tag">Embasamento APA · SciELO</div>
+          <p>Assistente para inspirar, organizar e sugerir — sem substituir julgamento profissional.</p>
+          <div class="dc-tag">Apoio ao raciocínio clínico</div>
         </div>
 
-        <div class="diferencial-card glass-card hover-lift" data-delay="1">
+        <div class="diferencial-card glass-card hover-lift">
           <div class="dc-icon icon-blue">
             <i data-lucide="book-open" width="28" height="28"></i>
           </div>
           <h3>Biblioteca Terapêutica</h3>
-          <p>Técnicas, exercícios e artigos com curadoria científica real. Conteúdo de PubMed, APA e SciELO integrado.</p>
+          <p>Conteúdo e técnicas em formato objetivo, pronto para consulta rápida.</p>
           <div class="dc-tag">Baseado em evidências</div>
         </div>
 
-        <div class="diferencial-card glass-card hover-lift" data-delay="2">
+        <div class="diferencial-card glass-card hover-lift">
           <div class="dc-icon icon-violet">
             <i data-lucide="shield-check" width="28" height="28"></i>
           </div>
           <h3>Privacidade Total</h3>
-          <p>Arquitetura segura com Supabase. Dados de pacientes protegidos com criptografia e conformidade com LGPD.</p>
-          <div class="dc-tag">LGPD · CFP Compliant</div>
+          <p>Arquitetura segura e compatível com LGPD para proteger dados e navegação.</p>
+          <div class="dc-tag">LGPD</div>
         </div>
 
-        <div class="diferencial-card glass-card hover-lift" data-delay="3">
+        <div class="diferencial-card glass-card hover-lift">
           <div class="dc-icon icon-teal">
             <i data-lucide="layout-dashboard" width="28" height="28"></i>
           </div>
           <h3>Dashboard Cognitivo</h3>
-          <p>Painel que integra agenda, reflexões, clima e insights num ambiente visualmente acolhedor e funcional.</p>
-          <div class="dc-tag">UX Premium</div>
+          <p>Ambiente limpo com notícias, reflexões e atalhos para ação imediata.</p>
+          <div class="dc-tag">UX funcional</div>
         </div>
 
-        <div class="diferencial-card glass-card hover-lift" data-delay="4">
+        <div class="diferencial-card glass-card hover-lift">
           <div class="dc-icon icon-rose">
             <i data-lucide="activity" width="28" height="28"></i>
           </div>
-          <h3>Sessões Organizadas</h3>
-          <p>Registro clínico estruturado, anotações em tempo real e histórico terapêutico com evolução visível.</p>
-          <div class="dc-tag">Prontuário Digital</div>
+          <h3>Recursos Práticos</h3>
+          <p>Atividades, perguntas e dinâmicas para usar com pacientes ou em estudo.</p>
+          <div class="dc-tag">Uso em sessão</div>
         </div>
 
-        <div class="diferencial-card glass-card hover-lift" data-delay="5">
+        <div class="diferencial-card glass-card hover-lift">
           <div class="dc-icon icon-amber">
             <i data-lucide="sun" width="28" height="28"></i>
           </div>
           <h3>Bem-estar do Terapeuta</h3>
-          <p>Recursos de autocuidado, reflexões diárias e lembretes de supervisão para saúde mental do profissional.</p>
+          <p>Materiais para reflexão, autocuidado e desenvolvimento contínuo.</p>
           <div class="dc-tag">Cuidando de quem cuida</div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       SEÇÃO: INSIGHTS
-  ============================================================ -->
   <section class="section-insights" id="insights">
     <div class="section-container">
       <div class="section-header">
         <div class="section-label">Inteligência Clínica</div>
-        <h2 class="section-title">Insights que <span class="gradient-text">transformam</span> a prática</h2>
+        <h2 class="section-title">Insights que <span class="gradient-text">apoiam</span> a prática</h2>
       </div>
 
       <div class="insights-showcase">
@@ -261,25 +243,27 @@
             </div>
             <div class="feed-content">
               <p class="feed-category">TCC · Técnica</p>
-              <p class="feed-text">Reestruturação cognitiva: identificar pensamentos automáticos negativos antes da intervenção direta.</p>
+              <p class="feed-text">Reestruturação cognitiva: identificar pensamentos automáticos antes da intervenção direta.</p>
             </div>
           </div>
+
           <div class="insight-feed-item glass-card">
             <div class="feed-icon">
               <i data-lucide="heart" width="16" height="16"></i>
             </div>
             <div class="feed-content">
               <p class="feed-category">Vínculo Terapêutico</p>
-              <p class="feed-text">A aliança terapêutica explica até 30% da variância nos resultados clínicos (Norcross, 2011).</p>
+              <p class="feed-text">A aliança terapêutica é um dos fatores mais consistentes nos resultados clínicos.</p>
             </div>
           </div>
+
           <div class="insight-feed-item glass-card">
             <div class="feed-icon">
               <i data-lucide="moon" width="16" height="16"></i>
             </div>
             <div class="feed-content">
               <p class="feed-category">Psicoterapia · Evidências</p>
-              <p class="feed-text">EMDR demonstra eficácia equivalente à TCC no tratamento de TEPT — revisão Cochrane 2020.</p>
+              <p class="feed-text">EMDR demonstra eficácia para TEPT em revisões sistemáticas recentes.</p>
             </div>
           </div>
         </div>
@@ -287,9 +271,6 @@
     </div>
   </section>
 
-  <!-- ============================================================
-       SEÇÃO: FERRAMENTAS
-  ============================================================ -->
   <section class="section-ferramentas" id="ferramentas">
     <div class="section-container">
       <div class="section-header">
@@ -299,32 +280,32 @@
 
       <div class="ferramentas-grid">
         <div class="ferramenta-item glass-card hover-lift">
-          <i data-lucide="users" width="32" height="32" class="ft-icon"></i>
-          <h4>Gestão de Pacientes</h4>
-          <p>Perfis completos com histórico, documentos e evolução terapêutica.</p>
+          <i data-lucide="newspaper" width="32" height="32" class="ft-icon"></i>
+          <h4>Notícias & Curadoria</h4>
+          <p>Um fluxo rápido com fontes confiáveis e atualizadas.</p>
         </div>
+
         <div class="ferramenta-item glass-card hover-lift">
-          <i data-lucide="calendar" width="32" height="32" class="ft-icon"></i>
-          <h4>Agenda Inteligente</h4>
-          <p>Gestão de horários com lembretes automáticos e visualização semanal.</p>
+          <i data-lucide="book-text" width="32" height="32" class="ft-icon"></i>
+          <h4>Atividades Terapêuticas</h4>
+          <p>Dinâmicas prontas para usar em sessão ou estudo.</p>
         </div>
-        <div class="ferramenta-item glass-card hover-lift">
-          <i data-lucide="file-text" width="32" height="32" class="ft-icon"></i>
-          <h4>Materiais Terapêuticos</h4>
-          <p>Biblioteca de exercícios, escalas e técnicas com embasamento científico.</p>
-        </div>
+
         <div class="ferramenta-item glass-card hover-lift">
           <i data-lucide="search" width="32" height="32" class="ft-icon"></i>
           <h4>Busca Global</h4>
-          <p>Encontre técnicas, artigos, pacientes e reflexões num único campo.</p>
+          <p>Encontre técnicas, artigos e reflexões num único campo.</p>
+        </div>
+
+        <div class="ferramenta-item glass-card hover-lift">
+          <i data-lucide="sparkles" width="32" height="32" class="ft-icon"></i>
+          <h4>Reflexão Rápida</h4>
+          <p>Conteúdo curto para inspirar a prática do dia.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       CTA FINAL
-  ============================================================ -->
   <section class="section-cta">
     <div class="section-container">
       <div class="cta-block glass-panel">
@@ -332,9 +313,11 @@
           <div class="ambient-orb ambient-orb--cta1"></div>
           <div class="ambient-orb ambient-orb--cta2"></div>
         </div>
+
         <div class="cta-content">
           <h2 class="cta-title">Pronto para elevar<br /><span class="gradient-text">sua prática clínica?</span></h2>
-          <p class="cta-desc">Acesse a plataforma agora e experimente um novo padrão de organização terapêutica.</p>
+          <p class="cta-desc">Acesse a plataforma e use notícias, curiosidades e ferramentas úteis no seu dia a dia.</p>
+
           <div class="cta-actions">
             <button class="btn-primary btn-cta" onclick="MindFlow.openModal('loginModal')">
               <i data-lucide="arrow-right" width="18" height="18"></i>
@@ -349,23 +332,17 @@
     </div>
   </section>
 
-  <!-- ============================================================
-       FOOTER
-  ============================================================ -->
   <footer class="landing-footer">
     <div class="footer-inner">
       <div class="footer-brand">
         <div class="brand-orb brand-orb--sm"></div>
         <span class="brand-name">CRV <strong>MindFlow</strong></span>
       </div>
-      <p class="footer-tagline">Central cognitiva para profissionais da saúde mental.</p>
-      <p class="footer-copy">© 2025 CRV MindFlow · Desenvolvido com propósito clínico.</p>
+      <p class="footer-tagline">Central de apoio para profissionais da saúde mental.</p>
+      <p class="footer-copy">© 2026 CRV MindFlow · Desenvolvido com propósito clínico.</p>
     </div>
   </footer>
 
-  <!-- ============================================================
-       MODAL: LOGIN
-  ============================================================ -->
   <div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true" aria-label="Login">
     <div class="modal-container glass-panel animate-modal-in">
       <button class="modal-close" onclick="MindFlow.closeModal('loginModal')" aria-label="Fechar">
@@ -382,18 +359,18 @@
         <button class="modal-tab" data-tab="visitante" onclick="MindFlow.switchTab(this, 'tabVisitante')">Visitante</button>
       </div>
 
-      <!-- Tab: Login -->
       <div class="modal-tab-content active" id="tabLogin">
         <form class="login-form" id="loginForm" onsubmit="MindFlow.handleLogin(event)">
           <div class="form-group">
-            abel class="form-label">E-mail profissional</label>
+            <label class="form-label">E-mail profissional</label>
             <div class="input-wrapper">
               <i data-lucide="mail" width="16" height="16" class="input-icon"></i>
               <input type="email" class="form-input" id="loginEmail" placeholder="psicologo@email.com" required autocomplete="email" />
             </div>
           </div>
+
           <div class="form-group">
-            abel class="form-label">Senha</label>
+            <label class="form-label">Senha</label>
             <div class="input-wrapper">
               <i data-lucide="lock" width="16" height="16" class="input-icon"></i>
               <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" />
@@ -402,18 +379,21 @@
               </button>
             </div>
           </div>
+
           <div class="form-row">
-            abel class="checkbox-label">
+            <label class="checkbox-label">
               <input type="checkbox" id="rememberMe" />
               <span class="checkbox-custom"></span>
               Lembrar acesso
             </label>
             <a href="#" class="form-link">Esqueci a senha</a>
           </div>
+
           <button type="submit" class="btn-primary btn-full" id="loginBtn">
             <span class="btn-text">Entrar</span>
             <i data-lucide="arrow-right" width="16" height="16"></i>
           </button>
+
           <div class="login-error hidden" id="loginError">
             <i data-lucide="alert-circle" width="14" height="14"></i>
             <span id="loginErrorMsg">Credenciais inválidas.</span>
@@ -421,7 +401,6 @@
         </form>
       </div>
 
-      <!-- Tab: Visitante -->
       <div class="modal-tab-content" id="tabVisitante">
         <div class="visitante-info">
           <div class="visitante-icon glass-card">
@@ -429,6 +408,7 @@
           </div>
           <h3>Acesso Visitante</h3>
           <p>Explore o dashboard, insights clínicos e materiais públicos sem necessidade de cadastro.</p>
+
           <div class="visitante-perms">
             <div class="perm perm--ok">
               <i data-lucide="check" width="14" height="14"></i>
@@ -451,6 +431,7 @@
               <span>Configurações</span>
             </div>
           </div>
+
           <button class="btn-primary btn-full" onclick="MindFlow.acessarVisitante()">
             <i data-lucide="eye" width="16" height="16"></i>
             Explorar como Visitante
@@ -458,7 +439,6 @@
         </div>
       </div>
 
-      <!-- Theme Toggle no Modal -->
       <div class="modal-footer">
         <button class="theme-toggle-sm" onclick="MindFlow.toggleTheme()" id="modalThemeBtn">
           <i data-lucide="sun" width="14" height="14"></i>
@@ -468,7 +448,9 @@
     </div>
   </div>
 
-  <!-- JS Global -->
-  <script src="static/js/main.js"></script>
+  <script src="static/js/index.js"></script>
+  <script>
+    if (window.lucide) lucide.createIcons();
+  </script>
 </body>
 </html>
